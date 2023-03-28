@@ -64,3 +64,8 @@ export function nombreEstadoTarea(estadosTarea, idEstadoTarea) {
   const estadoTarea = estadosTarea.find(estadoTarea => parseInt(estadoTarea.id_estado_tarea) === parseInt(idEstadoTarea))
   return (estadoTarea ? estadoTarea.nombre : 'Estado')
 }
+
+export function isBlank(str) {
+  return (!str || /^\s*$/.test(str))
+}
+

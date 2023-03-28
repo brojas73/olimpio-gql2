@@ -24,7 +24,7 @@ const main = async () => {
         database: "olimpio",
         username: "root",
         password: "Ol!mp!0!!@@",
-        // logging: true,
+        logging: true,
         synchronize: false,
         entities: [
             EstadoTarea, 

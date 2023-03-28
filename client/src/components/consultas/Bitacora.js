@@ -1,25 +1,39 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Spinner } from "react-bootstrap"
 import BootstrapTable from "react-bootstrap-table-next"
 import paginationFactory from 'react-bootstrap-table2-paginator'
 
 import { useTareasExternas } from '../../context/TareasExternasContext'
-import { fechaFormatter } from '../comun/utils'
+import { fechaFormatter, fetchData } from '../comun/utils'
 
 import Filtros from "./Filtros"
 import TareaExternaModal from "./TareaExternaModal"
 import TituloConsultas from './TituloConsultas'
 
-import { GET_TAREAS_EXTERNAS_LOG } from '../../queries/TareaExternaLog'
-import { useQuery } from "@apollo/client"
+const URL_APIS_DEV = 'http://localhost:3020/api'
+const URL_APIS_PROD = 'http://5.183.8.10/api'
 
 export default function Bitacora() {
   const { sucursalActual } = useTareasExternas()
-  const { data, loading } = useQuery(GET_TAREAS_EXTERNAS_LOG)
+  const [bitacora, setBitacora] = useState([])
+  const [loading, setLoading] = useState(true)
 
   const [modalTarea, setModalTarea] = useState({mostrar: false, idTareaExterna: 0})
   const [filtro, setFiltro] = useState({ticket: '', descripcion: ''})
+
+  useEffect(() => {
+    async function fetchBitacora() {
+      const url_api = process.env.NODE_ENV === 'development' ? URL_APIS_DEV : URL_APIS_PROD 
+      await fetchData(`${url_api}/tareas-externas-log`)
+              .then(data => {
+                setBitacora([...data])
+              })
+              .finally(setLoading(false))
+    }
+
+    fetchBitacora()
+  }, [sucursalActual, filtro])
 
   function handleChange(e) {
     setFiltro(prevValue => ({...prevValue, [e.target.name]: e.target.value.toUpperCase()}))
@@ -27,30 +41,29 @@ export default function Bitacora() {
 
   const tableRowEvents = {
     onDoubleClick: (e, row, rowIndex) => {
-      setModalTarea(prevValue => ({...prevValue, idTareaExterna: row.tarea_externa.id_tarea_externa, mostrar: true}))
+      setModalTarea(prevValue => ({...prevValue, idTareaExterna: row.id_tarea_externa, mostrar: true}))
     }
   }
 
   const columns = [
-    { dataField: "tarea_externa.sucursal_origen.nombre", text: "Sucursal", sort: true},
-    { dataField: "tarea_externa.ticket", text: "Ticket", sort: true},
-    { dataField: "tarea_externa.descripcion", text: "Descripción", sort: true },
-    { dataField: "tipo_accion.nombre", text: "Acción", sort: true },
+    { dataField: "sucursal_origen", text: "Sucursal", sort: true},
+    { dataField: "ticket", text: "Ticket", sort: true},
+    { dataField: "descripcion", text: "Descripción", sort: true },
+    { dataField: "tipo_accion", text: "Acción", sort: true },
     { dataField: "fecha", text: "Fecha", sort: true, formatter: fechaFormatter},
-    { dataField: "usuario.nombre", text: "Usuario", sort: true },
-    { dataField: "estado_tarea_fin.nombre", text: "Estado Final", sort: true },
-    { dataField: "estado_tarea_ini.nombre", text: "Estado Inicial", sort: true },
+    { dataField: "usuario", text: "Usuario", sort: true },
+    { dataField: "estado_fin", text: "Estado Final", sort: true },
+    { dataField: "estado_ini", text: "Estado Inicial", sort: true },
   ]
 
   if (loading) return <Spinner animation="border" />
 
-  if (data) {
+  if (bitacora) {
     // Obtengo las tareas que voy a desplegar
-    var tareasFiltradas = data.tareasExternasLog.filter(tareaExterna => (
-          tareaExterna.tarea_externa &&
-          parseInt(tareaExterna.tarea_externa.sucursal_origen.id_sucursal) === parseInt(sucursalActual) && 
-          tareaExterna.tarea_externa.ticket.includes(filtro.ticket) &&
-          tareaExterna.tarea_externa.descripcion.includes(filtro.descripcion)
+    var tareasFiltradas = bitacora.filter(tareaExterna => (
+          (parseInt(tareaExterna.id_sucursal_origen) === parseInt(sucursalActual) || parseInt(tareaExterna.id_sucursal_destino) === parseInt(sucursalActual)) &&
+          tareaExterna.ticket.includes(filtro.ticket) &&
+          tareaExterna.descripcion.includes(filtro.descripcion)
         ))
   }
 

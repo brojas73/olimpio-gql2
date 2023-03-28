@@ -13,7 +13,7 @@ const TIPO_SUCURSAL = {
 export const GET_ALL_TAREAS_EXTERNAS = {
     type: new GraphQLList(TareaExternaType),
     async resolve(): Promise<ITareaExterna[]> {
-        return await TareaExterna.find()
+        return await TareaExterna.find({where: { estado: 1}})
     }
 }
 

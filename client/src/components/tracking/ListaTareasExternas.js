@@ -4,17 +4,19 @@ import { useMutation } from "@apollo/client"
 import { Row } from "react-bootstrap"
 
 import { useAuth } from "../../hooks/useAuth"
+import { useTareasExternas } from "../../context/TareasExternasContext"
 
 import { ACTUALIZA_TAREA_EXTERNA_ESTADO, BORRA_TAREA_EXTERNA } from "../../mutations/TareaExterna"
-import { GET_TAREAS_EXTERNAS_ACTIVAS } from "../../queries/TareaExterna"
+import { GET_TAREAS_EXTERNAS_ACTIVAS, GET_TAREAS_EXTERNAS_ACTIVAS_BY_DESTINO } from "../../queries/TareaExterna"
 
 
 import TareasExternasHeader from "./TareasExternasHeader"
 import TareaExterna from "./TareaExternaCard"
 import Confirmacion from '../comun/Confirmacion'
-import { GET_TAREAS_EXTERNAS_LOG } from "../../queries/TareaExternaLog"
+// import { GET_TAREAS_EXTERNAS_LOG } from "../../queries/TareaExternaLog"
 
 const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoContinuar, textoBorrar, textoConfirmacion}) => {
+  const { sucursalActual } = useTareasExternas()
   const { credenciales } = useAuth()
 
   const [borrando, setBorrando] = useState(false)
@@ -29,7 +31,7 @@ const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoCont
     },
     refetchQueries: [
         { query: GET_TAREAS_EXTERNAS_ACTIVAS },
-        { query: GET_TAREAS_EXTERNAS_LOG }
+        { query: GET_TAREAS_EXTERNAS_ACTIVAS_BY_DESTINO, variables: { id_sucursal: sucursalActual }  }
       ]
   })
 
@@ -39,7 +41,7 @@ const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoCont
     },
     refetchQueries: [
           { query: GET_TAREAS_EXTERNAS_ACTIVAS },
-          { query: GET_TAREAS_EXTERNAS_LOG }
+          { query: GET_TAREAS_EXTERNAS_ACTIVAS_BY_DESTINO, variables: { id_sucursal: sucursalActual }  }
       ]
   })
 

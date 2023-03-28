@@ -1,5 +1,5 @@
 import { Button, Card, Col } from "react-bootstrap"
-import { FaArrowAltCircleRight, FaTrashAlt, FaCheck, FaRegCalendarAlt, FaCalendarAlt, FaListAlt, FaTicketAlt } from 'react-icons/fa'
+import { FaArrowAltCircleRight, FaTrashAlt, FaCheck, FaRegCalendarAlt, FaTicketAlt } from 'react-icons/fa'
 
 import { useAuth } from "../../hooks/useAuth"
 import { STATUS_TAREA, TIPOS_SERVICIO, useTareasExternas } from "../../context/TareasExternasContext"

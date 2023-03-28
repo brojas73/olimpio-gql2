@@ -36,8 +36,7 @@ const customFetch =  (uri, options) => {
 // Configuración de ApolloClient
 const client = new ApolloClient({
   link: createHttpLink({
-    uri: 'http://localhost:3010/graphql',
-    // uri: 'http://5.183.8.10/graphql',
+    uri: (process.env.NODE_ENV === 'development') ? 'http://localhost:3010/graphql' : 'http://5.183.8.10/graphql',
     fetch: customFetch,
   }),
   cache

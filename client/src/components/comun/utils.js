@@ -69,3 +69,8 @@ export function isBlank(str) {
   return (!str || /^\s*$/.test(str))
 }
 
+export const URL_APIS_DEV = 'http://localhost:3020/api'
+export const URL_APIS_PROD = 'http://5.183.8.10/api'
+
+
+

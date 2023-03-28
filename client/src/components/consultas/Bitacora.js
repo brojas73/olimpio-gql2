@@ -5,14 +5,11 @@ import BootstrapTable from "react-bootstrap-table-next"
 import paginationFactory from 'react-bootstrap-table2-paginator'
 
 import { useTareasExternas } from '../../context/TareasExternasContext'
-import { fechaFormatter, fetchData } from '../comun/utils'
+import { fechaFormatter, fetchData, URL_APIS_DEV, URL_APIS_PROD } from '../comun/utils'
 
 import Filtros from "./Filtros"
 import TareaExternaModal from "./TareaExternaModal"
 import TituloConsultas from './TituloConsultas'
-
-const URL_APIS_DEV = 'http://localhost:3020/api'
-const URL_APIS_PROD = 'http://5.183.8.10/api'
 
 export default function Bitacora() {
   const { sucursalActual } = useTareasExternas()
@@ -61,7 +58,8 @@ export default function Bitacora() {
   if (bitacora) {
     // Obtengo las tareas que voy a desplegar
     var tareasFiltradas = bitacora.filter(tareaExterna => (
-          (parseInt(tareaExterna.id_sucursal_origen) === parseInt(sucursalActual) || parseInt(tareaExterna.id_sucursal_destino) === parseInt(sucursalActual)) &&
+          // (parseInt(tareaExterna.id_sucursal_origen) === parseInt(sucursalActual) || parseInt(tareaExterna.id_sucursal_destino) === parseInt(sucursalActual)) &&
+          parseInt(tareaExterna.id_sucursal_origen) === parseInt(sucursalActual) &&
           tareaExterna.ticket.includes(filtro.ticket) &&
           tareaExterna.descripcion.includes(filtro.descripcion)
         ))

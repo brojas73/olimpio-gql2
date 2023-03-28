@@ -3,7 +3,7 @@ import './index.css';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
+import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client'
 import { BrowserRouter } from 'react-router-dom';
 import { TareasExternasProvider } from './context/TareasExternasContext';
 import { AuthProvider } from './hooks/useAuth';
@@ -22,9 +22,23 @@ const cache = new InMemoryCache({
   }
 })
 
+const customFetch =  (uri, options) => {
+  return fetch(uri, options)
+          .then(response => {
+            if (response.status >= 500) {
+              return Promise.reject(response.status)
+            }
+            return response
+          })
+}
+
 // Configuración de ApolloClient
 const client = new ApolloClient({
-  uri: 'http://localhost:3010/graphql',
+  link: createHttpLink({
+    uri: 'http://localhost:3010/graphql',
+    // uri: 'http://5.183.8.10/graphql',
+    fetch: customFetch,
+  }),
   cache
 })
 

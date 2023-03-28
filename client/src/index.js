@@ -32,6 +32,7 @@ const customFetch =  (uri, options) => {
           })
 }
 
+
 // Configuración de ApolloClient
 const client = new ApolloClient({
   link: createHttpLink({

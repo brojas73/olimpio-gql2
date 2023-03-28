@@ -4,7 +4,7 @@ const TituloConsultas = ({titulo, renglones}) => {
     return (
         <Navbar>
             <Container className="justify-content-start">
-                <Button variant="dark" size="lg">
+                <Button variant="dark" size="md">
                     {titulo} { " "}
                     <Badge bg="primary">{renglones}</Badge>
                 </Button>

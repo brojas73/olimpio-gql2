@@ -74,7 +74,6 @@ const TareaExterna = ({tareaExterna, tituloContinuar, tituloBorrar, onContinuar,
                 </Card.Body>
                 <Card.Footer className="d-flex justify-content-between align-items-center">
                     <div>
-                        {/* <small>Entregar: {formateaFechaHora(tareaExterna.fecha_requerida, tareaExterna.hora_requerida)}</small> */}
                         <small><FaRegCalendarAlt /> {formateaFechaHora(tareaExterna.fecha_requerida, tareaExterna.hora_requerida)}</small>
                     </div>
                     <div>

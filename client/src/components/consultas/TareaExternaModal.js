@@ -1,5 +1,5 @@
 import { Card, Col, Modal, Spinner} from "react-bootstrap"
-import { FaArrowAltCircleRight } from 'react-icons/fa'
+import { FaTicketAlt, FaArrowAltCircleRight, FaRegCalendarAlt } from 'react-icons/fa'
 
 import { TIPOS_SERVICIO } from '../../context/TareasExternasContext'
 import { formateaFecha, formateaFechaHora } from "../comun/utils"
@@ -20,7 +20,7 @@ const TareaExternaModal = ({mostrar, idTareaExterna, onClose}) => {
               <Card.Header>
                   <Card.Subtitle className="text-primary">{data.tareaExterna.estado_tarea.nombre}</Card.Subtitle>
                   <div className="d-flex justify-content-between align-items-center">
-                      <Card.Title>Ticket: {data.tareaExterna.ticket.padStart(6, '0')}</Card.Title>
+                      <Card.Title><FaTicketAlt /> {data.tareaExterna.ticket.padStart(6, '0')}</Card.Title>
                       <Card.Subtitle>
                       { data.tareaExterna.sucursal_origen.nombre }
                       { " " } <FaArrowAltCircleRight /> { " " }
@@ -43,7 +43,7 @@ const TareaExternaModal = ({mostrar, idTareaExterna, onClose}) => {
               </Card.Body>
               <Card.Footer className="d-flex justify-content-between align-items-center">
                 <div>
-                    <small>Entregar: { formateaFechaHora(data.tareaExterna.fecha_requerida, data.tareaExterna.hora_requerida)}</small>
+                  <small><FaRegCalendarAlt /> {formateaFechaHora(data.tareaExterna.fecha_requerida, data.tareaExterna.hora_requerida)}</small>
                 </div>
               </Card.Footer>
           </Card>

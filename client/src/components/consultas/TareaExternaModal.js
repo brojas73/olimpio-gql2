@@ -4,46 +4,49 @@ import { FaTicketAlt, FaArrowAltCircleRight, FaRegCalendarAlt } from 'react-icon
 import { TIPOS_SERVICIO } from '../../context/TareasExternasContext'
 import { formateaFecha, formateaFechaHora } from "../comun/utils"
 
-import { useQuery } from '@apollo/client'
-import { GET_TAREA_EXTERNA_BY_ID} from '../../queries/TareaExterna'
+import { useQuery } from 'react-query'
+import { fetchTareaExterna } from '../../queries/TareaExterna'
 
 const TareaExternaModal = ({mostrar, idTareaExterna, onClose}) => {
-  const { data, loading } = useQuery(GET_TAREA_EXTERNA_BY_ID, { variables: { id_tarea_externa: idTareaExterna }})
+  const { data, isLoading } = useQuery('tareaExterna', () => fetchTareaExterna(idTareaExterna))
 
-  if (loading) return <Spinner animation="border" />
+  if (isLoading) return <Spinner animation="border" />
+
+  // Obtengo el primer elemento del resultado
+  const tareaExterna = data[0]
 
   return (
     <Modal show={mostrar} onHide={onClose} animation={true}> 
       <Modal.Body>
         <Col>
-          <Card border={parseInt(data.tareaExterna.tipo_servicio.id_tipo_servicio) === TIPOS_SERVICIO.EXPRESS ? 'danger' : ''} >
+          <Card border={parseInt(tareaExterna.id_tipo_servicio) === TIPOS_SERVICIO.EXPRESS ? 'danger' : ''} >
               <Card.Header>
-                  <Card.Subtitle className="text-primary">{data.tareaExterna.estado_tarea.nombre}</Card.Subtitle>
+                  <Card.Subtitle className="text-primary">{tareaExterna.estado_tarea}</Card.Subtitle>
                   <div className="d-flex justify-content-between align-items-center">
-                      <Card.Title><FaTicketAlt /> {data.tareaExterna.ticket.padStart(6, '0')}</Card.Title>
+                      <Card.Title><FaTicketAlt /> {tareaExterna.ticket.padStart(6, '0')}</Card.Title>
                       <Card.Subtitle>
-                      { data.tareaExterna.sucursal_origen.nombre }
+                      { tareaExterna.sucursal_origen }
                       { " " } <FaArrowAltCircleRight /> { " " }
-                      { data.tareaExterna.sucursal_destino.nombre }
+                      { tareaExterna.sucursal_destino }
                       </Card.Subtitle>
                   </div>
                   <div className="d-flex justify-content-between align-items-center">
-                      <small>{formateaFecha(data.tareaExterna.fecha_creacion)}</small>
-                      <small>{data.tareaExterna.creado_por.nombre}</small>
+                      <small>{formateaFecha(tareaExterna.fecha_creacion)}</small>
+                      <small>{tareaExterna.creado_por}</small>
                   </div>
               </Card.Header>
               <Card.Body>
                   <Card.Subtitle>
-                      { data.tareaExterna.tipo_trabajo.nombre } { " - "}
-                      { data.tareaExterna.tipo_servicio.nombre }
+                      { tareaExterna.tipo_trabajo } { " - "}
+                      { tareaExterna.tipo_servicio }
                   </Card.Subtitle>
                   <Card.Text>
-                      { data.tareaExterna.descripcion }
+                      { tareaExterna.descripcion }
                   </Card.Text>
               </Card.Body>
               <Card.Footer className="d-flex justify-content-between align-items-center">
                 <div>
-                  <small><FaRegCalendarAlt /> {formateaFechaHora(data.tareaExterna.fecha_requerida, data.tareaExterna.hora_requerida)}</small>
+                  <small><FaRegCalendarAlt /> {formateaFechaHora(tareaExterna.fecha_requerida, tareaExterna.hora_requerida)}</small>
                 </div>
               </Card.Footer>
           </Card>

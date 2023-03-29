@@ -1,24 +1,24 @@
-import { gql } from '@apollo/client'
+// import { gql } from '@apollo/client'
 import { getUrlApis } from '../components/comun/utils'
 
-export const LOGIN = gql`
-    mutation Login($usuario: String!, $contrasena: String!) {
-        login(usuario: $usuario, contrasena: $contrasena) {
-            status {
-                successful
-                message
-            }
-            usuario {
-                id_usuario
-                usuario
-                nombre
-                rol {
-                    id_rol
-                }
-            }
-        }
-    }
-`
+// export const LOGIN = gql`
+//     mutation Login($usuario: String!, $contrasena: String!) {
+//         login(usuario: $usuario, contrasena: $contrasena) {
+//             status {
+//                 successful
+//                 message
+//             }
+//             usuario {
+//                 id_usuario
+//                 usuario
+//                 nombre
+//                 rol {
+//                     id_rol
+//                 }
+//             }
+//         }
+//     }
+// `
 
 export async function login(credenciales) {
     try {

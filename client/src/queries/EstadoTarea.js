@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client'
+import { fetchData, getUrlApis } from '../components/comun/utils'
 
 export const GET_ESTADOS_TAREA = gql`
     query EstadosTarea {
@@ -9,3 +10,12 @@ export const GET_ESTADOS_TAREA = gql`
         }
     }
 `
+
+export async function fetchEstadosTarea() {
+    try {
+        return await fetchData(`${getUrlApis()}/estados-tarea`)
+    } catch (error) {
+        throw error
+    }
+}
+

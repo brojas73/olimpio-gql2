@@ -1,25 +1,23 @@
 import { useState } from 'react'
-import { Button, Container, Form, Row, Col } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 
-import { useTareasExternas } from '../../context/TareasExternasContext'
-import { STATUS_TAREA } from '../../context/TareasExternasContext'
+import { Button, Container, Form, Row, Col } from 'react-bootstrap'
+
+import { STATUS_TAREA, useTareasExternas } from '../../context/TareasExternasContext'
 import { useAuth } from '../../hooks/useAuth'
 
 import SucursalSelect from '../comun/SucursalSelect'
 import TipoServicioSelect from '../comun/TipoServicioSelect'
 import TipoTrabajolSelect from '../comun/TipoTrabajoSelect'
 
-import { useMutation } from '@apollo/client'
-import { CREA_TAREA_EXTERNA } from '../../mutations/TareaExterna'
-import { GET_TAREAS_EXTERNAS_ACTIVAS } from '../../queries/TareaExterna'
-import { GET_TAREAS_EXTERNAS_LOG } from '../../queries/TareaExternaLog'
+import { useMutation, useQueryClient } from 'react-query'
+import { creaTareaExterna } from '../../mutations/TareaExterna'
 
 const NuevaTareaForm = ({onExito}) => {    
   const navigate = useNavigate()
-
   const { sucursalActual } = useTareasExternas()
   const { credenciales } = useAuth()
+
   const [tareaExterna, setTareaExterna] = useState({
     ticket: '',
     descripcion: '',
@@ -29,23 +27,13 @@ const NuevaTareaForm = ({onExito}) => {
     hora_requerida: formateaHora(new Date()),
     id_tipo_servicio: 0
   })
-  const [creaTareaExterna] = useMutation (CREA_TAREA_EXTERNA, {
-    variables: { 
-        id_sucursal_origen: sucursalActual,
-        ticket: tareaExterna.ticket,
-        descripcion: tareaExterna.descripcion,
-        id_tipo_trabajo: tareaExterna.id_tipo_trabajo,
-        id_sucursal_destino: tareaExterna.id_sucursal_destino,
-        fecha_requerida: tareaExterna.fecha_requerida,
-        hora_requerida: tareaExterna.hora_requerida,
-        id_tipo_servicio: tareaExterna.id_tipo_servicio,
-        id_estado_tarea: STATUS_TAREA.PENDIENTE_RECOLECCION,
-        id_usuario: credenciales.id_usuario
-    },
-    refetchQueries: [
-        { query: GET_TAREAS_EXTERNAS_ACTIVAS },
-        { query: GET_TAREAS_EXTERNAS_LOG }
-      ]
+
+  const queryClient = useQueryClient()
+  const { mutate: doCreaTareaExterna } = useMutation ({
+    mutationFn: creaTareaExterna,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tareasExternasActivas'] })
+    }
   })
 
   function handleChange(e) {
@@ -58,7 +46,23 @@ const NuevaTareaForm = ({onExito}) => {
   
   async function onSubmit(event) {
     event.preventDefault()
-    await creaTareaExterna()
+
+    const nuevaTareaExterna = {
+        id_sucursal_origen: sucursalActual,
+        ticket: tareaExterna.ticket,
+        descripcion: tareaExterna.descripcion,
+        id_tipo_trabajo: tareaExterna.id_tipo_trabajo,
+        id_sucursal_destino: tareaExterna.id_sucursal_destino,
+        fecha_requerida: tareaExterna.fecha_requerida,
+        hora_requerida: tareaExterna.hora_requerida,
+        id_tipo_servicio: tareaExterna.id_tipo_servicio,
+        id_estado_tarea: STATUS_TAREA.PENDIENTE_RECOLECCION,
+        fecha_creacion: new Date(),
+        id_creado_por: credenciales.id_usuario,
+        estado: 1
+    } 
+
+    await doCreaTareaExterna(nuevaTareaExterna)
     navigate(-1)
   }
 

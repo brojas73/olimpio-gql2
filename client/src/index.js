@@ -7,6 +7,7 @@ import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@ap
 import { BrowserRouter } from 'react-router-dom';
 import { TareasExternasProvider } from './context/TareasExternasContext';
 import { AuthProvider } from './hooks/useAuth';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 const cache = new InMemoryCache({
   typePolicies: {
@@ -42,15 +43,19 @@ const client = new ApolloClient({
   cache
 })
 
+const queryClient = new QueryClient()
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <ApolloProvider client={client}>
     <BrowserRouter>
-      <AuthProvider>
-        <TareasExternasProvider>
-          <App />
-        </TareasExternasProvider>
-      </AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <TareasExternasProvider>
+            <App />
+          </TareasExternasProvider>
+        </AuthProvider>
+      </QueryClientProvider>
     </BrowserRouter>
-  </ApolloProvider>
+  </ApolloProvider> 
 )

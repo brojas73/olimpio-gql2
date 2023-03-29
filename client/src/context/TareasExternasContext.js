@@ -1,8 +1,5 @@
 import React, { useContext, useState } from "react";
 
-export const URL_APIS = 'http://localhost:8080/api'
-// export const URL_APIS = 'http://5.183.8.10/api'
-
 export const STATUS_TAREA = {
     TAREAS_ACTIVAS: 0,
     PENDIENTE_RECOLECCION: 1,

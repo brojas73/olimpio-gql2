@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client'
+import { fetchData, getUrlApis } from '../components/comun/utils'
 
 export const GET_TAREAS_EXTERNAS_ACTIVAS = gql`
     query TareasExternasActivas {
@@ -140,3 +141,28 @@ export const GET_TAREA_EXTERNA_BY_ID = gql`
         }
     }
 `
+
+export async function fetchTareasExternasActivas() {
+    try {
+        return await fetchData(`${getUrlApis()}/tareas-externas-activas`)
+    } catch (error) {
+        throw error
+    }
+}
+
+export async function fetchTareasPorAtenderseHoy(idSucursal) {
+    try {
+        return await fetchData(`${getUrlApis()}/tareas-por-atenderse-hoy/${idSucursal}`)
+    } catch (error) {
+        throw error
+    }
+}
+
+export async function fetchTareaExternaById(idTareaExterna) {
+    try {
+        return await fetchData(`${getUrlApis()}/tareas-externas/${idTareaExterna}`)
+    } catch (error) {
+        throw error
+    }
+}
+

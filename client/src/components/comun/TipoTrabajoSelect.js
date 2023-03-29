@@ -1,11 +1,12 @@
-import { useQuery } from '@apollo/client'
 import { Form, Spinner } from 'react-bootstrap'
-import { GET_TIPOS_TRABAJO } from '../../queries/TipoTrabajo'
+
+import { useQuery } from 'react-query'
+import { fetchTiposTrabajo } from '../../queries/TipoTrabajo'
 
 const TipoTrabajoSelect = ({onChange, name, value, label}) => {
-    const { data, loading } = useQuery(GET_TIPOS_TRABAJO)
+    const { data: tiposTrabajo, isLoading } = useQuery('tiposTrabajo', fetchTiposTrabajo)
 
-    if (loading) return <Spinner animation="border" />
+    if (isLoading) return <Spinner animation="border" />
 
     return (
         <>
@@ -17,7 +18,7 @@ const TipoTrabajoSelect = ({onChange, name, value, label}) => {
             >
                 <option key={0} value="">Selecciona uno...</option>
                 {
-                    data.tiposTrabajo.map(tipoTrabajo => (
+                    tiposTrabajo.map(tipoTrabajo => (
                         <option key={tipoTrabajo.id_tipo_trabajo} value={tipoTrabajo.id_tipo_trabajo}>{tipoTrabajo.nombre}</option>
                     ))
                 }

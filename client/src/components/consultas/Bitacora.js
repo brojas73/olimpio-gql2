@@ -1,11 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { Spinner } from "react-bootstrap"
 import BootstrapTable from "react-bootstrap-table-next"
 import paginationFactory from 'react-bootstrap-table2-paginator'
 
 import { useTareasExternas } from '../../context/TareasExternasContext'
-import { fechaFormatter, fetchData, URL_APIS_DEV, URL_APIS_PROD } from '../comun/utils'
+import { fechaFormatter } from '../comun/utils'
+
+import { useQuery } from 'react-query'
+import { fetchTareasExternasLog } from '../../queries/TareaExternaLog'
 
 import Filtros from "./Filtros"
 import TareaExternaModal from "./TareaExternaModal"
@@ -13,24 +16,11 @@ import TituloConsultas from './TituloConsultas'
 
 export default function Bitacora() {
   const { sucursalActual } = useTareasExternas()
-  const [bitacora, setBitacora] = useState([])
-  const [loading, setLoading] = useState(true)
+
+  const {isLoading, data: tareasExternasLog} = useQuery('tareasExternasLog', fetchTareasExternasLog)
 
   const [modalTarea, setModalTarea] = useState({mostrar: false, idTareaExterna: 0})
   const [filtro, setFiltro] = useState({ticket: '', descripcion: ''})
-
-  useEffect(() => {
-    async function fetchBitacora() {
-      const url_api = process.env.NODE_ENV === 'development' ? URL_APIS_DEV : URL_APIS_PROD 
-      await fetchData(`${url_api}/tareas-externas-log`)
-              .then(data => {
-                setBitacora([...data])
-              })
-              .finally(setLoading(false))
-    }
-
-    fetchBitacora()
-  }, [sucursalActual, filtro])
 
   function handleChange(e) {
     setFiltro(prevValue => ({...prevValue, [e.target.name]: e.target.value.toUpperCase()}))
@@ -53,12 +43,11 @@ export default function Bitacora() {
     { dataField: "estado_ini", text: "Estado Inicial", sort: true },
   ]
 
-  if (loading) return <Spinner animation="border" />
+  if (isLoading) return <Spinner animation="border" />
 
-  if (bitacora) {
+  if (tareasExternasLog) {
     // Obtengo las tareas que voy a desplegar
-    var tareasFiltradas = bitacora.filter(tareaExterna => (
-          // (parseInt(tareaExterna.id_sucursal_origen) === parseInt(sucursalActual) || parseInt(tareaExterna.id_sucursal_destino) === parseInt(sucursalActual)) &&
+    var tareasFiltradas = tareasExternasLog.filter(tareaExterna => (
           parseInt(tareaExterna.id_sucursal_origen) === parseInt(sucursalActual) &&
           tareaExterna.ticket.includes(filtro.ticket) &&
           tareaExterna.descripcion.includes(filtro.descripcion)

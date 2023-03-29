@@ -1,3 +1,6 @@
+const URL_APIS_DEV = 'http://localhost:3020/api'
+const URL_APIS_PROD = 'http://5.183.8.10/api'
+
 export function formateaFechaHora(fecha, hora, mostrarDia = true, mostrarAt = true) {
     const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
     const dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
@@ -21,10 +24,6 @@ export function formateaFecha(fecha, mostrarDia = true, mostrarAt = true) {
     const hora = `${horas}:${minutos}`
     return formateaFechaHora(fechaStr, hora, mostrarDia, mostrarAt)
 }
-
-export async function fetchData(url) { 
-    return await fetch(url).then(response => response.json())
-}    
 
 export const ticketFormatter = (data, row) => {
     return (
@@ -50,6 +49,11 @@ export const accionFormatter = (data, row) => {
   )
 }
 
+export async function fetchData(url) { 
+  const response = await fetch(url).then(response => response.json())
+  return response
+}    
+
 export function nombreSucursal(sucursales, idSucursal) {
   const sucursal = sucursales.find(sucursal => parseInt(sucursal.id_sucursal) === parseInt(idSucursal))
   return (sucursal ? sucursal.nombre : 'Sucursal')
@@ -69,8 +73,10 @@ export function isBlank(str) {
   return (!str || /^\s*$/.test(str))
 }
 
-export const URL_APIS_DEV = 'http://localhost:3020/api'
-export const URL_APIS_PROD = 'http://5.183.8.10/api'
+export function getUrlApis() {
+  return process.env.NODE_ENV === 'development' ? URL_APIS_DEV : URL_APIS_PROD 
+} 
+
 
 
 

@@ -1,16 +1,16 @@
 import { Button, Card, Col } from "react-bootstrap"
-import { FaArrowAltCircleRight, FaTrashAlt, FaCheck, FaRegCalendarAlt, FaTicketAlt } from 'react-icons/fa'
+import { FaArrowAltCircleRight, FaTrashAlt, FaCheck, FaRegCalendarAlt, FaTicketAlt, FaShareSquare } from 'react-icons/fa'
 
 import { useAuth } from "../../hooks/useAuth"
 import { STATUS_TAREA, TIPOS_SERVICIO, useTareasExternas } from "../../context/TareasExternasContext"
 import { formateaFecha, formateaFechaHora } from '../comun/utils'
 
-const TareaExterna = ({tareaExterna, tituloContinuar, tituloBorrar, onContinuar, onBorrar }) => {
+const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, onContinuar, onBorrar, onForward }) => {
     const { estadoActual } = useTareasExternas()
     const { esMaquila, esEncargado, esChofer, credenciales } = useAuth()
 
     function mostrarBotonAccionContinuar() {
-        if (!tituloContinuar)
+        if (!textoContinuar)
             return false
         
         switch (parseInt(estadoActual)) {
@@ -34,39 +34,48 @@ const TareaExterna = ({tareaExterna, tituloContinuar, tituloBorrar, onContinuar,
     }
 
     function mostrarBotonAcccionBorrar() {
-        if (!tituloBorrar)
+        if (!textoBorrar)
             return false
 
         return (
             parseInt(estadoActual) === STATUS_TAREA.PENDIENTE_RECOLECCION && 
-            parseInt(tareaExterna.creado_por.id_usuario) === parseInt(credenciales.id_usuario) &&
+            parseInt(tareaExterna.id_creado_por) === parseInt(credenciales.id_usuario) &&
+            esEncargado()
+        )
+    }
+
+    function mostrarBotonAccionForward() {
+        if (!textoForward)
+            return false
+
+        return (
+            parseInt(estadoActual) === STATUS_TAREA.RECIBIDO_PARA_ATENDERSE && 
             esEncargado()
         )
     }
 
     return (
         <Col>
-            <Card border={parseInt(tareaExterna.tipo_servicio.id_tipo_servicio) === TIPOS_SERVICIO.EXPRESS ? 'danger' : ''} >
+            <Card border={parseInt(tareaExterna.id_tipo_servicio) === TIPOS_SERVICIO.EXPRESS ? 'danger' : ''} >
                 <Card.Header>
-                    <Card.Subtitle className="text-primary">{tareaExterna.estado_tarea.nombre}</Card.Subtitle>
+                    <Card.Subtitle className="text-primary">{tareaExterna.estado_tarea}</Card.Subtitle>
                     <div className="d-flex justify-content-between align-items-center">
-                        {/* <Card.Title>Ticket: {tareaExterna.ticket.padStart(6, '0')}</Card.Title> */}
                         <Card.Title><FaTicketAlt /> {tareaExterna.ticket.padStart(6, '0')}</Card.Title>
                         <Card.Subtitle>
-                            { tareaExterna.sucursal_origen.nombre }
+                            { tareaExterna.sucursal_origen }
                             { " " } <FaArrowAltCircleRight /> { " " }
-                            { tareaExterna.sucursal_destino.nombre }
+                            { tareaExterna.sucursal_destino }
                         </Card.Subtitle>
                     </div>
                     <div className="d-flex justify-content-between align-items-center">
                         <small>{formateaFecha(tareaExterna.fecha_creacion)}</small>
-                        <small>{tareaExterna.creado_por.nombre}</small>
+                        <small>{tareaExterna.creado_por}</small>
                     </div>
                 </Card.Header>
                 <Card.Body>
                     <Card.Subtitle>
-                        {tareaExterna.tipo_trabajo.nombre} { " - "}
-                        {tareaExterna.tipo_servicio.nombre}
+                        {tareaExterna.tipo_trabajo} { " - "}
+                        {tareaExterna.tipo_servicio}
                     </Card.Subtitle>
                     <Card.Text>
                         {tareaExterna.descripcion}
@@ -83,8 +92,23 @@ const TareaExterna = ({tareaExterna, tituloContinuar, tituloBorrar, onContinuar,
                                     <Button 
                                         size="sm" 
                                         onClick={() => onBorrar(tareaExterna.id_tarea_externa)} 
-                                        variant='danger'>
+                                        variant='danger'
+                                    >
                                         <FaTrashAlt />
+                                    </Button>
+                                    <span> </span>
+                                </>
+                            )
+                        }
+                        {
+                            mostrarBotonAccionForward() && (
+                                <>
+                                    <Button 
+                                        size="sm" 
+                                        onClick={() => onForward(tareaExterna.id_tarea_externa)} 
+                                        variant='secondary'
+                                    >
+                                        <FaShareSquare />
                                     </Button>
                                     <span> </span>
                                 </>
@@ -95,10 +119,8 @@ const TareaExterna = ({tareaExterna, tituloContinuar, tituloBorrar, onContinuar,
                                 <Button 
                                     size="sm"
                                     onClick={() => onContinuar(tareaExterna.id_tarea_externa)}
-                                    variant={parseInt(tareaExterna.tipo_servicio.id_tipo_servicio) === TIPOS_SERVICIO.EXPRESS ? 'danger' : 'primary'}
                                 >
                                     <FaCheck />
-                                    {/* {tituloContinuar} */}
                                 </Button>
                             )
                         }

@@ -1,35 +1,25 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Spinner } from "react-bootstrap"
 import BootstrapTable from "react-bootstrap-table-next"
 import paginationFactory from 'react-bootstrap-table2-paginator'
 
 import { useTareasExternas } from '../../context/TareasExternasContext'
-import { fechaFormatter, ticketFormatter, fetchData, URL_APIS_DEV, URL_APIS_PROD } from '../comun/utils'
+import { fechaFormatter, ticketFormatter} from '../comun/utils'
 
 import TareaExternaModal from "./TareaExternaModal"
 import Filtros from "./Filtros"
 import TituloConsultas from "./TituloConsultas"
 
+import { useQuery } from 'react-query'
+import { fetchTareasPorAtenderseHoy } from '../../queries/TareaExterna'
+
 export default function TareasPorAtenderseHoy() {
-    const [tareas, setTareas] = useState([])
-    const [loading, setLoading] = useState(true)
     const { sucursalActual } = useTareasExternas()
+
+    const { isLoading, data: tareasExternas } = useQuery(['tareasPorAtenderseHoy', sucursalActual], () => fetchTareasPorAtenderseHoy(sucursalActual))
 
     const [modalTarea, setModalTarea] = useState({mostrar: false, idTareaExterna: 0})
     const [filtro, setFiltro] = useState({ticket: '', descripcion: ''})
-
-    useEffect(() => {
-        async function fetchTareas () {
-            const url_api = process.env.NODE_ENV === 'development' ? URL_APIS_DEV : URL_APIS_PROD 
-            await fetchData(`${url_api}/tareas-por-atenderse-hoy/${sucursalActual}`)
-                  .then(data => {
-                    setTareas([...data])
-                  })
-                  .finally(setLoading(false)) 
-        }
-    
-        fetchTareas()
-    }, [sucursalActual])
 
     function handleChange(e) {
         setFiltro(prevValue => ({...prevValue, [e.target.name]: e.target.value.toUpperCase()}))
@@ -50,16 +40,15 @@ export default function TareasPorAtenderseHoy() {
         { dataField: "fecha_requerida", text: "Fecha Requerida", sort: true, formatter: fechaFormatter},
     ]
 
-    if (loading) return <Spinner animation="border" />
+    if (isLoading) return <Spinner animation="border" />
 
-    if (tareas) {
+    if (tareasExternas) {
         // Obtengo las tareas que voy a desplegar
-        var tareasFiltradas = tareas.filter(tareaExterna => (
+        var tareasFiltradas = tareasExternas.filter(tareaExterna => (
             tareaExterna.ticket.includes(filtro.ticket) &&
             tareaExterna.descripcion.includes(filtro.descripcion)
         ))
     }
-
 
     return (
         <>

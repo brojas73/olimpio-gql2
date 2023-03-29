@@ -145,25 +145,43 @@ app.use('/api/estados-tarea', (req, res) => {
 
 app.use('/api/tareas-externas-activas', (req, res) => {
     const q = `
-        select      id_tarea_externa,
-                    id_sucursal_origen,
-                    ticket,
-                    descripcion,
-                    id_tipo_trabajo,
-                    id_sucursal_destino,
-                    fecha_requerida,
-                    hora_requerida,
-                    id_tipo_servicio,
-                    id_estado_tarea,
-                    fecha_creacion,
-                    id_creado_por,
-                    fecha_modificacion,
-                    id_modificado_por,
-                    estado 
-            from    tarea_externa 
-            where   id_estado_tarea < 7 
-            and     estado = 1
-        order by    fecha_creacion
+        select      te.id_tarea_externa,
+                    te.id_sucursal_origen,
+                    te.ticket,
+                    te.descripcion,
+                    te.id_tipo_trabajo,
+                    te.id_sucursal_destino,
+                    te.fecha_requerida,
+                    te.hora_requerida,
+                    te.id_tipo_servicio,
+                    te.id_estado_tarea,
+                    te.fecha_creacion,
+                    te.id_creado_por,
+                    te.fecha_modificacion,
+                    te.id_modificado_por,
+                    te.estado,
+                    et.nombre estado_tarea,
+                    so.nombre sucursal_origen,
+                    sd.nombre sucursal_destino,
+                    tt.nombre tipo_trabajo,
+                    ts.nombre tipo_servicio,
+                    cp.nombre creado_por
+            from    tarea_externa te
+                    inner join sucursal so
+                       on    so.id_sucursal = te.id_sucursal_origen
+                    inner join sucursal sd
+                       on    sd.id_sucursal = te.id_sucursal_destino
+                    inner join tipo_trabajo tt
+                       on    tt.id_tipo_trabajo = te.id_tipo_trabajo
+                    inner join tipo_servicio ts
+                       on    ts.id_tipo_servicio = te.id_tipo_servicio
+                    inner join usuario cp
+                       on    cp.id_usuario = te.id_creado_por
+                    inner join estado_tarea et
+                       on    et.id_estado_tarea = te.id_estado_tarea
+            where   te.id_estado_tarea < 7 
+            and     te.estado = 1
+        order by    te.fecha_creacion
     `
 
     pool.getConnection((err, db) => {
@@ -181,25 +199,41 @@ app.use('/api/tareas-externas-activas', (req, res) => {
 
 app.get('/api/tareas-externas', (req, res) => {
     const q = `
-        select   id_tarea_externa,
-                 id_sucursal_origen,
-                 ticket,
-                 descripcion,
-                 id_tipo_trabajo,
-                 id_sucursal_destino,
-                 fecha_requerida,
-                 hora_requerida,
-                 id_tipo_servicio,
-                 id_estado_tarea,
-                 fecha_creacion,
-                 id_creado_por,
-                 fecha_modificacion,
-                 id_modificado_por,
-                 estado 
-           from  tarea_externa 
-           where estado = 1
-        order by fecha_creacion  
+        select   te.id_tarea_externa,
+                 te.id_sucursal_origen,
+                 te.ticket,
+                 te.descripcion,
+                 te.id_tipo_trabajo,
+                 te.id_sucursal_destino,
+                 te.fecha_requerida,
+                 te.hora_requerida,
+                 te.id_tipo_servicio,
+                 te.id_estado_tarea,
+                 te.fecha_creacion,
+                 te.id_creado_por,
+                 te.fecha_modificacion,
+                 te.id_modificado_por,
+                 te.estado,
+                 so.nombre sucursal_origen,
+                 sd.nombre sucursal_destino,
+                 tt.nombre tipo_trabajo,
+                 ts.nombre tipo_servicio,
+                 cp.nombre creado_por
+           from  tarea_externa te
+                 inner join sucursal so
+                    on    so.id_sucursal = te.id_sucursal_origen
+                 inner join sucursal sd
+                    on    sd.id_sucursal = te.id_sucursal_destino
+                 inner join tipo_trabajo tt
+                   on    tt.id_tipo_trabajo = te.id_tipo_trabajo
+                 inner join tipo_servicio ts
+                   on    ts.id_tipo_servicio = te.id_tipo_servicio
+                 inner join usuario cp
+                   on    cp.id_usuario = te.id_creado_por
+           where te.estado = 1
+        order by te.fecha_creacion
     `
+    
     pool.getConnection((err, db) => {
         if (err) throw err
         db.query(q, (err, data) => {

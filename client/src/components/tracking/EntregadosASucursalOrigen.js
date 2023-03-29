@@ -2,26 +2,26 @@ import { Spinner } from "react-bootstrap"
 
 import { STATUS_TAREA, useTareasExternas } from "../../context/TareasExternasContext"
 
-import { useQuery } from "@apollo/client"
-import { GET_TAREAS_EXTERNAS_ACTIVAS } from "../../queries/TareaExterna"
+import { useQuery } from "react-query"
+import { fetchTareasExternasActivas } from "../../queries/TareaExterna"
 
 import ListaTareasExternas from "./ListaTareasExternas"
 
 const EntregadosASucursalOrigen = () => {
   const { sucursalActual, ticketFiltro, sucursalFiltro, tipoTrabajoFiltro, tipoServicioFiltro } = useTareasExternas()
-  const { data: tareasExternas, loading } = useQuery(GET_TAREAS_EXTERNAS_ACTIVAS)
+  const { data: tareasExternas, isLoading } = useQuery('tareasExternasActivas', fetchTareasExternasActivas)
 
-  if (loading) return <Spinner animation="border" />
+  if (isLoading) return <Spinner animation="border" />
 
   if (tareasExternas) {
     // Obtengo las tareas que voy a desplegar
-    var tareasFiltradas = tareasExternas.tareasExternasActivas.filter(tareaExterna => (
-          parseInt(tareaExterna.estado_tarea.id_estado_tarea) === STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN &&
-          parseInt(tareaExterna.sucursal_origen.id_sucursal) === parseInt(sucursalActual) &&  
+    var tareasFiltradas = tareasExternas.filter(tareaExterna => (
+          parseInt(tareaExterna.id_estado_tarea) === STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN &&
+          parseInt(tareaExterna.id_sucursal_origen) === parseInt(sucursalActual) &&  
           (ticketFiltro.length === 0 || (ticketFiltro.length > 0 && tareaExterna.ticket.startsWith(ticketFiltro))) &&
-          (sucursalFiltro === 0 || (sucursalFiltro !== 0 && (tareaExterna.sucursal_origen.id_sucursal === sucursalFiltro || tareaExterna.sucursal_destino.id_sucursal === sucursalFiltro))) &&
-          (tipoTrabajoFiltro === 0 || (tipoTrabajoFiltro !== 0 && tareaExterna.tipo_trabajo.id_tipo_trabajo === tipoTrabajoFiltro)) &&
-          (tipoServicioFiltro === 0 || (tipoServicioFiltro !== 0 && tareaExterna.tipo_servicio.id_tipo_servicio === tipoServicioFiltro)
+          (sucursalFiltro === 0 || (sucursalFiltro !== 0 && (tareaExterna.id_sucursal_origen === sucursalFiltro || tareaExterna.id_sucursal_destino === sucursalFiltro))) &&
+          (tipoTrabajoFiltro === 0 || (tipoTrabajoFiltro !== 0 && tareaExterna.id_tipo_trabajo === tipoTrabajoFiltro)) &&
+          (tipoServicioFiltro === 0 || (tipoServicioFiltro !== 0 && tareaExterna.id_tipo_servicio === tipoServicioFiltro)
         )))
   }
 

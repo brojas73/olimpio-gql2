@@ -1,12 +1,13 @@
 import { useState } from "react"
-import { useMutation } from "@apollo/client"
 
 import {Button, Container, Form, Spinner} from 'react-bootstrap'
 
 import { useAuth } from '../../hooks/useAuth'
 
+import { useMutation } from "react-query"
+
 import SucursalSelect from '../comun/SucursalSelect'
-import { LOGIN } from "../../mutations/Login"
+import { login } from "../../mutations/Login"
 import { useTareasExternas } from "../../context/TareasExternasContext"
 
 const Login = ({onLoginOk, onLoginFail}) => {
@@ -19,7 +20,18 @@ const Login = ({onLoginOk, onLoginFail}) => {
     sucursal: 0
   })
 
-  const [login, {loading}] = useMutation(LOGIN)
+  const { isLoading, mutate: doLogin } = useMutation({
+    mutationFn: login, 
+    onSuccess: (userInfo) => {
+      if (!userInfo || userInfo === 'undefined') {
+        onLoginFail('La combinación usuario/contraseña es inválida')
+      } else {
+        setCredenciales(userInfo)
+        setSucursalActual(parseInt(formInfo.sucursal))
+        onLoginOk(userInfo)
+      }
+    }
+  })
 
   function handleChange(e) {
     setFormInfo(prevValue => ({...prevValue, [e.target.name]: e.target.value}))
@@ -27,26 +39,13 @@ const Login = ({onLoginOk, onLoginFail}) => {
 
   async function handleSubmit(event) {
     event.preventDefault()
-    await login({
-      variables: {
+    await doLogin({
         usuario: formInfo.usuario,
         contrasena: formInfo.contrasena
-      },
-      onCompleted: ( { login }) => {
-        if (login.status.successful) {
-          const { usuario: { id_usuario, nombre, rol: { id_rol } } } = login
-          const userInfo = { id_usuario, nombre, id_rol}
-          setCredenciales(userInfo)
-          setSucursalActual(parseInt(formInfo.sucursal))
-          onLoginOk(userInfo)
-        } else {
-          onLoginFail(login.status.message)
-        }
-      }
-    })
+      })
   }
 
-  if (loading) return <Spinner animation="border" />
+  if (isLoading) return <Spinner animation="border" />
   
   return (
     <Container>

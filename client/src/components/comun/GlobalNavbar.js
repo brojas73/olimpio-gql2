@@ -9,8 +9,7 @@ import UsuarioDropDown from "./UsuarioDropDown"
 
 
 const GlobalNavbar = ({onLogout}) => {
-    const { conectado, sucursalActual  } = useTareasExternas()
-    const { setSucursalActual } = useTareasExternas()
+    const { conectado, sucursalActual, setSucursalActual  } = useTareasExternas()
     const { getUsuario } = useAuth()
 
     return (
@@ -23,7 +22,10 @@ const GlobalNavbar = ({onLogout}) => {
                     conectado && (
                         <Offcanvas.Body>
                             <Nav className="justify-content-start flex-grow-1 pe-3">
-                                <Nav.Link as={Link} to='/tracking/tareas-activas'>Tracking</Nav.Link>
+                                <NavDropdown title="Tracking">
+                                    <NavDropdown.Item as={Link} to='/tracking/tareas-activas'>Tareas Externas</NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} to='/servicios-domicilio/servicios-activos'>Servicios a Domicilio</NavDropdown.Item>
+                                </NavDropdown>
                                 <NavDropdown title="Consultas">
                                     <NavDropdown.Item as={Link} to='/consultas/tareas-por-atenderse-hoy'>Tareas para Hoy</NavDropdown.Item>
                                     <NavDropdown.Item as={Link} to='/consultas/bitacora'>Bitácora</NavDropdown.Item>

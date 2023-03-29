@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client'
+import { fetchData, getUrlApis } from '../components/comun/utils'
 
 export const GET_TAREAS_EXTERNAS_LOG = gql`
     query TareasExternasLog {
@@ -30,3 +31,12 @@ export const GET_TAREAS_EXTERNAS_LOG = gql`
         }
     }
 `
+
+export async function fetchTareasExternasLog() {
+    try {
+        return await fetchData(`${getUrlApis()}/tareas-externas-log`)
+    } catch (error) {
+        throw error
+    }
+}
+

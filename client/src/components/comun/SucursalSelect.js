@@ -1,13 +1,14 @@
-import { useQuery } from '@apollo/client'
 import { Form, Spinner } from 'react-bootstrap'
+
 import { useTareasExternas } from '../../context/TareasExternasContext'
-import { GET_SUCURSALES } from '../../queries/Sucursal'
+import { useQuery } from 'react-query'
+import { fetchSucursales } from '../../queries/Sucursal'
 
 const SucursalSelect = ({onChange, name, value, label, filtraSucursalActual }) => {
-    const { data, loading } = useQuery(GET_SUCURSALES)
+    const { data: sucursales, isLoading } = useQuery('sucursales', fetchSucursales)
     const { sucursalActual } = useTareasExternas()
 
-    if (loading) return <Spinner animation="border" />
+    if (isLoading) return <Spinner animation="border" />
 
     return (
         <>
@@ -19,7 +20,7 @@ const SucursalSelect = ({onChange, name, value, label, filtraSucursalActual }) =
             >
                 <option key={0} value="">Selecciona una...</option>
                 {
-                    data.sucursales.filter(sucursal => (!filtraSucursalActual || parseInt(sucursal.id_sucursal) !== parseInt(sucursalActual)))
+                    sucursales.filter(sucursal => (!filtraSucursalActual || parseInt(sucursal.id_sucursal) !== parseInt(sucursalActual)))
                                    .map(sucursal => (
                         <option key={sucursal.id_sucursal} value={sucursal.id_sucursal}>{sucursal.nombre}</option>
                     ))

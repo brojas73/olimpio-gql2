@@ -1,18 +1,13 @@
 import { Form, Nav, Navbar, Offcanvas } from "react-bootstrap"
 import { useTareasExternas } from "../../context/TareasExternasContext"
-import EstadosTareaDropDown from "../comun/EstadosTareaDropDown"
 
-// import EstadosTareaDropDown from "../comun/EstadosTareaDropDown"
 import SucursalesDropDown from "../comun/SucursalesDropDown"
-// import TiposServicioDropDown from "../comun/TiposServicioDropDown"
-// import TiposTrabajoDropDown from "../comun/TiposTrabajoDropDown"
+import EstadosTareaDropDown from "../comun/EstadosTareaDropDown"
 
 const Filtros = () => {
     const { 
         ticketFiltro, 
         sucursalFiltro, 
-        // tipoServicioFiltro, 
-        // tipoTrabajoFiltro, 
         estadoActual, 
         setEstadoActual,
         setTicketFiltro,
@@ -44,16 +39,6 @@ const Filtros = () => {
                                 titleOption={true}
                                 onSelect={setSucursalFiltro} 
                             />
-                            {/* <TiposTrabajoDropDown 
-                                title={getTipoTrabajo(tipoTrabajoFiltro)} 
-                                titleOption={true}
-                                onSelect={asignaTipoTrabajoFiltro} 
-                            /> */}
-                            {/* <TiposServicioDropDown 
-                                title={getTipoServicio(tipoServicioFiltro)} 
-                                titleOption={true}
-                                onSelect={asignaTipoServicioFiltro} 
-                            /> */}
                             <EstadosTareaDropDown
                                 idSelected={estadoActual}
                                 onSelect={setEstadoActual}

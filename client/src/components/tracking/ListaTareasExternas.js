@@ -1,48 +1,38 @@
 import { useState } from "react"
-import { useMutation } from "@apollo/client"
 
 import { Row } from "react-bootstrap"
 
 import { useAuth } from "../../hooks/useAuth"
-import { useTareasExternas } from "../../context/TareasExternasContext"
 
-import { ACTUALIZA_TAREA_EXTERNA_ESTADO, BORRA_TAREA_EXTERNA } from "../../mutations/TareaExterna"
-import { GET_TAREAS_EXTERNAS_ACTIVAS, GET_TAREAS_EXTERNAS_ACTIVAS_BY_DESTINO } from "../../queries/TareaExterna"
+import { useMutation, useQueryClient } from "react-query"
+import { actualizaEstadoTareaExterna, borraTareaExterna } from "../../mutations/TareaExterna"
 
 
 import TareasExternasHeader from "./TareasExternasHeader"
 import TareaExterna from "./TareaExternaCard"
 import Confirmacion from '../comun/Confirmacion'
-// import { GET_TAREAS_EXTERNAS_LOG } from "../../queries/TareaExternaLog"
 
-const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoContinuar, textoBorrar, textoConfirmacion}) => {
-  const { sucursalActual } = useTareasExternas()
+const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoContinuar, textoBorrar, textoConfirmacion, textoForward}) => {
   const { credenciales } = useAuth()
 
   const [borrando, setBorrando] = useState(false)
+  const [redireccionando, setRedireccionando] = useState(false)
   const [idTareaExterna, setIdTareaExterna] = useState(0)
   const [confirmacion, setConfirmacion] = useState({ mensaje: textoConfirmacion, mostrar: false })
 
-  const [actualizaTareaExternaEstado] = useMutation (ACTUALIZA_TAREA_EXTERNA_ESTADO, {
-    variables: { 
-        id_tarea_externa: idTareaExterna,
-        id_estado_tarea: siguienteEstado,
-        id_modificado_por: credenciales.id_usuario
-    },
-    refetchQueries: [
-        { query: GET_TAREAS_EXTERNAS_ACTIVAS },
-        { query: GET_TAREAS_EXTERNAS_ACTIVAS_BY_DESTINO, variables: { id_sucursal: sucursalActual }  }
-      ]
+  const queryClient = useQueryClient()
+  const { mutate: doActualizaEstadoTareaExterna } = useMutation ({
+    mutationFn: actualizaEstadoTareaExterna,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tareasExternasActivas'] })
+    }
   })
 
-  const [borraTareaExterna] = useMutation(BORRA_TAREA_EXTERNA, {
-    variables: { 
-      id_tarea_externa: idTareaExterna
-    },
-    refetchQueries: [
-          { query: GET_TAREAS_EXTERNAS_ACTIVAS },
-          { query: GET_TAREAS_EXTERNAS_ACTIVAS_BY_DESTINO, variables: { id_sucursal: sucursalActual }  }
-      ]
+  const { mutate: doBorraTareaExterna } = useMutation ({
+    mutationFn: borraTareaExterna,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tareasExternasActivas'] })
+    }
   })
 
   async function handleConfirmacion(confirmado) {
@@ -50,23 +40,32 @@ const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoCont
 
     if (confirmado) {
       if (borrando) {
-        return await borraTareaExterna()
+        return await doBorraTareaExterna({id_tarea_externa: idTareaExterna})
       } 
 
-      return await actualizaTareaExternaEstado()
+      if (redireccionando) {
+        return
+      }
+
+      return await doActualizaEstadoTareaExterna({id_tarea_externa: idTareaExterna, id_estado_tarea: siguienteEstado, id_usuario: credenciales.id_usuario})
     }
   }
 
   function onContinuar(idTareaExterna) {
     setIdTareaExterna(idTareaExterna)
-    setConfirmacion(prevValue => ({...prevValue, mostrar: true}))
-    setBorrando(false)
+    setConfirmacion(prevValue => ({...prevValue, mensaje: textoConfirmacion, mostrar: true}))
   }
 
   function onBorrar(idTareaExterna) {
     setIdTareaExterna(idTareaExterna)
     setConfirmacion(prevValue => ({...prevValue, mensaje: '¿Seguro que quieres borrar la tarea?', mostrar: true}))
     setBorrando(true)
+  }
+
+  function onForward(idTareaExterna) {
+    setIdTareaExterna(idTareaExterna)
+    setConfirmacion(prevValue => ({...prevValue, mensaje: '¿Seguro que quieres redireccionar la tarea?', mostrar: true}))
+    setRedireccionando(true)
   }
 
   return (
@@ -83,10 +82,12 @@ const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoCont
         tareasExternas.map(tareaExterna => (
           <TareaExterna 
               tareaExterna={tareaExterna} 
-              tituloContinuar={textoContinuar}
-              tituloBorrar={textoBorrar}
+              textoContinuar={textoContinuar}
+              textoBorrar={textoBorrar}
+              textoForward={textoForward}
               onContinuar={onContinuar}
               onBorrar={onBorrar}
+              onForward={onForward}
               key={tareaExterna.id_tarea_externa} 
           />
         ))

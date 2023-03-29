@@ -19,6 +19,8 @@ import TerminadosParaRecolectar from "./components/tracking/TerminadosParaRecole
 import RecolectadosParaEntrega from "./components/tracking/RecolectadosParaEntrega"
 import EntregadosASucursalOrigen from "./components/tracking/EntregadosASucursalOrigen"
 
+import ServiciosActivos from './components/servicios-domicilio/ServiciosActivos'
+
 import Bitacora from "./components/consultas/Bitacora"
 import TareasPorAtenderseHoy from "./components/consultas/TareasPorAtenderseHoy"
 import NuevaTareaForm from "./components/tracking/NuevaTareaForm"
@@ -84,6 +86,10 @@ function App() {
             <Route path='terminados-para-recolectar' element={<TerminadosParaRecolectar />} />
             <Route path='recolectados-para-entrega' element={<RecolectadosParaEntrega />} />
             <Route path='entregados-a-sucursal-origen' element={<EntregadosASucursalOrigen />} />
+        </Route>
+
+        <Route path='/servicios-domicilio' element={<ProtectedLayout />} >
+            <Route path='servicios-activos' element={<ServiciosActivos />} />
         </Route>
 
         <Route path='/consultas' element={<ProtectedLayout />}>

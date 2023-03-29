@@ -1,22 +1,26 @@
+import { useLocation } from "react-router-dom"
+
 import { Link } from 'react-router-dom'
 import { NavDropdown, Spinner } from 'react-bootstrap'
 
 import { STATUS_TAREA } from '../../context/TareasExternasContext'
 
-import { useQuery } from '@apollo/client'
-import { GET_ESTADOS_TAREA } from '../../queries/EstadoTarea'
+import { useQuery } from 'react-query'
+import { fetchEstadosTarea } from '../../queries/EstadoTarea'
+
 import { nombreEstadoTarea } from './utils'
 
 
 const EstadosTareaDropDown = ({onSelect, idSelected }) => {
-  const { data, loading } = useQuery(GET_ESTADOS_TAREA)
+  const { data: estadosTarea, isLoading } = useQuery('estadosTarea', fetchEstadosTarea)
+  const titulo = useLocation().pathname.includes('tareas-activas') ? 'Estado de la Tarea' : nombreEstadoTarea(estadosTarea, idSelected)
 
-  if (loading) return <Spinner animation='border' />
+  if (isLoading) return <Spinner animation='border' />
 
   return (
-    <NavDropdown title={nombreEstadoTarea(data.estadosTarea, idSelected)}>
+    <NavDropdown title={titulo}>
     {
-      data.estadosTarea
+      estadosTarea 
         .filter(estadoTarea => parseInt(estadoTarea.id_estado_tarea) !== STATUS_TAREA.RECIBIDO_EN_SUCURSAL_ORIGEN)
         .map(estadoTarea => (
           <NavDropdown.Item 

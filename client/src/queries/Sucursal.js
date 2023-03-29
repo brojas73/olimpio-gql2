@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client'
+import { fetchData, getUrlApis } from '../components/comun/utils.js'
 
 export const GET_SUCURSALES = gql`
     query Sucursales {
@@ -8,3 +9,12 @@ export const GET_SUCURSALES = gql`
         }
     }
 `
+
+export async function fetchSucursales() {
+    try {
+        return await fetchData(`${getUrlApis()}/sucursales`)
+    } catch (error) {
+        throw error
+    }
+}
+

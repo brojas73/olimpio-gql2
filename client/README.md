@@ -1,70 +1,171 @@
-# Getting Started with Create React App
+############## INSTALACION DE MYSQL #################
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+1. Instalar mysql
 
-## Available Scripts
+            apt update
+            apt install mysql-server
+            sytemctl start mysql.service
 
-In the project directory, you can run:
+2. Configurar usuarios
 
-### `npm start`
+            $ mysql
+            mysql> alter user 'root'@'localhost' identified with mysql_native_password by 'password' ;
+            mysql> create user 'brojas'@'localhost' identified with mysql_native_password by 'password' ;
+            mysql> grant all privileges on *.* to 'brojas'@'localhost' with grant option ;
+            mysql> flush privileges ;
+            mysql> exit ;
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+3. Revisar status de mysql
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+            systemctl status mysql.service
 
-### `npm test`
+4. Instalar la BD
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+            mysql> create database olimpio;
+            mysql> exit
+            $ mysql -u root -p olimpio < olimpio.sql
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+############## INSTALACION DE LA APLICACION Y EL SERVER DE API ####################
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Este vídeo fue importante para el deploy inicial:
+https://www.youtube.com/watch?v=Nxw2j1-srVc&ab_channel=LamaDev
 
-### `npm run eject`
+1. Contratar HOSTINGER (Con Ubuntu)
+2. ssh-keygen -t rsa (Linux o Mac)
+2. Utilizar putty y puttygen
+3. Guardar la llave primaria
+4. Se puede utilizar putty para conectarse al servidor utilizando la llave primaria creada
+5. Desinstalar apache
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+            systemctl stop apache2
+            systemctl disable apache2
+            apt remove apache2
+            apt autoremove
+            apt clean && apt update
+            rm -rf /var/www/html
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+6. Instalar Nginx
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+            apt install nginx
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+7. Instalar firewall
 
-## Learn More
+            apt install ufw
+            ufw enable
+            ufw allow ssh
+            ufw allow "Nginx Full"
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+8. Crear un HTML de prueba
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+            mkdir /var/www/olimpio
+            vi /var/www/olimpio/index.htm
 
-### Code Splitting
+                  Este es un archivo de prueba
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+9. Borrar los archivos default de nginx
 
-### Analyzing the Bundle Size
+            rm /etc/nginx/sites-available/default
+            rm /etc/nginx/sites-enabled/default
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+10. Crear un archivo de configuracion para nginx
 
-### Making a Progressive Web App
+            vi /etc/nginx/sites-available/olimpio
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+            server {
+                  listen 80;
 
-### Advanced Configuration
+                  location / {
+                        root /var/www/olimpio/client;
+                        index index.html index.htm;
+                        proxy_http_version 1.1;
+                        proxy_set_header Upgrade $http_upgrade;
+                        proxy_set_header Connection 'upgrade';
+                        proxy_set_header Host $host;
+                        proxy_cache_bypass $http_upgrade;
+                        try_files $uri $uri/ /index.html;
+                  }
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+                  location /api {
+                        proxy_pass http://5.183.8.10:8080;
+                        proxy_http_version 1.1;
+                        proxy_set_header Upgrade $http_upgrade;
+                        proxy_set_header Connection 'upgrade';
+                        proxy_set_header Host $host;
+                        proxy_cache_bypass $http_upgrade;
+                  }
+            }
 
-### Deployment
+11. Crear liga para que los archivos de sites-available sean iguales a sites-eabled
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+            ln -s /etc/nginx/sites-available/olimpio /etc/nginx/sites-enabled/olimpio
 
-### `npm run build` fails to minify
+12. Arrancar nginx  
+      Primero probamos que el archivo este OK
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+            nginx -t
+
+      Si todo esta OK, lo arrancamos
+
+            systemctl start nginx
+
+13. Instalar git
+
+            apt install git
+
+14. Crear repositorio en github
+15. Hacer la carga del proyecto a github (Posicionarse en el root del proyecto), en .gitignore hay que agregar .env
+
+            git init
+            git add .
+            git commit -m "commit"
+            git remote add origin "<github url>"
+            git push origin master
+
+16. Crear las aplicaciones en la máquinad de producción
+      Irse a root de la maquina
+      Crear un directorio para la aplicación (mkdir olimpio)
+
+            cd ~
+            mkdir olimpio
+            cd olimpio
+            git clone <git hub url> .
+
+17. Configurar la location para el API (Ya se hizo en el paso 10)
+18. Instalar node js y npm
+
+            apt install nodejs
+            apt install npm
+
+19. Crear el backend
+
+            cd backend
+            npm install
+
+20. Instalar pm2 y correr el server de apis
+
+            npm i -g pm2
+            pm2 start --name api server.js
+            pm2 startup ubuntu                  # Esto es para que se arranque cuando arranca el SO
+            pm2 status                          # Con esto podemos ver los procesos corriendo como pm2
+
+21. Hacer deploy de la app
+
+            cd /root/olimpio
+            npm install
+            npm run build
+            mkdir /var/www/olimpio/client
+            cp -r build/* /var/www/olimpio/client
+
+22. Configurar el directorio raíz de nginx para que apunte al cliente (Ya se hizo en el paso 10)
+
+            sytemctl reload nginx
+
+######### REVISION DE LOGS #########
+
+Los logs de pm2 se pueden revisar así:
+
+            ls -l /root/.pm2/logs/*
+
+

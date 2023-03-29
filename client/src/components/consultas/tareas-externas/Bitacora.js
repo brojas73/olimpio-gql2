@@ -4,11 +4,11 @@ import { Spinner } from "react-bootstrap"
 import BootstrapTable from "react-bootstrap-table-next"
 import paginationFactory from 'react-bootstrap-table2-paginator'
 
-import { useTareasExternas } from '../../context/TareasExternasContext'
-import { fechaFormatter } from '../comun/utils'
+import { useTareasExternas } from '../../../context/TareasExternasContext'
+import { fechaFormatter } from '../../comun/utils'
 
 import { useQuery } from 'react-query'
-import { fetchTareasExternasLog } from '../../queries/TareaExternaLog'
+import { fetchTareasExternasLog } from '../../../queries/TareaExternaLog'
 
 import Filtros from "./Filtros"
 import TareaExternaModal from "./TareaExternaModal"
@@ -73,7 +73,7 @@ export default function Bitacora() {
       <TituloConsultas titulo="Bitácora de Tareas" renglones={tareasFiltradas.length} />
 
       <BootstrapTable 
-        keyField="id_tarea_externa_log" 
+        keyField="id" 
         data={tareasFiltradas} 
         columns={columns} 
         striped hover condensed 

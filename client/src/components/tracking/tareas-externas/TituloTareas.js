@@ -2,10 +2,10 @@ import { useNavigate } from "react-router-dom"
 import { Navbar, Container, Button, Badge } from 'react-bootstrap'
 import { FaPlus } from 'react-icons/fa'
 
-import { useTareasExternas } from "../../context/TareasExternasContext"
-import { STATUS_TAREA } from "../../context/TareasExternasContext"
+import { useTareasExternas } from "../../../context/TareasExternasContext"
+import { STATUS_TAREA } from "../../../context/TareasExternasContext"
 
-import { useAuth } from "../../hooks/useAuth"
+import { useAuth } from "../../../hooks/useAuth"
 
 const TituloTareas = ({titulo, renglones}) => {
     const navigate = useNavigate()

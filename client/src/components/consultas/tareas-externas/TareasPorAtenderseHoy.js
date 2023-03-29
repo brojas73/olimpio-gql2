@@ -3,15 +3,15 @@ import { Spinner } from "react-bootstrap"
 import BootstrapTable from "react-bootstrap-table-next"
 import paginationFactory from 'react-bootstrap-table2-paginator'
 
-import { useTareasExternas } from '../../context/TareasExternasContext'
-import { fechaFormatter, ticketFormatter} from '../comun/utils'
+import { useTareasExternas } from '../../../context/TareasExternasContext'
+import { fechaFormatter, ticketFormatter} from '../../comun/utils'
 
 import TareaExternaModal from "./TareaExternaModal"
 import Filtros from "./Filtros"
 import TituloConsultas from "./TituloConsultas"
 
 import { useQuery } from 'react-query'
-import { fetchTareasPorAtenderseHoy } from '../../queries/TareaExterna'
+import { fetchTareasPorAtenderseHoy } from '../../../queries/TareaExterna'
 
 export default function TareasPorAtenderseHoy() {
     const { sucursalActual } = useTareasExternas()
@@ -35,6 +35,7 @@ export default function TareasPorAtenderseHoy() {
         { dataField: "ticket", text: "Ticket", sort: true, formatter: ticketFormatter},
         { dataField: "descripcion", text: "Descripción", sort: true },
         { dataField: "sucursal_origen", text: "Sucursal Origen", sort: true },
+        { dataField: "estado_tarea", text: "Estado Actual", sort: true },
         { dataField: "tipo_trabajo", text: "Tipo de Trabajo", sort: true },
         { dataField: "tipo_servicio", text: "Tipo de Servicio", sort: true },
         { dataField: "fecha_requerida", text: "Fecha Requerida", sort: true, formatter: fechaFormatter},

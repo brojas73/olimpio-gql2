@@ -3,15 +3,15 @@ import { useNavigate } from 'react-router-dom'
 
 import { Button, Container, Form, Row, Col } from 'react-bootstrap'
 
-import { STATUS_TAREA, useTareasExternas } from '../../context/TareasExternasContext'
-import { useAuth } from '../../hooks/useAuth'
+import { STATUS_TAREA, useTareasExternas } from '../../../context/TareasExternasContext'
+import { useAuth } from '../../../hooks/useAuth'
 
-import SucursalSelect from '../comun/SucursalSelect'
-import TipoServicioSelect from '../comun/TipoServicioSelect'
-import TipoTrabajolSelect from '../comun/TipoTrabajoSelect'
+import SucursalSelect from '../../comun/SucursalSelect'
+import TipoServicioSelect from '../../comun/TipoServicioSelect'
+import TipoTrabajolSelect from '../../comun/TipoTrabajoSelect'
 
 import { useMutation, useQueryClient } from 'react-query'
-import { creaTareaExterna } from '../../mutations/TareaExterna'
+import { creaTareaExterna } from '../../../mutations/TareaExterna'
 
 const NuevaTareaForm = ({onExito}) => {    
   const navigate = useNavigate()

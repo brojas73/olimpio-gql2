@@ -1,8 +1,8 @@
 import { Form, Nav, Navbar, Offcanvas } from "react-bootstrap"
-import { useTareasExternas } from "../../context/TareasExternasContext"
+import { useTareasExternas } from "../../../context/TareasExternasContext"
 
-import SucursalesDropDown from "../comun/SucursalesDropDown"
-import EstadosTareaDropDown from "../comun/EstadosTareaDropDown"
+import SucursalesDropDown from "../../comun/SucursalesDropDown"
+import EstadosTareaDropDown from "../../comun/EstadosTareaDropDown"
 
 const Filtros = () => {
     const { 

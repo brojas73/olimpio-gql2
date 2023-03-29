@@ -11,19 +11,19 @@ import GlobalNavbar from "./components/comun/GlobalNavbar"
 import Home from './components/comun/Home'
 import Login from "./components/login/Login"
 
-import TareasActivas from "./components/tracking/TareasActivas"
-import PendienteRecoleccion from "./components/tracking/PendienteRecoleccion"
-import RecolectadosParaAtenderse from "./components/tracking/RecolectadosParaAtenderse"
-import RecibidosParaAtenderse from "./components/tracking/RecibidosParaAtenderse"
-import TerminadosParaRecolectar from "./components/tracking/TerminadosParaRecolectar"
-import RecolectadosParaEntrega from "./components/tracking/RecolectadosParaEntrega"
-import EntregadosASucursalOrigen from "./components/tracking/EntregadosASucursalOrigen"
+import TareasActivas from "./components/tracking/tareas-externas/TareasActivas"
+import PendienteRecoleccion from "./components/tracking/tareas-externas/PendienteRecoleccion"
+import RecolectadosParaAtenderse from "./components/tracking/tareas-externas/RecolectadosParaAtenderse"
+import RecibidosParaAtenderse from "./components/tracking/tareas-externas/RecibidosParaAtenderse"
+import TerminadosParaRecolectar from "./components/tracking/tareas-externas/TerminadosParaRecolectar"
+import RecolectadosParaEntrega from "./components/tracking/tareas-externas/RecolectadosParaEntrega"
+import EntregadosASucursalOrigen from "./components/tracking/tareas-externas/EntregadosASucursalOrigen"
 
-import ServiciosActivos from './components/servicios-domicilio/ServiciosActivos'
+import ServiciosActivos from './components/tracking/servicios-domicilio/ServiciosActivos'
 
-import Bitacora from "./components/consultas/Bitacora"
-import TareasPorAtenderseHoy from "./components/consultas/TareasPorAtenderseHoy"
-import NuevaTareaForm from "./components/tracking/NuevaTareaForm"
+import Bitacora from "./components/consultas/tareas-externas/Bitacora"
+import TareasPorAtenderseHoy from "./components/consultas/tareas-externas/TareasPorAtenderseHoy"
+import NuevaTareaForm from "./components/tracking/tareas-externas/NuevaTareaForm"
 
 function App() {
   const navigate = useNavigate()

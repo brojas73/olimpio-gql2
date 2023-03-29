@@ -2,15 +2,15 @@ import { useState } from "react"
 
 import { Row } from "react-bootstrap"
 
-import { useAuth } from "../../hooks/useAuth"
+import { useAuth } from "../../../hooks/useAuth"
 
 import { useMutation, useQueryClient } from "react-query"
-import { actualizaEstadoTareaExterna, borraTareaExterna } from "../../mutations/TareaExterna"
+import { actualizaEstadoTareaExterna, borraTareaExterna } from "../../../mutations/TareaExterna"
 
 
 import TareasExternasHeader from "./TareasExternasHeader"
 import TareaExterna from "./TareaExternaCard"
-import Confirmacion from '../comun/Confirmacion'
+import Confirmacion from '../../comun/Confirmacion'
 
 const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoContinuar, textoBorrar, textoConfirmacion, textoForward}) => {
   const { credenciales } = useAuth()

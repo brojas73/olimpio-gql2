@@ -1,9 +1,9 @@
 import { Button, Card, Col } from "react-bootstrap"
 import { FaArrowAltCircleRight, FaTrashAlt, FaCheck, FaRegCalendarAlt, FaTicketAlt, FaShareSquare } from 'react-icons/fa'
 
-import { useAuth } from "../../hooks/useAuth"
-import { STATUS_TAREA, TIPOS_SERVICIO, useTareasExternas } from "../../context/TareasExternasContext"
-import { formateaFecha, formateaFechaHora } from '../comun/utils'
+import { useAuth } from "../../../hooks/useAuth"
+import { STATUS_TAREA, TIPOS_SERVICIO, useTareasExternas } from "../../../context/TareasExternasContext"
+import { formateaFecha, formateaFechaHora } from '../../comun/utils'
 
 const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, onContinuar, onBorrar, onForward }) => {
     const { estadoActual } = useTareasExternas()

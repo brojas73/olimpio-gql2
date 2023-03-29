@@ -1,11 +1,11 @@
 import { Card, Col, Modal, Spinner} from "react-bootstrap"
 import { FaTicketAlt, FaArrowAltCircleRight, FaRegCalendarAlt } from 'react-icons/fa'
 
-import { TIPOS_SERVICIO } from '../../context/TareasExternasContext'
-import { formateaFecha, formateaFechaHora } from "../comun/utils"
+import { TIPOS_SERVICIO } from '../../../context/TareasExternasContext'
+import { formateaFecha, formateaFechaHora } from "../../comun/utils"
 
 import { useQuery } from 'react-query'
-import { fetchTareaExterna } from '../../queries/TareaExterna'
+import { fetchTareaExterna } from '../../../queries/TareaExterna'
 
 const TareaExternaModal = ({mostrar, idTareaExterna, onClose}) => {
   const { data, isLoading } = useQuery('tareaExterna', () => fetchTareaExterna(idTareaExterna))

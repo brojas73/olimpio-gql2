@@ -457,9 +457,12 @@ app.get('/api/tareas-por-atenderse-hoy/:id_sucursal_destino', (req, res) => {
                  te.descripcion,
                  concat(te.fecha_requerida, ' ', te.hora_requerida) as fecha_requerida,
                  so.nombre as sucursal_origen,
+                 et.nombre as estado_tarea,
                  ts.nombre as tipo_servicio,
                  tt.nombre as tipo_trabajo
            from  tarea_externa te
+                 inner join estado_tarea et
+                    on    et.id_estado_tarea = te.id_estado_tarea
                  inner join tipo_servicio ts
                     on    ts.id_tipo_servicio = te.id_tipo_servicio
                  inner join tipo_trabajo tt

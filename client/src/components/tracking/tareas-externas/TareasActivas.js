@@ -1,9 +1,9 @@
 import { Spinner } from "react-bootstrap"
 
-import { useTareasExternas } from "../../context/TareasExternasContext"
+import { useTareasExternas } from "../../../context/TareasExternasContext"
 
 import { useQuery } from "react-query"
-import { fetchTareasExternasActivas } from '../../queries/TareaExterna'
+import { fetchTareasExternasActivas } from '../../../queries/TareaExterna'
 
 import ListaTareasExternas from "./ListaTareasExternas"
 

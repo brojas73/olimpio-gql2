@@ -4,7 +4,7 @@ import { useQuery } from 'react-query'
 import { fetchTiposServicio, QUERY_TIPOS_SERVICIO } from '../../queries/TipoServicio'
 
 const TipoServicioSelect = ({onChange, name, value, label}) => {
-    const { data: tiposServicio, isLoading } = useQuery(QUERY_TIPOS_SERVICIO, fetchTiposServicio, { refetchOnWindowFocus: false})
+    const { data: tiposServicio, isLoading } = useQuery(QUERY_TIPOS_SERVICIO, fetchTiposServicio, { staleTime: Infinity, cacheTime: Infinity})
 
     if (isLoading) return <Spinner animation="border" />
 

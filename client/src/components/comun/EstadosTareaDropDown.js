@@ -12,7 +12,7 @@ import { nombreEstadoTarea } from './utils'
 
 
 const EstadosTareaDropDown = ({onSelect, idSelected }) => {
-  const { data: estadosTarea, isLoading } = useQuery(QUERY_ESTADOS_TAREA, fetchEstadosTarea, { refetchOnWindowFocus: false})
+  const { data: estadosTarea, isLoading } = useQuery(QUERY_ESTADOS_TAREA, fetchEstadosTarea, { staleTime: Infinity, cacheTime: Infinity})
   const titulo = useLocation().pathname.includes('tareas-activas') ? 'Estado de la Tarea' : nombreEstadoTarea(estadosTarea, idSelected)
 
   if (isLoading) return <Spinner animation='border' />

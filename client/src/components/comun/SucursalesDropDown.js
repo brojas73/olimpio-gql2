@@ -9,7 +9,7 @@ import { fetchSucursales, QUERY_SUCURSALES } from "../../queries/Sucursal"
 import { nombreSucursal } from "./utils"
 
 const SucursalesDropDown = ({onSelect, titleOption, showIcon, idSelected}) => {
-  const { data: sucursales, isLoading } = useQuery(QUERY_SUCURSALES, fetchSucursales, { refetchOnWindowFocus: false})
+  const { data: sucursales, isLoading } = useQuery(QUERY_SUCURSALES, fetchSucursales, { staleTime: Infinity, cacheTime: Infinity})
 
   if (isLoading) return <Spinner animation="border" />
 

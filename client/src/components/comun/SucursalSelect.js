@@ -5,7 +5,7 @@ import { useQuery } from 'react-query'
 import { fetchSucursales, QUERY_SUCURSALES } from '../../queries/Sucursal'
 
 const SucursalSelect = ({onChange, name, value, label, filtraSucursalActual }) => {
-    const { data: sucursales, isLoading } = useQuery(QUERY_SUCURSALES, fetchSucursales, { refetchOnWindowFocus: false})
+    const { data: sucursales, isLoading } = useQuery(QUERY_SUCURSALES, fetchSucursales, { staleTime: Infinity, cacheTime: Infinity})
     const { sucursalActual } = useTareasExternas()
 
     if (isLoading) return <Spinner animation="border" />

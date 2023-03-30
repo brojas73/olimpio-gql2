@@ -6,13 +6,13 @@ import { NavDropdown, Spinner } from 'react-bootstrap'
 import { STATUS_TAREA } from '../../context/TareasExternasContext'
 
 import { useQuery } from 'react-query'
-import { fetchEstadosTarea } from '../../queries/EstadoTarea'
+import { fetchEstadosTarea, QUERY_ESTADOS_TAREA } from '../../queries/EstadoTarea'
 
 import { nombreEstadoTarea } from './utils'
 
 
 const EstadosTareaDropDown = ({onSelect, idSelected }) => {
-  const { data: estadosTarea, isLoading } = useQuery('estadosTarea', fetchEstadosTarea)
+  const { data: estadosTarea, isLoading } = useQuery(QUERY_ESTADOS_TAREA, fetchEstadosTarea, { refetchOnWindowFocus: false})
   const titulo = useLocation().pathname.includes('tareas-activas') ? 'Estado de la Tarea' : nombreEstadoTarea(estadosTarea, idSelected)
 
   if (isLoading) return <Spinner animation='border' />

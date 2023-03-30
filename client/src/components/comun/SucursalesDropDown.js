@@ -4,12 +4,12 @@ import { faLandmark } from "@fortawesome/free-solid-svg-icons"
 import { NavDropdown, Spinner  } from "react-bootstrap"
 
 import { useQuery } from "react-query"
-import { fetchSucursales } from "../../queries/Sucursal"
+import { fetchSucursales, QUERY_SUCURSALES } from "../../queries/Sucursal"
 
 import { nombreSucursal } from "./utils"
 
 const SucursalesDropDown = ({onSelect, titleOption, showIcon, idSelected}) => {
-  const { data: sucursales, isLoading } = useQuery('sucursales', fetchSucursales)
+  const { data: sucursales, isLoading } = useQuery(QUERY_SUCURSALES, fetchSucursales, { refetchOnWindowFocus: false})
 
   if (isLoading) return <Spinner animation="border" />
 

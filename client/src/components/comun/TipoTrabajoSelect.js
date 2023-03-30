@@ -1,10 +1,10 @@
 import { Form, Spinner } from 'react-bootstrap'
 
 import { useQuery } from 'react-query'
-import { fetchTiposTrabajo } from '../../queries/TipoTrabajo'
+import { fetchTiposTrabajo, QUERY_TIPOS_TRABAJO } from '../../queries/TipoTrabajo'
 
 const TipoTrabajoSelect = ({onChange, name, value, label}) => {
-    const { data: tiposTrabajo, isLoading } = useQuery('tiposTrabajo', fetchTiposTrabajo)
+    const { data: tiposTrabajo, isLoading } = useQuery(QUERY_TIPOS_TRABAJO, fetchTiposTrabajo, { refetchOnWindowFocus: false})
 
     if (isLoading) return <Spinner animation="border" />
 

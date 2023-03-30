@@ -8,7 +8,7 @@ import { useTareasExternas } from '../../../context/TareasExternasContext'
 import { fechaFormatter } from '../../comun/utils'
 
 import { useQuery } from 'react-query'
-import { fetchTareasExternasLog } from '../../../queries/TareaExternaLog'
+import { fetchTareasExternasLog, QUERY_TAREAS_EXTERNAS_LOG } from '../../../queries/TareaExternaLog'
 
 import Filtros from "./Filtros"
 import TareaExternaModal from "./TareaExternaModal"
@@ -17,7 +17,7 @@ import TituloConsultas from './TituloConsultas'
 export default function Bitacora() {
   const { sucursalActual } = useTareasExternas()
 
-  const {isLoading, data: tareasExternasLog} = useQuery('tareasExternasLog', fetchTareasExternasLog)
+  const {isLoading, data: tareasExternasLog} = useQuery(QUERY_TAREAS_EXTERNAS_LOG, fetchTareasExternasLog)
 
   const [modalTarea, setModalTarea] = useState({mostrar: false, idTareaExterna: 0})
   const [filtro, setFiltro] = useState({ticket: '', descripcion: ''})

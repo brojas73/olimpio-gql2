@@ -1,7 +1,9 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faUser, faUserPen, faTruck, faStore } from "@fortawesome/free-solid-svg-icons"
 import { NavDropdown  } from "react-bootstrap"
 import { Link } from "react-router-dom"
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faUser, faUserPen, faTruck, faStore } from "@fortawesome/free-solid-svg-icons"
+
 import { useAuth } from "../../hooks/useAuth"
 
 const UsuarioDropDown = ({onLogout, title}) => {

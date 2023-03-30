@@ -2,10 +2,10 @@ import { Form, Spinner } from 'react-bootstrap'
 
 import { useTareasExternas } from '../../context/TareasExternasContext'
 import { useQuery } from 'react-query'
-import { fetchSucursales } from '../../queries/Sucursal'
+import { fetchSucursales, QUERY_SUCURSALES } from '../../queries/Sucursal'
 
 const SucursalSelect = ({onChange, name, value, label, filtraSucursalActual }) => {
-    const { data: sucursales, isLoading } = useQuery('sucursales', fetchSucursales)
+    const { data: sucursales, isLoading } = useQuery(QUERY_SUCURSALES, fetchSucursales, { refetchOnWindowFocus: false})
     const { sucursalActual } = useTareasExternas()
 
     if (isLoading) return <Spinner animation="border" />

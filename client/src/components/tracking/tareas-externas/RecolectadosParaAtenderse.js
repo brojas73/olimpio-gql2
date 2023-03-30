@@ -3,13 +3,13 @@ import { Spinner } from "react-bootstrap"
 import { STATUS_TAREA, useTareasExternas } from "../../../context/TareasExternasContext"
 
 import { useQuery } from "react-query"
-import { fetchTareasExternasActivas } from "../../../queries/TareaExterna"
+import { fetchTareasExternasActivas, QUERY_TAREAS_EXTERNAS_ACTIVAS } from "../../../queries/TareaExterna"
 
 import ListaTareasExternas from "./ListaTareasExternas"
 
 const RecolectadosParaAtenderse = () => {
   const { sucursalActual, ticketFiltro, sucursalFiltro, tipoTrabajoFiltro, tipoServicioFiltro } = useTareasExternas()
-  const { data: tareasExternas, isLoading } = useQuery('tareasExternasActivas', fetchTareasExternasActivas)
+  const { data: tareasExternas, isLoading } = useQuery(QUERY_TAREAS_EXTERNAS_ACTIVAS, fetchTareasExternasActivas)
 
   if (isLoading) return <Spinner animation="border" />
 

@@ -11,12 +11,13 @@ import Filtros from "./Filtros"
 import TituloConsultas from "./TituloConsultas"
 
 import { useQuery } from 'react-query'
-import { fetchTareasPorAtenderseHoy } from '../../../queries/TareaExterna'
+import { fetchTareasPorAtenderseHoy, QUERY_TAREAS_POR_ATENDERSE_HOY } from '../../../queries/TareaExterna'
 
 export default function TareasPorAtenderseHoy() {
     const { sucursalActual } = useTareasExternas()
 
-    const { isLoading, data: tareasExternas } = useQuery(['tareasPorAtenderseHoy', sucursalActual], () => fetchTareasPorAtenderseHoy(sucursalActual))
+    // const { isLoading, data: tareasExternas } = useQuery(['tareasPorAtenderseHoy', sucursalActual], () => fetchTareasPorAtenderseHoy(sucursalActual))
+    const { isLoading, data: tareasExternas } = useQuery(QUERY_TAREAS_POR_ATENDERSE_HOY, () => fetchTareasPorAtenderseHoy(sucursalActual))
 
     const [modalTarea, setModalTarea] = useState({mostrar: false, idTareaExterna: 0})
     const [filtro, setFiltro] = useState({ticket: '', descripcion: ''})

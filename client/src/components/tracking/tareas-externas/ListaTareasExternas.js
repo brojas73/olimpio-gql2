@@ -6,7 +6,7 @@ import { useAuth } from "../../../hooks/useAuth"
 
 import { useMutation, useQueryClient } from "react-query"
 import { actualizaEstadoTareaExterna, borraTareaExterna } from "../../../mutations/TareaExterna"
-
+import { QUERY_TAREAS_EXTERNAS_ACTIVAS } from "../../../queries/TareaExterna"
 
 import TareasExternasHeader from "./TareasExternasHeader"
 import TareaExterna from "./TareaExternaCard"
@@ -23,15 +23,22 @@ const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoCont
   const queryClient = useQueryClient()
   const { mutate: doActualizaEstadoTareaExterna } = useMutation ({
     mutationFn: actualizaEstadoTareaExterna,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['tareasExternasActivas'] })
+    onSuccess: (data) => {
+      queryClient.setQueriesData(QUERY_TAREAS_EXTERNAS_ACTIVAS, (current) => (
+        current.map(tareaExterna => (
+          parseInt(tareaExterna.id_tarea_externa) === parseInt(data.id_tarea_externa) ? 
+            {...tareaExterna, id_estado_tarea: data.id_estado_tarea} : tareaExterna 
+        ))
+      ))
     }
   })
 
   const { mutate: doBorraTareaExterna } = useMutation ({
     mutationFn: borraTareaExterna,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['tareasExternasActivas'] })
+    onSuccess: (data) => {
+      queryClient.setQueriesData(QUERY_TAREAS_EXTERNAS_ACTIVAS, (current) => (
+        current.filter(tareaExterna => (parseInt(tareaExterna.id_tarea_externa) !== parseInt(data.id_tarea_externa)))
+      ))
     }
   })
 

@@ -3,17 +3,13 @@ import { Spinner } from "react-bootstrap"
 import { useTareasExternas } from "../../../context/TareasExternasContext"
 
 import { useQuery } from "react-query"
-import { fetchTareasExternasActivas } from '../../../queries/TareaExterna'
+import { fetchTareasExternasActivas, QUERY_TAREAS_EXTERNAS_ACTIVAS } from '../../../queries/TareaExterna'
 
 import ListaTareasExternas from "./ListaTareasExternas"
 
 const TareasActivas = () => {
   const { ticketFiltro, sucursalFiltro, tipoTrabajoFiltro, tipoServicioFiltro } = useTareasExternas()
-  const { data: tareasExternas, isLoading } = useQuery('tareasExternasActivas', fetchTareasExternasActivas)
-
-  // Esto es para poner en el filtro que estamos en las tareas activas cuando
-  // dieron click al TRACKING en el menú de la barra de navegación global "GlobalNavbar"
-  // setEstadoActual(STATUS_TAREA.TAREAS_ACTIVAS)
+  const { data: tareasExternas, isLoading } = useQuery(QUERY_TAREAS_EXTERNAS_ACTIVAS, fetchTareasExternasActivas)
 
   if (isLoading) return <Spinner animation="border" />
 

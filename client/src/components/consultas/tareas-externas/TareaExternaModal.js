@@ -5,10 +5,10 @@ import { TIPOS_SERVICIO } from '../../../context/TareasExternasContext'
 import { formateaFecha, formateaFechaHora } from "../../comun/utils"
 
 import { useQuery } from 'react-query'
-import { fetchTareaExterna } from '../../../queries/TareaExterna'
+import { fetchTareaExterna, QUERY_TAREA_EXTERNA } from '../../../queries/TareaExterna'
 
 const TareaExternaModal = ({mostrar, idTareaExterna, onClose}) => {
-  const { data, isLoading } = useQuery('tareaExterna', () => fetchTareaExterna(idTareaExterna))
+  const { data, isLoading } = useQuery(QUERY_TAREA_EXTERNA, () => fetchTareaExterna(idTareaExterna))
 
   if (isLoading) return <Spinner animation="border" />
 

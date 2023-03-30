@@ -356,9 +356,17 @@ app.delete('/api/tareas-externas/:id_tarea_externa', (req, res) => {
                 db.release()
                 if (err) {
                     console.log(err)
-                    res.send(err)
+                    res.send({
+                        status: 500,
+                        mesnsaje: 'Hubo problemas para borrar la tarea',
+                        error: err
+                    })
                 }
-                res.send({"status": 200, "mensaje": "La tarea se borró exitosamente"})
+                res.send({
+                    status: 200,
+                    mensaje: "La tarea se borró exitosamente",
+                    id_tarea_externa: id_tarea_externa
+                })
             })
         }) 
     } catch (err) {
@@ -380,9 +388,19 @@ app.put('/api/tareas-externas/:id_tarea_externa/:id_estado_tarea/:id_usuario', (
                 db.release()
                 if (err) {
                     console.log(err)
-                    res.send(err)
+                    res.send({
+                        status: 500,
+                        mensaje: 'Hubo problemas para actualizar el estado de la tarea',
+                        error: err
+                    })
                 }
-                res.send({"status": 200, "mensaje": "El estado se cambió con éxito"})
+                res.send({
+                    status: 200, 
+                    mensaje: "El estado se cambió con éxito",
+                    id_tarea_externa: id_tarea_externa,
+                    id_estado_tarea: id_estado_tarea,
+                    id_usuario: id_usuario
+                })
             })
         }) 
     } catch (err) {

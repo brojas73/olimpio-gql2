@@ -9,3 +9,11 @@ export async function fetchTareasExternasLog() {
     }
 }
 
+export const QUERY_TAREAS_EXTERNAS_LOG_BY_TAREA_EXTERNA = 'tareasExternasLogByTareaExterna'
+export async function fetchTareasExternasLogByTareaExterna(idTareaExterna) {
+    try {
+        return await fetchData(`${getUrlApis()}/tareas-externas-log/${idTareaExterna}`)
+    } catch (error) {
+        throw error
+    }
+}

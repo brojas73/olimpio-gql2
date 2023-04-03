@@ -1,5 +1,5 @@
 import { Button, Card, Col } from "react-bootstrap"
-import { FaTrashAlt, FaCheck, FaRegCalendarAlt, FaTicketAlt, FaTruck, FaUserAlt, FaPhoneAlt, FaDollarSign } from 'react-icons/fa'
+import { FaTrashAlt, FaCheck, FaRegCalendarAlt, FaTicketAlt, FaTruck, FaUserAlt, FaPhoneAlt, FaDollarSign, FaClipboardList } from 'react-icons/fa'
 import { faLandmark, faLocationDot } from "@fortawesome/free-solid-svg-icons"
 
 import { useAuth } from "../../../hooks/useAuth"
@@ -9,7 +9,7 @@ import { STATUS_SERVICIO_DOMICILIO, useServiciosDomicilio } from "../../../conte
 import { formateaFecha, formateaFechaHora, esEntrega, pagado } from '../../comun/utils'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
-const ServicioDomicilio = ({servicioDomicilio, textoContinuar, textoBorrar, onContinuar, onBorrar, onInformacionPago }) => {
+const ServicioDomicilio = ({servicioDomicilio, textoContinuar, textoBorrar, onContinuar, onBorrar, onInformacionPago, onLog }) => {
     const { estadoSDActual } = useServiciosDomicilio()
     const { esEncargado, esChofer, credenciales } = useAuth()
 
@@ -55,23 +55,37 @@ const ServicioDomicilio = ({servicioDomicilio, textoContinuar, textoBorrar, onCo
                 <Card.Header>
                     <Card.Subtitle className="text-primary d-flex justify-content-between align-items-center">
                         {servicioDomicilio.estado_servicio_domicilio}
-                        {
-                            esEncargado() && (
-                                <Button 
-                                    size="sm"
-                                    variant="outline-success"
-                                    onClick={() => onInformacionPago(servicioDomicilio.id_servicio_domicilio)}
+                        <div>
+                            <Button 
+                                variant='outline-dark'
+                                size="sm"
+                                onClick={() => onLog(servicioDomicilio.id_servicio_domicilio)} 
                                 >
-                                    <FaDollarSign /> 
-                                    <span> </span>
-                                    <span className="align-middle">
-                                        {
-                                            pagado(servicioDomicilio) ? 'Pagado' : 'Informción del Pago'
-                                        }
-                                    </span>
-                                </Button>
-                            )
-                        }
+                                <FaClipboardList /> 
+                                <span> </span>
+                                <span className="align-middle">
+                                    Log
+                                </span>
+                            </Button>
+                            <span> </span>
+                            {
+                                esEncargado() && (
+                                    <Button 
+                                        size="sm"
+                                        variant="outline-success"
+                                        onClick={() => onInformacionPago(servicioDomicilio.id_servicio_domicilio)}
+                                    >
+                                        <FaDollarSign /> 
+                                        <span> </span>
+                                        <span className="align-middle">
+                                            {
+                                                pagado(servicioDomicilio) ? 'Pagado' : 'Info del Pago'
+                                            }
+                                        </span>
+                                    </Button>
+                                )
+                            }
+                        </div>
                     </Card.Subtitle>
                     <div className="d-flex justify-content-between align-items-center mt-2">
                         <Card.Subtitle>

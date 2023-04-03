@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 import { Row } from "react-bootstrap"
 
@@ -13,6 +14,7 @@ import TareaExterna from "./TareaExternaCard"
 import Confirmacion from '../../comun/Confirmacion'
 
 const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoContinuar, textoBorrar, textoConfirmacion, textoForward}) => {
+  const navigate = useNavigate()
   const { credenciales } = useAuth()
 
   const [borrando, setBorrando] = useState(false)
@@ -42,7 +44,7 @@ const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoCont
     }
   })
 
-  async function handleConfirmacion(confirmado) {
+  async function handlerConfirmacion(confirmado) {
     setConfirmacion(prevValue => ({...prevValue, mostrar: false}))
 
     if (confirmado) {
@@ -58,21 +60,29 @@ const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoCont
     }
   }
 
-  function onContinuar(idTareaExterna) {
+  function handlerContinuar(idTareaExterna) {
     setIdTareaExterna(idTareaExterna)
     setConfirmacion(prevValue => ({...prevValue, mensaje: textoConfirmacion, mostrar: true}))
   }
 
-  function onBorrar(idTareaExterna) {
+  function handlerBorrar(idTareaExterna) {
     setIdTareaExterna(idTareaExterna)
     setConfirmacion(prevValue => ({...prevValue, mensaje: '¿Seguro que quieres borrar la tarea?', mostrar: true}))
     setBorrando(true)
   }
 
-  function onForward(idTareaExterna) {
+  function handlerForward(idTareaExterna) {
     setIdTareaExterna(idTareaExterna)
     setConfirmacion(prevValue => ({...prevValue, mensaje: '¿Seguro que quieres redireccionar la tarea?', mostrar: true}))
     setRedireccionando(true)
+  }
+
+  function handlerLog(idTareaExterna) {
+    navigate('/tracking/bitacora-tarea-externa', {
+      state: {
+        id_tarea_externa: idTareaExterna
+      }
+    })
   }
 
   return (
@@ -81,7 +91,7 @@ const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoCont
         mostrar={confirmacion.mostrar} 
         titulo='Confirmación' 
         mensaje={confirmacion.mensaje}
-        onConfirmar={handleConfirmacion}
+        onConfirmar={handlerConfirmacion}
       />
       <TareasExternasHeader titulo={titulo} renglones={tareasExternas.length}/>
       <Row xs={1} md={1} lg={2} className="g-3">
@@ -92,9 +102,10 @@ const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoCont
               textoContinuar={textoContinuar}
               textoBorrar={textoBorrar}
               textoForward={textoForward}
-              onContinuar={onContinuar}
-              onBorrar={onBorrar}
-              onForward={onForward}
+              onContinuar={handlerContinuar}
+              onBorrar={handlerBorrar}
+              onForward={handlerForward}
+              onLog={handlerLog}
               key={tareaExterna.id_tarea_externa} 
           />
         ))

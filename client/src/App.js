@@ -36,6 +36,7 @@ import RecolectadoParaEntregaACliente from "./components/tracking/servicios-domi
 import EntregadosACliente from "./components/tracking/servicios-domicilio/EntregadosACliente"
 import InformacionPagoForm from "./components/tracking/servicios-domicilio/InformacionPagoForm"
 import PorPagar from "./components/tracking/servicios-domicilio/PorPagar"
+import BitacoraTareaExterna from "./components/tracking/tareas-externas/BitacoraTareaExterna"
 
 function App() {
   const navigate = useNavigate()
@@ -98,6 +99,7 @@ function App() {
             <Route path='terminados-para-recolectar' element={<TerminadosParaRecolectar />} />
             <Route path='recolectados-para-entrega' element={<RecolectadosParaEntrega />} />
             <Route path='entregados-a-sucursal-origen' element={<EntregadosASucursalOrigen />} />
+            <Route path='bitacora-tarea-externa' element={<BitacoraTareaExterna />} />
         </Route>
 
         <Route path='/servicios-domicilio' element={<ProtectedLayout />} >

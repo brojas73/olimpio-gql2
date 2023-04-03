@@ -55,18 +55,26 @@ const ListaServiciosDomicilio = ({serviciosDomicilio, titulo, siguienteEstado, t
     }
   }
 
-  function onContinuar(idServicioDomicilio) {
+  function handlerContinuar(idServicioDomicilio) {
     setIdServicioDomicilio(idServicioDomicilio)
     setConfirmacion(prevValue => ({...prevValue, mensaje: textoConfirmacion, mostrar: true}))
   }
 
-  function onBorrar(idServicioDomicilio) {
+  function handlerBorrar(idServicioDomicilio) {
     setIdServicioDomicilio(idServicioDomicilio)
     setConfirmacion(prevValue => ({...prevValue, mensaje: '¿Seguro que quieres borrar el servicio a domicilio?', mostrar: true}))
     setBorrando(true)
   }
 
-  function onInformacionPago(idServicioDomicilio) {
+  function handlerLog(idServicioDomicilio) {
+    navigate('/servicios-domicilio/bitacora-servicio-domicilio', {
+      state: {
+        id_servicio_domicilio: idServicioDomicilio
+      }
+    })
+  }
+
+  function handlerInformacionPago(idServicioDomicilio) {
     navigate('/servicios-domicilio/actualiza-informacion-pago', {
       state: {
         id_servicio_domicilio: idServicioDomicilio
@@ -90,9 +98,10 @@ const ListaServiciosDomicilio = ({serviciosDomicilio, titulo, siguienteEstado, t
               servicioDomicilio={servicioDomicilio} 
               textoContinuar={textoContinuar}
               textoBorrar={textoBorrar}
-              onContinuar={onContinuar}
-              onBorrar={onBorrar}
-              onInformacionPago={onInformacionPago}
+              onContinuar={handlerContinuar}
+              onBorrar={handlerBorrar}
+              onLog={handlerLog}
+              onInformacionPago={handlerInformacionPago}
               key={servicioDomicilio.id_servicio_domicilio} 
           />
         ))

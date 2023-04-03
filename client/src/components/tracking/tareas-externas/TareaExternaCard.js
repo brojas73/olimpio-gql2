@@ -1,11 +1,11 @@
 import { Button, Card, Col } from "react-bootstrap"
-import { FaArrowAltCircleRight, FaTrashAlt, FaCheck, FaRegCalendarAlt, FaTicketAlt, FaShareSquare } from 'react-icons/fa'
+import { FaClipboardList, FaArrowAltCircleRight, FaTrashAlt, FaCheck, FaRegCalendarAlt, FaTicketAlt, FaShareSquare } from 'react-icons/fa'
 
 import { useAuth } from "../../../hooks/useAuth"
 import { STATUS_TAREA, TIPOS_SERVICIO, useTareasExternas } from "../../../context/TareasExternasContext"
 import { formateaFecha, formateaFechaHora } from '../../comun/utils'
 
-const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, onContinuar, onBorrar, onForward }) => {
+const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, onContinuar, onBorrar, onForward, onLog }) => {
     const { estadoActual } = useTareasExternas()
     const { esMaquila, esEncargado, esChofer, credenciales } = useAuth()
 
@@ -58,7 +58,20 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
         <Col>
             <Card border={parseInt(tareaExterna.id_tipo_servicio) === TIPOS_SERVICIO.EXPRESS ? 'danger' : ''} >
                 <Card.Header>
-                    <Card.Subtitle className="text-primary">{tareaExterna.estado_tarea}</Card.Subtitle>
+                    <div className="d-flex justify-content-between align-items-center">
+                        <Card.Subtitle className="text-primary">{tareaExterna.estado_tarea}</Card.Subtitle>
+                        <Button 
+                            size="sm" 
+                            onClick={() => onLog(tareaExterna.id_tarea_externa)} 
+                            variant="outline-dark"
+                        >
+                            <FaClipboardList /> 
+                            <span> </span>
+                            <span className="align-middle">
+                                Log
+                            </span>
+                        </Button>
+                    </div>
                     <div className="d-flex justify-content-between align-items-center">
                         <Card.Title>
                             <FaTicketAlt /> 

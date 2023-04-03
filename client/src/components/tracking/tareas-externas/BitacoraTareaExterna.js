@@ -21,14 +21,11 @@ export default function BitacoraTareaExterna() {
   )
 
   const columns = [
-    { dataField: "sucursal_origen", text: "Sucursal", sort: true},
-    { dataField: "ticket", text: "Ticket", sort: true},
-    { dataField: "descripcion", text: "Descripción", sort: true },
     { dataField: "tipo_accion", text: "Acción", sort: true },
     { dataField: "fecha", text: "Fecha", sort: true, formatter: fechaFormatter},
     { dataField: "usuario", text: "Usuario", sort: true },
-    { dataField: "estado_fin", text: "Estado Final", sort: true },
     { dataField: "estado_ini", text: "Estado Inicial", sort: true },
+    { dataField: "estado_fin", text: "Estado Final", sort: true },
   ]
 
   if (isLoading) return <Spinner animation="border" />

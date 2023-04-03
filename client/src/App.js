@@ -21,22 +21,24 @@ import RecibidosParaAtenderse from "./components/tracking/tareas-externas/Recibi
 import TerminadosParaRecolectar from "./components/tracking/tareas-externas/TerminadosParaRecolectar"
 import RecolectadosParaEntrega from "./components/tracking/tareas-externas/RecolectadosParaEntrega"
 import EntregadosASucursalOrigen from "./components/tracking/tareas-externas/EntregadosASucursalOrigen"
+import NuevaTareaForm from "./components/tracking/tareas-externas/NuevaTareaForm"
+import BitacoraTareaExterna from "./components/tracking/tareas-externas/BitacoraTareaExterna"
+
+import Bitacora from "./components/consultas/tareas-externas/Bitacora"
+import TareasPorAtenderseHoy from "./components/consultas/tareas-externas/TareasPorAtenderseHoy"
+
 
 import ServiciosActivos from './components/tracking/servicios-domicilio/ServiciosActivos'
 import PendienteRecoleccionEnCliente from "./components/tracking/servicios-domicilio/PendienteRecoleccionEnCliente"
 import RecolectadosParaEntregaEnSucursal from "./components/tracking/servicios-domicilio/RecolectadosParaEntregaEnSucursal"
 import RecibidosEnSucursal from "./components/tracking/servicios-domicilio/RecibidosEnSucursal"
-
-import Bitacora from "./components/consultas/tareas-externas/Bitacora"
-import TareasPorAtenderseHoy from "./components/consultas/tareas-externas/TareasPorAtenderseHoy"
-import NuevaTareaForm from "./components/tracking/tareas-externas/NuevaTareaForm"
 import NuevoServicioForm from "./components/tracking/servicios-domicilio/NuevoServicioForm"
+import EntregadosACliente from "./components/tracking/servicios-domicilio/EntregadosACliente"
 import PendienteRecoleccionEnSucursal from "./components/tracking/servicios-domicilio/PendienteRecoleccionEnSucursal"
 import RecolectadoParaEntregaACliente from "./components/tracking/servicios-domicilio/RecolectadoParaEntregaACliente"
-import EntregadosACliente from "./components/tracking/servicios-domicilio/EntregadosACliente"
 import InformacionPagoForm from "./components/tracking/servicios-domicilio/InformacionPagoForm"
 import PorPagar from "./components/tracking/servicios-domicilio/PorPagar"
-import BitacoraTareaExterna from "./components/tracking/tareas-externas/BitacoraTareaExterna"
+import BitacoraServicioDomicilio from './components/tracking/servicios-domicilio/BitacoraServicioDomicilio'
 
 function App() {
   const navigate = useNavigate()
@@ -113,13 +115,14 @@ function App() {
             <Route path='entregados-a-cliente' element={<EntregadosACliente />} />
             <Route path='actualiza-informacion-pago' element={<InformacionPagoForm />} />
             <Route path='por-pagar' element={<PorPagar />} />
+            <Route path='bitacora-servicio-domicilio' element={<BitacoraServicioDomicilio />} />
         </Route>
 
         <Route path='/consultas' element={<ProtectedLayout />}>
             <Route path='bitacora' element={<Bitacora />} />
             <Route path='tareas-por-atenderse-hoy' element={<TareasPorAtenderseHoy />} />
           </Route>
-      </Routes>
+      </Routes> 
     </Container>
   )
 }

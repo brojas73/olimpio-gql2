@@ -7,35 +7,32 @@ import paginationFactory from 'react-bootstrap-table2-paginator'
 import { fechaFormatter } from '../../comun/utils'
 
 import { useQuery } from 'react-query'
-import { fetchTareasExternasLogByTareaExterna, QUERY_TAREAS_EXTERNAS_LOG_BY_TAREA_EXTERNA } from '../../../queries/ServicioDomiclioLog'
+import { fetchServiciosDomicilioLogByServicioDomicilio, QUERY_SERVICIOS_DOMICILIO_LOG_BY_SERVICIO_DOMICILIO } from '../../../queries/ServicioDomicilioLog'
 
-import TituloTareas from './TituloTareas'
+import TituloServicioDomicilio from './TituloServicioDomicilio'
 
 export default function BitacoraServicioDomicilio() {
   const location = useLocation()
   const navigate = useNavigate()
   const idServicioDomicilio = location.state.id_servicio_domicilio
 
-  const {isLoading, data: serviciosDomicilioLog} = useQuery(QUERY_TAREAS_EXTERNAS_LOG_BY_TAREA_EXTERNA, 
-    () => fetchTareasExternasLogByTareaExterna(idServicioDomicilio)
+  const {isLoading, data: serviciosDomicilioLog} = useQuery(QUERY_SERVICIOS_DOMICILIO_LOG_BY_SERVICIO_DOMICILIO, 
+    () => fetchServiciosDomicilioLogByServicioDomicilio(idServicioDomicilio)
   )
 
-  const columns = [
-    { dataField: "sucursal_origen", text: "Sucursal", sort: true},
-    { dataField: "ticket", text: "Ticket", sort: true},
-    { dataField: "descripcion", text: "Descripción", sort: true },
+  const columns = [ 
     { dataField: "tipo_accion", text: "Acción", sort: true },
     { dataField: "fecha", text: "Fecha", sort: true, formatter: fechaFormatter},
     { dataField: "usuario", text: "Usuario", sort: true },
-    { dataField: "estado_fin", text: "Estado Final", sort: true },
     { dataField: "estado_ini", text: "Estado Inicial", sort: true },
+    { dataField: "estado_fin", text: "Estado Final", sort: true },
   ]
 
   if (isLoading) return <Spinner animation="border" />
 
   return (
     <>
-      <TituloTareas titulo="Bitácora de Servicio a Domicilio" renglones={serviciosDomicilioLog.length} />
+      <TituloServicioDomicilio titulo="Bitácora de Servicio a Domicilio" renglones={serviciosDomicilioLog.length} />
 
       <BootstrapTable 
         keyField="id" 

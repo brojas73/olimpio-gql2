@@ -1,6 +1,9 @@
 import { useState } from "react"
+
 import { Route, Routes, useNavigate } from "react-router-dom"
-import { Alert, Container } from "react-bootstrap"
+
+import Alert from 'react-bootstrap/Alert'
+import Container from 'react-bootstrap/Container'
 
 import { useTareasExternas } from "./context/TareasExternasContext"
 
@@ -8,7 +11,7 @@ import IdleTimeoutHandler from "./components/comun/IdleTimeoutHandler"
 import ProtectedLayout from "./components/comun/ProtectedLayout"
 
 import GlobalNavbar from "./components/comun/GlobalNavbar"
-import Home from './components/comun/Home'
+import Home from "./components/comun/Home"
 import Login from "./components/login/Login"
 
 import TareasActivas from "./components/tracking/tareas-externas/TareasActivas"
@@ -20,10 +23,19 @@ import RecolectadosParaEntrega from "./components/tracking/tareas-externas/Recol
 import EntregadosASucursalOrigen from "./components/tracking/tareas-externas/EntregadosASucursalOrigen"
 
 import ServiciosActivos from './components/tracking/servicios-domicilio/ServiciosActivos'
+import PendienteRecoleccionEnCliente from "./components/tracking/servicios-domicilio/PendienteRecoleccionEnCliente"
+import RecolectadosParaEntregaEnSucursal from "./components/tracking/servicios-domicilio/RecolectadosParaEntregaEnSucursal"
+import RecibidosEnSucursal from "./components/tracking/servicios-domicilio/RecibidosEnSucursal"
 
 import Bitacora from "./components/consultas/tareas-externas/Bitacora"
 import TareasPorAtenderseHoy from "./components/consultas/tareas-externas/TareasPorAtenderseHoy"
 import NuevaTareaForm from "./components/tracking/tareas-externas/NuevaTareaForm"
+import NuevoServicioForm from "./components/tracking/servicios-domicilio/NuevoServicioForm"
+import PendienteRecoleccionEnSucursal from "./components/tracking/servicios-domicilio/PendienteRecoleccionEnSucursal"
+import RecolectadoParaEntregaACliente from "./components/tracking/servicios-domicilio/RecolectadoParaEntregaACliente"
+import EntregadosACliente from "./components/tracking/servicios-domicilio/EntregadosACliente"
+import InformacionPagoForm from "./components/tracking/servicios-domicilio/InformacionPagoForm"
+import PorPagar from "./components/tracking/servicios-domicilio/PorPagar"
 
 function App() {
   const navigate = useNavigate()
@@ -90,6 +102,15 @@ function App() {
 
         <Route path='/servicios-domicilio' element={<ProtectedLayout />} >
             <Route path='servicios-activos' element={<ServiciosActivos />} />
+            <Route path='nuevo-servicio-domicilio' element={<NuevoServicioForm />} />
+            <Route path='pendiente-recoleccion-en-cliente' element={<PendienteRecoleccionEnCliente />} />
+            <Route path='recolectados-para-entrega-en-sucursal' element={<RecolectadosParaEntregaEnSucursal />} />
+            <Route path='recibidos-en-sucursal' element={<RecibidosEnSucursal />} />
+            <Route path='pendiente-recoleccion-en-sucursal' element={<PendienteRecoleccionEnSucursal />} />
+            <Route path='recolectados-para-entrega-a-cliente' element={<RecolectadoParaEntregaACliente />} />
+            <Route path='entregados-a-cliente' element={<EntregadosACliente />} />
+            <Route path='actualiza-informacion-pago' element={<InformacionPagoForm />} />
+            <Route path='por-pagar' element={<PorPagar />} />
         </Route>
 
         <Route path='/consultas' element={<ProtectedLayout />}>

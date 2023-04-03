@@ -6,8 +6,9 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
-import { TareasExternasProvider } from './context/TareasExternasContext';
 import { AuthProvider } from './hooks/useAuth';
+import { TareasExternasProvider } from './context/TareasExternasContext';
+import { ServiciosDomicilioProvider } from './context/ServiciosDomicilioContext';
 
 const queryClient = new QueryClient()
 
@@ -16,9 +17,11 @@ root.render(
   <BrowserRouter>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <TareasExternasProvider>
-          <App />
-        </TareasExternasProvider>
+        <ServiciosDomicilioProvider>
+          <TareasExternasProvider>
+            <App />
+          </TareasExternasProvider>
+        </ServiciosDomicilioProvider>
       </AuthProvider>
     </QueryClientProvider>
   </BrowserRouter>

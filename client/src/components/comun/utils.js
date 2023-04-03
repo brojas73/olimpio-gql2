@@ -25,6 +25,23 @@ export function formateaFecha(fecha, mostrarDia = true, mostrarAt = true) {
     return formateaFechaHora(fechaStr, hora, mostrarDia, mostrarAt)
 }
 
+export function formateaFechaForm(fecha) {
+  const fechaTmp = new Date(fecha)
+  const fechaFormateada = fechaTmp.getFullYear() + '-' + 
+                          String((fechaTmp.getMonth() + 1)).padStart(2, '0') + '-' + 
+                          String(fechaTmp.getDate()).padStart(2, '0') 
+  return fechaFormateada
+}  
+
+export function formateaHoraForm(fecha) {
+  const fechaTmp = new Date(fecha)
+  const horaFormateada = String(fechaTmp.getHours()).padStart(2, '0') + ':' +
+                         String(fechaTmp.getMinutes()).padStart(2, '0')
+  return horaFormateada
+}
+
+
+
 export const ticketFormatter = (data, row) => {
     return (
       <>
@@ -69,6 +86,12 @@ export function nombreEstadoTarea(estadosTarea, idEstadoTarea) {
   return (estadoTarea ? estadoTarea.nombre : 'Estado')
 }
 
+export function nombreEstadoServicioDomicilio(estadosServicioDomicilio, idEstadoServicioDomicilio) {
+  const estadoServicioDomicilio = estadosServicioDomicilio.find(estadoServicioDomicilio => parseInt(estadoServicioDomicilio.id_estado_servicio_domicilio) === parseInt(idEstadoServicioDomicilio))
+  return (estadoServicioDomicilio ? estadoServicioDomicilio.nombre : 'Estado del Servicio')
+}
+
+
 export function isBlank(str) {
   return (!str || /^\s*$/.test(str))
 }
@@ -77,6 +100,13 @@ export function getUrlApis() {
   return process.env.NODE_ENV === 'development' ? URL_APIS_DEV : URL_APIS_PROD 
 } 
 
+export function esEntrega(servicioDomicilio) {
+  return servicioDomicilio.tipo_servicio === 'E'
+}
+
+export function pagado(servicioDomicilio) {
+  return !(servicioDomicilio.pagado === 'N')
+}
 
 
 

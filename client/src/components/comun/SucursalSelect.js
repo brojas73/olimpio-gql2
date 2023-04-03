@@ -4,7 +4,7 @@ import { useTareasExternas } from '../../context/TareasExternasContext'
 import { useQuery } from 'react-query'
 import { fetchSucursales, QUERY_SUCURSALES } from '../../queries/Sucursal'
 
-const SucursalSelect = ({onChange, name, value, label, filtraSucursalActual }) => {
+const SucursalSelect = ({onChange, name, value, label, filtraSucursalActual, isInvalid }) => {
     const { data: sucursales, isLoading } = useQuery(QUERY_SUCURSALES, fetchSucursales, { staleTime: Infinity, cacheTime: Infinity})
     const { sucursalActual } = useTareasExternas()
 
@@ -13,11 +13,12 @@ const SucursalSelect = ({onChange, name, value, label, filtraSucursalActual }) =
     return (
         <>
             <Form.Label>{label}</Form.Label>
-            <Form.Select required
+            <Form.Select
                 onChange={onChange}
                 value={value}
                 name={name}
-            >
+                isInvalid={isInvalid}
+                >
                 <option key={0} value="">Selecciona una...</option>
                 {
                     sucursales.filter(sucursal => (!filtraSucursalActual || parseInt(sucursal.id_sucursal) !== parseInt(sucursalActual)))

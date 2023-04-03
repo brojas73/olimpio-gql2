@@ -24,14 +24,14 @@ const EstadosTareaDropDown = ({onSelect, idSelected }) => {
         .filter(estadoTarea => parseInt(estadoTarea.id_estado_tarea) !== STATUS_TAREA.RECIBIDO_EN_SUCURSAL_ORIGEN)
         .map(estadoTarea => (
           <NavDropdown.Item 
-              as={Link}
-              to={estadoTarea.url}
-              key={estadoTarea.id_estado_tarea}
-              onClick={() => onSelect(estadoTarea.id_estado_tarea)}
+            as={Link}
+            to={estadoTarea.url}
+            key={estadoTarea.id_estado_tarea}
+            onClick={() => onSelect(estadoTarea.id_estado_tarea)}
           >
             {estadoTarea.nombre}
           </NavDropdown.Item>
-      ))
+        ))
     }
     </NavDropdown>
   )

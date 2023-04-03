@@ -3,7 +3,7 @@ import { Form, Spinner } from 'react-bootstrap'
 import { useQuery } from 'react-query'
 import { fetchTiposServicio, QUERY_TIPOS_SERVICIO } from '../../queries/TipoServicio'
 
-const TipoServicioSelect = ({onChange, name, value, label}) => {
+const TipoServicioSelect = ({onChange, name, value, label, isInvalid}) => {
     const { data: tiposServicio, isLoading } = useQuery(QUERY_TIPOS_SERVICIO, fetchTiposServicio, { staleTime: Infinity, cacheTime: Infinity})
 
     if (isLoading) return <Spinner animation="border" />
@@ -11,11 +11,12 @@ const TipoServicioSelect = ({onChange, name, value, label}) => {
     return (
         <>
             <Form.Label>{label}</Form.Label>
-            <Form.Select required
+            <Form.Select
                 onChange={onChange}
                 value={value}
                 name={name}
-            >
+                isInvalid={ isInvalid }
+                >
                 <option key={0} value="">Selecciona uno...</option>
                 {
                     tiposServicio.map(tipoServicio => (

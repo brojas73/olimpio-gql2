@@ -42,7 +42,7 @@ const Login = ({onLoginOk, onLoginFail}) => {
     await doLogin({
         usuario: formInfo.usuario,
         contrasena: formInfo.contrasena
-      })
+    })
   }
 
   if (isLoading) return <Spinner animation="border" />

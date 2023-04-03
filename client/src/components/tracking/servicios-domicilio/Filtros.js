@@ -1,18 +1,17 @@
 import { Form, Nav, Navbar, Offcanvas } from "react-bootstrap"
-import { useTareasExternas } from "../../../context/TareasExternasContext"
 
-import SucursalesDropDown from "../../comun/SucursalesDropDown"
-import EstadosTareaDropDown from "../../comun/EstadosTareaDropDown"
+import { useTareasExternas } from "../../../context/TareasExternasContext"
+import { useServiciosDomicilio } from "../../../context/ServiciosDomicilioContext"
+
+import EstadosServicioDomicilioDropDown from "../../comun/EstadosServicioDomicilioDropDown"
 
 const Filtros = () => {
     const { 
         ticketFiltro, 
-        sucursalFiltro, 
-        estadoActual, 
-        setEstadoActual,
         setTicketFiltro,
-        setSucursalFiltro
     } = useTareasExternas()
+
+    const { estadoSDActual, setEstadoSDActual } = useServiciosDomicilio()
 
     function onSubmit(event) {
         event.preventDefault()
@@ -34,14 +33,9 @@ const Filtros = () => {
                                     onChange={e => setTicketFiltro(e.target.value)}
                                 />
                             </Form>
-                            <SucursalesDropDown 
-                                idSelected={sucursalFiltro} 
-                                titleOption={true}
-                                onSelect={setSucursalFiltro} 
-                            />
-                            <EstadosTareaDropDown
-                                idSelected={estadoActual} 
-                                onSelect={setEstadoActual}
+                            <EstadosServicioDomicilioDropDown
+                                idSelected={estadoSDActual} 
+                                onSelect={setEstadoSDActual}
                             />
                         </Nav>
                     </Offcanvas.Body>

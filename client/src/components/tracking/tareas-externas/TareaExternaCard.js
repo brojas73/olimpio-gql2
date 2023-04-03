@@ -60,7 +60,13 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
                 <Card.Header>
                     <Card.Subtitle className="text-primary">{tareaExterna.estado_tarea}</Card.Subtitle>
                     <div className="d-flex justify-content-between align-items-center">
-                        <Card.Title><FaTicketAlt /> {tareaExterna.ticket.padStart(6, '0')}</Card.Title>
+                        <Card.Title>
+                            <FaTicketAlt /> 
+                            <span> </span>
+                            <span className="align-middle">
+                               {tareaExterna.ticket.padStart(6, '0')}
+                            </span>
+                        </Card.Title>
                         <Card.Subtitle>
                             { tareaExterna.sucursal_origen }
                             { " " } <FaArrowAltCircleRight /> { " " }
@@ -82,9 +88,13 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
                     </Card.Text>
                 </Card.Body>
                 <Card.Footer className="d-flex justify-content-between align-items-center">
-                    <div>
-                        <small><FaRegCalendarAlt /> {formateaFechaHora(tareaExterna.fecha_requerida, tareaExterna.hora_requerida)}</small>
-                    </div>
+                    <small>
+                        <FaRegCalendarAlt /> 
+                        <span> </span>
+                        <span className="align-middle">
+                            {formateaFechaHora(tareaExterna.fecha_requerida, tareaExterna.hora_requerida)}
+                        </span>
+                    </small>
                     <div>
                         {
                             mostrarBotonAcccionBorrar() && (
@@ -92,9 +102,13 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
                                     <Button 
                                         size="sm" 
                                         onClick={() => onBorrar(tareaExterna.id_tarea_externa)} 
-                                        variant='danger'
+                                        variant='outline-danger'
                                     >
                                         <FaTrashAlt />
+                                        <span> </span>
+                                        <span className="align-middle">
+                                            {textoBorrar}
+                                        </span>
                                     </Button>
                                     <span> </span>
                                 </>
@@ -106,9 +120,13 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
                                     <Button 
                                         size="sm" 
                                         onClick={() => onForward(tareaExterna.id_tarea_externa)} 
-                                        variant='secondary'
+                                        variant='outline-secondary'
                                     >
                                         <FaShareSquare />
+                                        <span> </span>
+                                        <span className="align-middle">
+                                            {textoForward}
+                                        </span>
                                     </Button>
                                     <span> </span>
                                 </>
@@ -119,8 +137,13 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
                                 <Button 
                                     size="sm"
                                     onClick={() => onContinuar(tareaExterna.id_tarea_externa)}
+                                    variant='outline-primary'
                                 >
-                                    <FaCheck />
+                                    <FaCheck /> 
+                                    <span> </span>
+                                    <span className="align-middle">
+                                        {textoContinuar}
+                                    </span>
                                 </Button>
                             )
                         }

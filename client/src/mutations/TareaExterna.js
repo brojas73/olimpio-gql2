@@ -25,7 +25,7 @@ export async function borraTareaExterna({id_tarea_externa}) {
     try {
         const response = await fetch(`${getUrlApis()}/tareas-externas/${id_tarea_externa}`, {
             method: 'DELETE',
-            header: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id_tarea_externa })
         })
 
@@ -43,9 +43,9 @@ export async function borraTareaExterna({id_tarea_externa}) {
 
 export async function actualizaEstadoTareaExterna({id_tarea_externa, id_estado_tarea, id_usuario}) {
     try {
-        const response = await fetch(`${getUrlApis()}/tareas-externas/${id_tarea_externa}/${id_estado_tarea}/${id_usuario}`, {
+        const response = await fetch(`${getUrlApis()}/tareas-externas/${id_tarea_externa}`, {
             method: 'PUT',
-            header: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id_tarea_externa, id_estado_tarea, id_usuario })
         })
 
@@ -90,7 +90,7 @@ export async function redireaccionaTareaExterna({id_tarea_externa, id_sucursal_d
     try {
         const response = await fetch(`${getUrlApis()}/tareas-externas/${id_tarea_externa}/${id_sucursal_destino}/${id_usuario}`, {
             method: 'PUT',
-            header: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id_tarea_externa, id_sucursal_destino, id_usuario })
         })
 

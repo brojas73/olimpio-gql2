@@ -79,7 +79,7 @@ const ServicioDomicilio = ({servicioDomicilio, textoContinuar, textoBorrar, onCo
                                         <span> </span>
                                         <span className="align-middle">
                                             {
-                                                pagado(servicioDomicilio) ? 'Pagado' : 'Info del Pago'
+                                                pagado(servicioDomicilio) ? 'Pagado' : 'Pago'
                                             }
                                         </span>
                                     </Button>

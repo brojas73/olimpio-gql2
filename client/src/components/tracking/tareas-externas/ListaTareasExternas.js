@@ -6,7 +6,13 @@ import { Row } from "react-bootstrap"
 import { useAuth } from "../../../hooks/useAuth"
 
 import { useMutation, useQueryClient } from "react-query"
-import { actualizaEstadoTareaExterna, borraTareaExterna, redireccionaTareaExterna } from "../../../mutations/TareaExterna"
+import { 
+  actualizaEstadoTareaExterna, 
+  borraTareaExterna, 
+  redireccionaTareaExterna, 
+  recolectaTareaExternaForwarded 
+} from "../../../mutations/TareaExterna"
+
 import { QUERY_TAREAS_EXTERNAS_ACTIVAS } from "../../../queries/TareaExterna"
 
 import TareasExternasHeader from "./TareasExternasHeader"
@@ -19,7 +25,9 @@ const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoCont
   const { credenciales } = useAuth()
 
   const [borrando, setBorrando] = useState(false)
+  const [recolectandoForwarded, setRecolectandoForwarded] = useState(false)
   const [idTareaExterna, setIdTareaExterna] = useState(0)
+  const [idSucursalRedireccion, setIdSucursalRedireccion] = useState(0)
   const [confirmacion, setConfirmacion] = useState({ mensaje: textoConfirmacion, mostrar: false })
   const [modalSucursalRedireccion, setModalSucursalRedireccion] = useState({mostrar: false})
   
@@ -57,13 +65,36 @@ const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoCont
     }
   })
 
+  const { mutate: doRecolectaTareaExternaForwarded } = useMutation ({
+    mutationFn: recolectaTareaExternaForwarded,
+    onSuccess: (data) => {
+      queryClient.setQueriesData(QUERY_TAREAS_EXTERNAS_ACTIVAS, (current) => (
+        current.map(tareaExterna => (
+          parseInt(tareaExterna.id_tarea_externa) === parseInt(data.id_tarea_externa) ? 
+            {...tareaExterna, id_estado_tarea: data.id_estado_tarea} : tareaExterna 
+        ))
+      ))
+    }
+  })
+
   function handlerConfirmacion(confirmado) {
     setConfirmacion(prevValue => ({...prevValue, mostrar: false}))
 
     if (confirmado) {
       if (borrando) {
+        setBorrando(false)
         return doBorraTareaExterna({id_tarea_externa: idTareaExterna})
       } 
+
+      if (recolectandoForwarded) {
+        setRecolectandoForwarded(false)
+        return doRecolectaTareaExternaForwarded({
+          id_tarea_externa: idTareaExterna, 
+          id_estado_tarea: siguienteEstado,
+          id_sucursal_redireccion: parseInt(idSucursalRedireccion), 
+          id_usuario: credenciales.id_usuario
+        })
+      }
 
       return doActualizaEstadoTareaExterna({
         id_tarea_externa: idTareaExterna, 
@@ -95,11 +126,20 @@ const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoCont
     if (confirmado) {
       return doRedireccionaTareaExterna({
         id_tarea_externa: idTareaExterna, 
-        id_sucursal_redireccion: idSucursalRedireccion, 
+        id_sucursal_redireccion: parseInt(idSucursalRedireccion), 
         id_usuario: credenciales.id_usuario
       })
     }
 
+  }
+
+  function handlerRecolectarForwarded(idTareaExterna, idSucursalRedireccion) {
+    setIdTareaExterna(idTareaExterna)
+    setIdSucursalRedireccion(idSucursalRedireccion)
+    setConfirmacion(prevValue => ({...prevValue, mensaje: textoConfirmacion, mostrar: true}))
+    setRecolectandoForwarded(true)
+    console.log('ListaTareasExternas.handlerRecolectarForwarded.idTareaExterna', idTareaExterna)
+    console.log('ListaTareasExternas.handlerRecolectarForwarded.idSucursalRedireccion', idSucursalRedireccion)
   }
 
   function handlerLog(idTareaExterna) {
@@ -137,6 +177,7 @@ const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoCont
               onBorrar={handlerBorrar}
               onForward={handlerForward}
               onLog={handlerLog}
+              onRecolectarForwarded={handlerRecolectarForwarded}
               key={tareaExterna.id_tarea_externa} 
           />
         ))

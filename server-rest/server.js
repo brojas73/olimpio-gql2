@@ -206,6 +206,7 @@ app.use('/api/tareas-externas-activas', (req, res) => {
                     et.nombre estado_tarea,
                     so.nombre sucursal_origen,
                     sd.nombre sucursal_destino,
+                    sr.nombre sucursal_redireccion,
                     tt.nombre tipo_trabajo,
                     ts.nombre tipo_servicio,
                     cp.nombre creado_por
@@ -214,6 +215,8 @@ app.use('/api/tareas-externas-activas', (req, res) => {
                        on    so.id_sucursal = te.id_sucursal_origen
                     inner join sucursal sd
                        on    sd.id_sucursal = te.id_sucursal_destino
+                    left outer join sucursal sr
+                       on    sr.id_sucursal = te.id_sucursal_redireccion
                     inner join tipo_trabajo tt
                        on    tt.id_tipo_trabajo = te.id_tipo_trabajo
                     inner join tipo_servicio ts
@@ -260,6 +263,7 @@ app.get('/api/tareas-externas', (req, res) => {
                  te.estado,
                  so.nombre sucursal_origen,
                  sd.nombre sucursal_destino,
+                 sr.nombre sucursal_redireccion,
                  tt.nombre tipo_trabajo,
                  ts.nombre tipo_servicio,
                  cp.nombre creado_por
@@ -268,6 +272,8 @@ app.get('/api/tareas-externas', (req, res) => {
                     on    so.id_sucursal = te.id_sucursal_origen
                  inner join sucursal sd
                     on    sd.id_sucursal = te.id_sucursal_destino
+                 left outer join sucursal sr
+                    on    sr.id_sucursal = te.id_sucursal_redireccion
                  inner join tipo_trabajo tt
                    on    tt.id_tipo_trabajo = te.id_tipo_trabajo
                  inner join tipo_servicio ts
@@ -301,6 +307,7 @@ app.get('/api/tareas-externas/:id_tarea_externa', (req, res) => {
                  te.descripcion,
                  te.id_tipo_trabajo,
                  te.id_sucursal_destino,
+                 te.id_sucursal_redireccion,
                  te.fecha_requerida,
                  te.hora_requerida,
                  te.id_tipo_servicio,
@@ -313,6 +320,7 @@ app.get('/api/tareas-externas/:id_tarea_externa', (req, res) => {
                  et.nombre estado_tarea,
                  so.nombre sucursal_origen,
                  sd.nombre sucursal_destino,
+                 sr.nombre sucursal_redireccion,
                  tt.nombre tipo_trabajo,
                  ts.nombre tipo_servicio,
                  cp.nombre creado_por
@@ -321,6 +329,8 @@ app.get('/api/tareas-externas/:id_tarea_externa', (req, res) => {
                     on    so.id_sucursal = te.id_sucursal_origen
                  inner join sucursal sd
                     on    sd.id_sucursal = te.id_sucursal_destino
+                 left outer join sucursa sr
+                    on    sr.id_sucursal = te.id_sucursal_redireccion
                  inner join tipo_trabajo tt
                    on    tt.id_tipo_trabajo = te.id_tipo_trabajo
                  inner join tipo_servicio ts
@@ -581,9 +591,9 @@ app.put('/api/tareas-externas/:id_tarea_externa', (req, res) => {
         const { id_estado_tarea, id_sucursal_redireccion, id_usuario, tipo_accion } = req.body
         let q, params
 
-        console.log('server.tareas-externas.params', req.params)
-        console.log('server.tareas-externas.body', req.body)
-        return
+        // console.log('server.tareas-externas.params', req.params)
+        // console.log('server.tareas-externas.body', req.body)
+        // return
 
         // Si es el tipo de opcion por devfault
         if (!tipo_accion) { 
@@ -600,6 +610,15 @@ app.put('/api/tareas-externas/:id_tarea_externa', (req, res) => {
                           id_modificado_por = ?,
                           id_estado_tarea = ?,
                           id_sucursal_redireccion = ?
+                    where id_tarea_externa = ?`
+            params = [id_usuario, id_estado_tarea, id_sucursal_redireccion, id_tarea_externa]
+        } else if (tipo_accion === 'recolecta-redireccion') {
+            q = `update   tarea_externa
+                    set   fecha_modificacion = CURRENT_TIMESTAMP,
+                          id_modificado_por = ?,
+                          id_estado_tarea = ?,
+                          id_sucursal_destino = ?,
+                          id_sucursal_redireccion = null
                     where id_tarea_externa = ?`
             params = [id_usuario, id_estado_tarea, id_sucursal_redireccion, id_tarea_externa]
         }
@@ -621,6 +640,7 @@ app.put('/api/tareas-externas/:id_tarea_externa', (req, res) => {
                     mensaje: "El estado se cambió con éxito",
                     id_tarea_externa: id_tarea_externa,
                     id_estado_tarea: id_estado_tarea,
+                    id_sucursal_redireccion: id_sucursal_redireccion,
                     id_usuario: id_usuario
                 })
             })

@@ -5,9 +5,16 @@ import { useAuth } from "../../../hooks/useAuth"
 import { STATUS_TAREA, TIPOS_SERVICIO, useTareasExternas } from "../../../context/TareasExternasContext"
 import { esRedireccionada, formateaFecha, formateaFechaHora } from '../../comun/utils'
 
-const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, onContinuar, onBorrar, onForward, onLog }) => {
+const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, onContinuar, onBorrar, onForward, onLog, onRecolectarForwarded }) => {
     const { estadoActual } = useTareasExternas()
     const { esMaquila, esEncargado, esChofer, credenciales } = useAuth()
+
+    function handlerContinuar() {
+        if (esRedireccionada(tareaExterna))
+            onRecolectarForwarded(tareaExterna.id_tarea_externa, tareaExterna.id_sucursal_redireccion)
+        else
+            onContinuar(tareaExterna.id_tarea_externa)
+    }
 
     function mostrarBotonAccionContinuar() {
         if (!textoContinuar)
@@ -85,8 +92,16 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
                         </Card.Title>
                         <Card.Subtitle>
                             { tareaExterna.sucursal_origen }
-                            { " " } <FaArrowAltCircleRight /> { " " }
+                            <span> </span> <FaArrowAltCircleRight /> <span> </span>
                             { tareaExterna.sucursal_destino }
+                            {
+                                esRedireccionada(tareaExterna) && (
+                                    <>
+                                        <span> </span> <FaArrowAltCircleRight /> <span> </span>
+                                        {tareaExterna.sucursal_redireccion}
+                                    </>
+                                )
+                            }
                         </Card.Subtitle>
                     </div>
                     <div className="d-flex justify-content-between align-items-center">
@@ -152,7 +167,7 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
                             mostrarBotonAccionContinuar() && (
                                 <Button 
                                     size="sm"
-                                    onClick={() => onContinuar(tareaExterna.id_tarea_externa)}
+                                    onClick={handlerContinuar}
                                     variant='outline-primary'
                                 >
                                     <FaCheck /> 

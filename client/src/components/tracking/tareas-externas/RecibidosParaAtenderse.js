@@ -31,7 +31,7 @@ const RecibidosParaAtenderse = () => {
       titulo='Recibidos para Atenderse'
       siguienteEstado={STATUS_TAREA.TERMINADO_PARA_RECOLECTAR}
       textoContinuar='Terminar'
-      textoForward='Redireccionar'
+      textoForward='Desviar'
       textoConfirmacion='¿Seguro que quieres terminar la tarea?'
     />
   )

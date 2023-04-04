@@ -35,7 +35,7 @@ const RedireccionaSucursalModal = ({mostrar, onConfirmar}) => {
         const { id_sucursal_redireccion } = formData
         const newErrors = {}
     
-        if (parseInt(id_sucursal_redireccion) === 0) newErrors.id_sucursal_redireccion = 'Selecciona la sucursal a la que quieres redireccionar la tarea'
+        if (parseInt(id_sucursal_redireccion) === 0) newErrors.id_sucursal_redireccion = 'Selecciona la sucursal a la que quieres desviar la tarea'
 
         return newErrors
     }
@@ -55,13 +55,13 @@ const RedireccionaSucursalModal = ({mostrar, onConfirmar}) => {
     return (
         <Modal show={mostrar} onHide={handlerCancelar}>
             <Modal.Header>
-                <Modal.Title>Redireccionamiento de Tarea Externa</Modal.Title>
+                <Modal.Title>Desvío de Tarea Externa</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handlerSubmit}>
                     <Form.Group className="mb-3">
                         <SucursalSelect 
-                            label='Sucursal de Redirección'
+                            label='Sucursal de Desvío'
                             onChange={handlerChange} 
                             value={formData.id_sucursal_redireccion}
                             name='id_sucursal_redireccion' 
@@ -74,7 +74,7 @@ const RedireccionaSucursalModal = ({mostrar, onConfirmar}) => {
                     </Form.Group>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={handlerCancelar}>Cancelar</Button>
-                        <Button variant="primary" onClick={handlerSubmit}>Redireccionar</Button>
+                        <Button variant="primary" onClick={handlerSubmit}>Desviar</Button>
                     </Modal.Footer>
                 </Form>
             </Modal.Body>

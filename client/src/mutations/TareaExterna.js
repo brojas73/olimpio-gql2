@@ -75,6 +75,9 @@ export async function actualizaEstadoTareaExterna({id_tarea_externa, id_estado_t
             case STATUS_TAREA.RECIBIDO_EN_SUCURSAL_ORIGEN:
                 mensaje = 'Tarea recibida en sucursal origen con éxito'
                 break
+            case STATUS_TAREA.REDIRECCIONADO:
+                mensaje = 'Tarea desviada con éxito'
+                break
             default:
                 mensaje = 'Tarea actualizada con éxito'
                 break
@@ -101,6 +104,27 @@ export async function redireccionaTareaExterna({id_tarea_externa, id_sucursal_re
 
         const data = await response.json()
         data.mensaje = 'La tarea se redireccionó con éxito'
+        return data
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+export async function recolectaTareaExternaForwarded({id_tarea_externa, id_estado_tarea, id_sucursal_redireccion, id_usuario}) {
+    try {
+        const response = await fetch(`${getUrlApis()}/tareas-externas/${id_tarea_externa}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id_tarea_externa, id_sucursal_redireccion, id_estado_tarea, id_usuario, tipo_accion: 'recolecta-redireccion' })
+        })
+
+        if (!response.ok) {
+            const mensaje = `Ocurrió un error: ${response.status}`
+            throw new Error(mensaje)
+        }
+
+        const data = await response.json()
+        data.mensaje = 'La tarea se recolectó con éxito'
         return data
     } catch (err) {
         console.log(err)

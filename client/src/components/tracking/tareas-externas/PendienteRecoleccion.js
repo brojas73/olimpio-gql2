@@ -6,6 +6,7 @@ import { useQuery } from "react-query"
 import { fetchTareasExternasActivas, QUERY_TAREAS_EXTERNAS_ACTIVAS } from "../../../queries/TareaExterna"
 
 import ListaTareasExternas from "./ListaTareasExternas"
+import { esPendienteDeRecoleccion, esRedireccionada, origenEnSucursalActual, destinoEnSucursalActual } from "../../comun/utils"
 
 const PendienteRecoleccion = () => {
   const { sucursalActual, ticketFiltro, sucursalFiltro, tipoTrabajoFiltro, tipoServicioFiltro } = useTareasExternas()
@@ -16,13 +17,13 @@ const PendienteRecoleccion = () => {
   if (tareasExternas) {
     // Obtengo las tareas que voy a desplegar
     var tareasFiltradas = tareasExternas.filter(tareaExterna => (
-          parseInt(tareaExterna.id_estado_tarea) === STATUS_TAREA.PENDIENTE_RECOLECCION &&
-          parseInt(tareaExterna.id_sucursal_origen) === parseInt(sucursalActual) &&  
+          ((esPendienteDeRecoleccion(tareaExterna) && origenEnSucursalActual(tareaExterna, sucursalActual)) || 
+           (esRedireccionada(tareaExterna) && destinoEnSucursalActual(tareaExterna, sucursalActual)) &&  
           (ticketFiltro.length === 0 || (ticketFiltro.length > 0 && tareaExterna.ticket.startsWith(ticketFiltro))) &&
           (sucursalFiltro === 0 || (sucursalFiltro !== 0 && (tareaExterna.id_sucursal_origen === sucursalFiltro || tareaExterna.id_sucursal_destino === sucursalFiltro))) &&
           (tipoTrabajoFiltro === 0 || (tipoTrabajoFiltro !== 0 && tareaExterna.id_tipo_trabajo === tipoTrabajoFiltro)) &&
           (tipoServicioFiltro === 0 || (tipoServicioFiltro !== 0 && tareaExterna.id_tipo_servicio === tipoServicioFiltro)
-        )))
+        ))))
   }
 
   return (

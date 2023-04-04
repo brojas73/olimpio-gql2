@@ -1,3 +1,5 @@
+import { STATUS_TAREA, useTareasExternas } from '../../context/TareasExternasContext'
+
 const URL_APIS_DEV = 'http://localhost:3020/api'
 const URL_APIS_PROD = 'http://5.183.8.10/api'
 
@@ -108,5 +110,24 @@ export function pagado(servicioDomicilio) {
   return !(servicioDomicilio.pagado === 'N')
 }
 
+export function esPendienteDeRecoleccion(tareaExterna) {
+  return parseInt(tareaExterna.id_estado_tarea) === STATUS_TAREA.PENDIENTE_RECOLECCION
+}
+
+export function esRedireccionada(tareaExterna) {
+  return parseInt(tareaExterna.id_estado_tarea) === STATUS_TAREA.REDIRECCIONADO
+}
+
+export function origenEnSucursalActual(tareaExterna, sucursalActual) {
+  return parseInt(sucursalActual) === parseInt(tareaExterna.id_sucursal_origen)
+}
+
+export function destinoEnSucursalActual(tareaExterna, sucursalActual) {
+  return parseInt(sucursalActual) === parseInt(tareaExterna.id_sucursal_destino)
+}
+
+export function redireccionEnSucursalActual(tareaExterna, sucursalActual) {
+  return parseInt(sucursalActual) === parseInt(tareaExterna.id_sucursal_redireccion)
+}
 
 

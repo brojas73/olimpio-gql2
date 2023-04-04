@@ -6,22 +6,23 @@ import { Row } from "react-bootstrap"
 import { useAuth } from "../../../hooks/useAuth"
 
 import { useMutation, useQueryClient } from "react-query"
-import { actualizaEstadoTareaExterna, borraTareaExterna } from "../../../mutations/TareaExterna"
+import { actualizaEstadoTareaExterna, borraTareaExterna, redireccionaTareaExterna } from "../../../mutations/TareaExterna"
 import { QUERY_TAREAS_EXTERNAS_ACTIVAS } from "../../../queries/TareaExterna"
 
 import TareasExternasHeader from "./TareasExternasHeader"
 import TareaExterna from "./TareaExternaCard"
 import Confirmacion from '../../comun/Confirmacion'
+import RedireccionaSucursalModal from "./RedireccionaSucursalModal"
 
 const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoContinuar, textoBorrar, textoConfirmacion, textoForward}) => {
   const navigate = useNavigate()
   const { credenciales } = useAuth()
 
   const [borrando, setBorrando] = useState(false)
-  const [redireccionando, setRedireccionando] = useState(false)
   const [idTareaExterna, setIdTareaExterna] = useState(0)
   const [confirmacion, setConfirmacion] = useState({ mensaje: textoConfirmacion, mostrar: false })
-
+  const [modalSucursalRedireccion, setModalSucursalRedireccion] = useState({mostrar: false})
+  
   const queryClient = useQueryClient()
   const { mutate: doActualizaEstadoTareaExterna } = useMutation ({
     mutationFn: actualizaEstadoTareaExterna,
@@ -44,19 +45,31 @@ const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoCont
     }
   })
 
-  async function handlerConfirmacion(confirmado) {
+  const { mutate: doRedireccionaTareaExterna } = useMutation ({
+    mutationFn: redireccionaTareaExterna,
+    onSuccess: (data) => {
+      queryClient.setQueriesData(QUERY_TAREAS_EXTERNAS_ACTIVAS, (current) => (
+        current.map(tareaExterna => (
+          parseInt(tareaExterna.id_tarea_externa) === parseInt(data.id_tarea_externa) ? 
+            {...tareaExterna, id_estado_tarea: data.id_estado_tarea} : tareaExterna 
+        ))
+      ))
+    }
+  })
+
+  function handlerConfirmacion(confirmado) {
     setConfirmacion(prevValue => ({...prevValue, mostrar: false}))
 
     if (confirmado) {
       if (borrando) {
-        return await doBorraTareaExterna({id_tarea_externa: idTareaExterna})
+        return doBorraTareaExterna({id_tarea_externa: idTareaExterna})
       } 
 
-      if (redireccionando) {
-        return
-      }
-
-      return await doActualizaEstadoTareaExterna({id_tarea_externa: idTareaExterna, id_estado_tarea: siguienteEstado, id_usuario: credenciales.id_usuario})
+      return doActualizaEstadoTareaExterna({
+        id_tarea_externa: idTareaExterna, 
+        id_estado_tarea: siguienteEstado,
+        id_usuario: credenciales.id_usuario
+      })
     }
   }
 
@@ -73,8 +86,20 @@ const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoCont
 
   function handlerForward(idTareaExterna) {
     setIdTareaExterna(idTareaExterna)
-    setConfirmacion(prevValue => ({...prevValue, mensaje: '¿Seguro que quieres redireccionar la tarea?', mostrar: true}))
-    setRedireccionando(true)
+    setModalSucursalRedireccion(prevValue => ({...prevValue, mostrar: true}))
+
+  }
+
+  function handlerConfirmarForward(confirmado, idSucursalRedireccion) {
+    setModalSucursalRedireccion(prevValue => ({...prevValue, mostrar: false}))
+    if (confirmado) {
+      return doRedireccionaTareaExterna({
+        id_tarea_externa: idTareaExterna, 
+        id_sucursal_redireccion: idSucursalRedireccion, 
+        id_usuario: credenciales.id_usuario
+      })
+    }
+
   }
 
   function handlerLog(idTareaExterna) {
@@ -93,6 +118,12 @@ const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoCont
         mensaje={confirmacion.mensaje}
         onConfirmar={handlerConfirmacion}
       />
+
+      <RedireccionaSucursalModal 
+        mostrar={modalSucursalRedireccion.mostrar}
+        onConfirmar={handlerConfirmarForward}
+      />
+
       <TareasExternasHeader titulo={titulo} renglones={tareasExternas.length}/>
       <Row xs={1} md={1} lg={2} className="g-3">
       {

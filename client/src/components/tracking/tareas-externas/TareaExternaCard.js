@@ -3,7 +3,7 @@ import { FaClipboardList, FaArrowAltCircleRight, FaTrashAlt, FaCheck, FaRegCalen
 
 import { useAuth } from "../../../hooks/useAuth"
 import { STATUS_TAREA, TIPOS_SERVICIO, useTareasExternas } from "../../../context/TareasExternasContext"
-import { formateaFecha, formateaFechaHora } from '../../comun/utils'
+import { esRedireccionada, formateaFecha, formateaFechaHora } from '../../comun/utils'
 
 const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, onContinuar, onBorrar, onForward, onLog }) => {
     const { estadoActual } = useTareasExternas()
@@ -35,6 +35,9 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
 
     function mostrarBotonAcccionBorrar() {
         if (!textoBorrar)
+            return false
+
+        if (esRedireccionada(tareaExterna))
             return false
 
         return (

@@ -196,6 +196,7 @@ app.use('/api/tareas-externas-activas', (req, res) => {
                     te.ticket,
                     te.descripcion,
                     te.id_sucursal_destino,
+                    te.id_sucursal_redireccion,
                     te.fecha_requerida,
                     te.hora_requerida,
                     te.id_tipo_servicio,
@@ -221,7 +222,7 @@ app.use('/api/tareas-externas-activas', (req, res) => {
                        on    cp.id_usuario = te.id_creado_por
                     inner join estado_tarea et
                        on    et.id_estado_tarea = te.id_estado_tarea
-            where   te.id_estado_tarea < 7 
+            where   te.id_estado_tarea != 7 
             and     te.estado = 1
         order by    te.fecha_creacion
     `
@@ -247,6 +248,7 @@ app.get('/api/tareas-externas', (req, res) => {
                  te.descripcion,
                  te.id_tipo_trabajo,
                  te.id_sucursal_destino,
+                 te.id_sucursal_redireccion,
                  te.fecha_requerida,
                  te.hora_requerida,
                  te.id_tipo_servicio,
@@ -576,15 +578,71 @@ app.delete('/api/tareas-externas/:id_tarea_externa', (req, res) => {
 app.put('/api/tareas-externas/:id_tarea_externa', (req, res) => {
     try {
         const { id_tarea_externa } = req.params
-        const { id_estado_tarea, id_usuario } = req.body
+        const { id_estado_tarea, id_sucursal_redireccion, id_usuario, tipo_accion } = req.body
+        let q, params
+
+        console.log('server.tareas-externas.params', req.params)
+        console.log('server.tareas-externas.body', req.body)
+        return
+
+        // Si es el tipo de opcion por devfault
+        if (!tipo_accion) { 
+            q = `update   tarea_externa
+                    set   fecha_modificacion = CURRENT_TIMESTAMP,
+                          id_modificado_por = ?,
+                          id_estado_tarea = ?
+                    where id_tarea_externa = ?`
+
+            params = [id_usuario, id_estado_tarea, id_tarea_externa]
+        } else if (tipo_accion === 'redireccion') {
+            q = `update   tarea_externa
+                    set   fecha_modificacion = CURRENT_TIMESTAMP,
+                          id_modificado_por = ?,
+                          id_estado_tarea = ?,
+                          id_sucursal_redireccion = ?
+                    where id_tarea_externa = ?`
+            params = [id_usuario, id_estado_tarea, id_sucursal_redireccion, id_tarea_externa]
+        }
+
+        pool.getConnection((err, db) => {
+            if (err) throw err
+            db.query(q, params, (err, data) => {
+                db.release()
+                if (err) {
+                    console.log(err)
+                    res.send({
+                        status: 500,
+                        mensaje: 'Hubo problemas para actualizar el estado de la tarea',
+                        error: err
+                    })
+                }
+                res.send({
+                    status: 200, 
+                    mensaje: "El estado se cambió con éxito",
+                    id_tarea_externa: id_tarea_externa,
+                    id_estado_tarea: id_estado_tarea,
+                    id_usuario: id_usuario
+                })
+            })
+        }) 
+    } catch (err) {
+        console.log('update', err)
+    }
+})
+
+app.put('/api/tarea-externa/:id_tarea_externa', (req, res) => {
+    try {
+        const { id_tarea_externa } = req.params
+        const { id_estado_tarea, id_sucursal_redireccion, id_usuario } = req.body
         const q = `update   tarea_externa
                        set  fecha_modificacion = CURRENT_TIMESTAMP,
                             id_modificado_por = ?,
-                            id_estado_tarea = ?
+                            id_estado_tarea = ?,
+                            id_sucursal_redireccion = ?
                       where id_tarea_externa = ?`
         pool.getConnection((err, db) => {
             if (err) throw err
-            db.query(q, [id_usuario, id_estado_tarea, id_tarea_externa], (err, data) => {
+            db.query(q, [id_usuario, id_estado_tarea, id_sucursal_redireccion, id_tarea_externa], (err, data) => {
                 db.release()
                 if (err) {
                     console.log(err)

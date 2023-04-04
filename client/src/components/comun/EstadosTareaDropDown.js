@@ -21,7 +21,10 @@ const EstadosTareaDropDown = ({onSelect, idSelected }) => {
     <NavDropdown title={titulo}>
     {
       estadosTarea 
-        .filter(estadoTarea => parseInt(estadoTarea.id_estado_tarea) !== STATUS_TAREA.RECIBIDO_EN_SUCURSAL_ORIGEN)
+        .filter(estadoTarea => (
+          parseInt(estadoTarea.id_estado_tarea) !== STATUS_TAREA.RECIBIDO_EN_SUCURSAL_ORIGEN &&
+          parseInt(estadoTarea.id_estado_tarea) !== STATUS_TAREA.REDIRECCIONADO 
+        ))
         .map(estadoTarea => (
           <NavDropdown.Item 
             as={Link}

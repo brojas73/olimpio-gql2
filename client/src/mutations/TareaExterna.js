@@ -86,12 +86,12 @@ export async function actualizaEstadoTareaExterna({id_tarea_externa, id_estado_t
     }
 }
 
-export async function redireaccionaTareaExterna({id_tarea_externa, id_sucursal_destino, id_usuario}) {
+export async function redireccionaTareaExterna({id_tarea_externa, id_sucursal_redireccion, id_usuario}) {
     try {
-        const response = await fetch(`${getUrlApis()}/tareas-externas/${id_tarea_externa}/${id_sucursal_destino}/${id_usuario}`, {
+        const response = await fetch(`${getUrlApis()}/tareas-externas/${id_tarea_externa}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id_tarea_externa, id_sucursal_destino, id_usuario })
+            body: JSON.stringify({ id_tarea_externa, id_sucursal_redireccion, id_estado_tarea: STATUS_TAREA.REDIRECCIONADO, id_usuario, tipo_accion: 'redireccion' })
         })
 
         if (!response.ok) {

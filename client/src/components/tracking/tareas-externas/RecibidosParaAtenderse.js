@@ -16,8 +16,8 @@ const RecibidosParaAtenderse = () => {
   if (tareasExternas) {
     // Obtengo las tareas que voy a desplegar
     var tareasFiltradas = tareasExternas.filter(tareaExterna => (
-          parseInt(tareaExterna.id_estado_tarea) === STATUS_TAREA.RECIBIDO_PARA_ATENDERSE &&
-          parseInt(tareaExterna.id_sucursal_destino) === parseInt(sucursalActual) &&  
+          parseInt(tareaExterna.id_estado_tarea) === STATUS_TAREA.RECIBIDO_PARA_ATENDERSE && 
+          parseInt(tareaExterna.id_sucursal_destino) === parseInt(sucursalActual) &&
           (ticketFiltro.length === 0 || (ticketFiltro.length > 0 && tareaExterna.ticket.startsWith(ticketFiltro))) &&
           (sucursalFiltro === 0 || (sucursalFiltro !== 0 && (tareaExterna.id_sucursal_origen === sucursalFiltro || tareaExterna.id_sucursal_destino === sucursalFiltro))) &&
           (tipoTrabajoFiltro === 0 || (tipoTrabajoFiltro !== 0 && tareaExterna.id_tipo_trabajo === tipoTrabajoFiltro)) &&

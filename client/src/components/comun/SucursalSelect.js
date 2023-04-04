@@ -18,12 +18,12 @@ const SucursalSelect = ({onChange, name, value, label, filtraSucursalActual, isI
                 value={value}
                 name={name}
                 isInvalid={isInvalid}
-                >
-                <option key={0} value="">Selecciona una...</option>
+            >
+                <option key={0} value={0}>Selecciona una...</option>
                 {
                     sucursales.filter(sucursal => (!filtraSucursalActual || parseInt(sucursal.id_sucursal) !== parseInt(sucursalActual)))
                                    .map(sucursal => (
-                        <option key={sucursal.id_sucursal} value={sucursal.id_sucursal}>{sucursal.nombre}</option>
+                        <option key={parseInt(sucursal.id_sucursal)} value={parseInt(sucursal.id_sucursal)}>{sucursal.nombre}</option>
                     ))
                 }
             </Form.Select>

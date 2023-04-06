@@ -1,4 +1,4 @@
-import { STATUS_TAREA, useTareasExternas } from '../../context/TareasExternasContext'
+import { STATUS_TAREA } from '../../context/TareasExternasContext'
 
 const URL_APIS_DEV = 'http://localhost:3020/api'
 const URL_APIS_PROD = 'http://5.183.8.10/api'
@@ -69,7 +69,7 @@ export const accionFormatter = (data, row) => {
 }
 
 export async function fetchData(url) { 
-  const response = await fetch(url).then(response => response.json())
+  const response = await fetch(url, {credentials: 'include'}).then(response => response.json())
   return response
 }    
 

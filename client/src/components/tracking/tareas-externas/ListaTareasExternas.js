@@ -77,7 +77,7 @@ const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoCont
     }
   })
 
-  function handlerConfirmacion(confirmado) {
+  function handleConfirmacion(confirmado) {
     setConfirmacion(prevValue => ({...prevValue, mostrar: false}))
 
     if (confirmado) {
@@ -104,24 +104,24 @@ const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoCont
     }
   }
 
-  function handlerContinuar(idTareaExterna) {
+  function handleContinuar(idTareaExterna) {
     setIdTareaExterna(idTareaExterna)
     setConfirmacion(prevValue => ({...prevValue, mensaje: textoConfirmacion, mostrar: true}))
   }
 
-  function handlerBorrar(idTareaExterna) {
+  function handleBorrar(idTareaExterna) {
     setIdTareaExterna(idTareaExterna)
     setConfirmacion(prevValue => ({...prevValue, mensaje: '¿Seguro que quieres borrar la tarea?', mostrar: true}))
     setBorrando(true)
   }
 
-  function handlerForward(idTareaExterna) {
+  function handleForward(idTareaExterna) {
     setIdTareaExterna(idTareaExterna)
     setModalSucursalRedireccion(prevValue => ({...prevValue, mostrar: true}))
 
   }
 
-  function handlerConfirmarForward(confirmado, idSucursalRedireccion) {
+  function handleConfirmarForward(confirmado, idSucursalRedireccion) {
     setModalSucursalRedireccion(prevValue => ({...prevValue, mostrar: false}))
     if (confirmado) {
       return doRedireccionaTareaExterna({
@@ -133,7 +133,7 @@ const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoCont
 
   }
 
-  function handlerRecolectarForwarded(idTareaExterna, idSucursalRedireccion) {
+  function handleRecolectarForwarded(idTareaExterna, idSucursalRedireccion) {
     setIdTareaExterna(idTareaExterna)
     setIdSucursalRedireccion(idSucursalRedireccion)
     setConfirmacion(prevValue => ({...prevValue, mensaje: textoConfirmacion, mostrar: true}))
@@ -142,7 +142,7 @@ const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoCont
     console.log('ListaTareasExternas.handlerRecolectarForwarded.idSucursalRedireccion', idSucursalRedireccion)
   }
 
-  function handlerLog(idTareaExterna) {
+  function handleLog(idTareaExterna) {
     navigate('/tracking/bitacora-tarea-externa', {
       state: {
         id_tarea_externa: idTareaExterna
@@ -156,12 +156,12 @@ const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoCont
         mostrar={confirmacion.mostrar} 
         titulo='Confirmación' 
         mensaje={confirmacion.mensaje}
-        onConfirmar={handlerConfirmacion}
+        onConfirmar={handleConfirmacion}
       />
 
       <RedireccionaSucursalModal 
         mostrar={modalSucursalRedireccion.mostrar}
-        onConfirmar={handlerConfirmarForward}
+        onConfirmar={handleConfirmarForward}
       />
 
       <TareasExternasHeader titulo={titulo} renglones={tareasExternas.length}/>
@@ -173,11 +173,11 @@ const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoCont
               textoContinuar={textoContinuar}
               textoBorrar={textoBorrar}
               textoForward={textoForward}
-              onContinuar={handlerContinuar}
-              onBorrar={handlerBorrar}
-              onForward={handlerForward}
-              onLog={handlerLog}
-              onRecolectarForwarded={handlerRecolectarForwarded}
+              onContinuar={handleContinuar}
+              onBorrar={handleBorrar}
+              onForward={handleForward}
+              onLog={handleLog}
+              onRecolectarForwarded={handleRecolectarForwarded}
               key={tareaExterna.id_tarea_externa} 
           />
         ))

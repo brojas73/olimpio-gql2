@@ -94,7 +94,7 @@ const NuevoServicioForm = ({onExito}) => {
     return true
   }
   
-  async function onSubmit(event) {
+  function onSubmit(event) {
     event.preventDefault()
     if (isValid()) {
         const nuevoServicioDomicilio = {
@@ -110,7 +110,7 @@ const NuevoServicioForm = ({onExito}) => {
             id_usuario: credenciales.id_usuario
         } 
 
-        await doCreaServicioDomicilio(nuevoServicioDomicilio)
+        doCreaServicioDomicilio(nuevoServicioDomicilio)
         navigate(-1)
     }
   }

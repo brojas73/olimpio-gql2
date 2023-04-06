@@ -9,7 +9,7 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
     const { estadoActual } = useTareasExternas()
     const { esMaquila, esEncargado, esChofer, credenciales } = useAuth()
 
-    function handlerContinuar() {
+    function handleContinuar() {
         if (esRedireccionada(tareaExterna))
             onRecolectarForwarded(tareaExterna.id_tarea_externa, tareaExterna.id_sucursal_redireccion)
         else
@@ -167,7 +167,7 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
                             mostrarBotonAccionContinuar() && (
                                 <Button 
                                     size="sm"
-                                    onClick={handlerContinuar}
+                                    onClick={handleContinuar}
                                     variant='outline-primary'
                                 >
                                     <FaCheck /> 

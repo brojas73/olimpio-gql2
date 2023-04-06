@@ -12,6 +12,10 @@ const GlobalNavbar = ({onLogout}) => {
     const { conectado, sucursalActual, setSucursalActual  } = useTareasExternas()
     const { getUsuario } = useAuth()
 
+    function handleOnSelect() {
+        console.log('GlobalNavbar.handlerOnSelect')
+    }
+
     return (
         <Navbar bg="dark" variant="dark" expand='md' className="mb-3"> 
             <Navbar.Brand as={Link} to="/" className="mx-3">Olimpio</Navbar.Brand>
@@ -23,7 +27,7 @@ const GlobalNavbar = ({onLogout}) => {
                         <Offcanvas.Body>
                             <Nav className="justify-content-start flex-grow-1 pe-3">
                                 <NavDropdown title="Tracking">
-                                    <NavDropdown.Item as={Link} to='/tracking/tareas-activas'>Tareas Externas</NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} onSelect={handleOnSelect} to='/tracking/tareas-activas'>Tareas Externas</NavDropdown.Item>
                                     <NavDropdown.Item as={Link} to='/servicios-domicilio/servicios-activos'>Servicios a Domicilio</NavDropdown.Item>
                                 </NavDropdown>
                                 <NavDropdown title="Consultas">

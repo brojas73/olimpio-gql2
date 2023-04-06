@@ -23,6 +23,7 @@ import { getUrlApis } from '../components/comun/utils'
 export async function login(credenciales) {
     try {
         const response = await fetch(`${getUrlApis()}/login`, {
+            credentials: 'include',
             method: 'POST', 
             headers: {
                 'Content-Type': 'application/json'
@@ -40,6 +41,8 @@ export async function login(credenciales) {
         console.log(err)
     }
 }
+
+
 
 
 

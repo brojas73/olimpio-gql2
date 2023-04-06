@@ -78,7 +78,7 @@ const NuevaTareaForm = ({onExito}) => {
     return true
   }
   
-  async function onSubmit(event) {
+  function onSubmit(event) {
     event.preventDefault()
 
     if (isValid()) {
@@ -97,7 +97,7 @@ const NuevaTareaForm = ({onExito}) => {
             estado: 1
         } 
     
-        await doCreaTareaExterna(nuevaTareaExterna)
+        doCreaTareaExterna(nuevaTareaExterna)
         navigate(-1)
     }
   }

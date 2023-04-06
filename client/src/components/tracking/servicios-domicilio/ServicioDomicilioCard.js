@@ -27,7 +27,7 @@ const ServicioDomicilio = ({servicioDomicilio, textoContinuar, textoBorrar, onCo
             case STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_SUCURSAL:
                 return esChofer()
             case STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_CLIENTE:
-                return esEncargado()
+                return esChofer()
             case STATUS_SERVICIO_DOMICILIO.ENTREGADO_A_CLIENTE:
                 return esChofer()
             default:

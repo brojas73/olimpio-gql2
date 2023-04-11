@@ -1,6 +1,6 @@
 import { STATUS_TAREA } from '../../context/TareasExternasContext'
 
-const URL_APIS_DEV = 'http://localhost:3020/api'
+const URL_APIS_DEV = 'http://localhost:3040/api/v1'
 const URL_APIS_PROD = 'http://5.183.8.10/api'
 
 export function formateaFechaHora(fecha, hora, mostrarDia = true, mostrarAt = true) {

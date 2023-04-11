@@ -23,7 +23,7 @@ export async function creaServicioDomicilio(servicioDomicilio) {
 export async function actualizaEstadoServicioDomicilio({id_servicio_domicilio, id_estado_servicio_domicilio, id_usuario}) {
     try {
         const response = await fetch(`${getUrlApis()}/servicios-domicilio/${id_servicio_domicilio}`, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id_servicio_domicilio, id_estado_servicio_domicilio, id_usuario })
         })
@@ -43,7 +43,7 @@ export async function actualizaEstadoServicioDomicilio({id_servicio_domicilio, i
 export async function actualizaInfoPagoServicioDomicilio({id_servicio_domicilio, infoPago}) {
     try {
         const response = await fetch(`${getUrlApis()}/servicios-domicilio-info-pago/${id_servicio_domicilio}`, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({id_servicio_domicilio, infoPago})
         })

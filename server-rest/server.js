@@ -8,7 +8,7 @@ import { createClient } from 'redis'
 
 dotenv.config()
 const port = process.env.PORT || 3020
-const origin = process.env.ORIGIN || 'http://localhost'
+const origin = process.env.ORIGIN || 'http://localhost:3001'
 
 const main = async() => {
     const redisClient = createClient()

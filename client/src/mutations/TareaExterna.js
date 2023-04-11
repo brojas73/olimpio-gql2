@@ -34,7 +34,8 @@ export async function borraTareaExterna({id_tarea_externa}) {
             throw new Error(mensaje)
         }
 
-        const data = await response.json()
+        const json = await response.json()
+        const { data } = json
         return data
     } catch (err) {
         console.log(err)
@@ -44,7 +45,7 @@ export async function borraTareaExterna({id_tarea_externa}) {
 export async function actualizaEstadoTareaExterna({id_tarea_externa, id_estado_tarea, id_usuario}) {
     try {
         const response = await fetch(`${getUrlApis()}/tareas-externas/${id_tarea_externa}`, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id_tarea_externa, id_estado_tarea, id_usuario })
         })
@@ -92,7 +93,7 @@ export async function actualizaEstadoTareaExterna({id_tarea_externa, id_estado_t
 export async function redireccionaTareaExterna({id_tarea_externa, id_sucursal_redireccion, id_usuario}) {
     try {
         const response = await fetch(`${getUrlApis()}/tareas-externas/${id_tarea_externa}`, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id_tarea_externa, id_sucursal_redireccion, id_estado_tarea: STATUS_TAREA.REDIRECCIONADO, id_usuario, tipo_accion: 'redireccion' })
         })
@@ -113,7 +114,7 @@ export async function redireccionaTareaExterna({id_tarea_externa, id_sucursal_re
 export async function recolectaTareaExternaForwarded({id_tarea_externa, id_estado_tarea, id_sucursal_redireccion, id_usuario}) {
     try {
         const response = await fetch(`${getUrlApis()}/tareas-externas/${id_tarea_externa}`, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id_tarea_externa, id_sucursal_redireccion, id_estado_tarea, id_usuario, tipo_accion: 'recolecta-redireccion' })
         })

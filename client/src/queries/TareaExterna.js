@@ -3,7 +3,8 @@ import { fetchData, getUrlApis } from '../components/comun/utils'
 export const QUERY_TAREAS_EXTERNAS_ACTIVAS = 'tareasExternasActivas'
 export async function fetchTareasExternasActivas() {
     try {
-        return await fetchData(`${getUrlApis()}/tareas-externas-activas`)
+        const { data } = await fetchData(`${getUrlApis()}/tareas-externas`)
+        return data
     } catch (error) {
         throw error
     }
@@ -12,7 +13,8 @@ export async function fetchTareasExternasActivas() {
 export const QUERY_TAREAS_POR_ATENDERSE_HOY = 'tareasPorAtenderseHoy'
 export async function fetchTareasPorAtenderseHoy(idSucursal) {
     try {
-        return await fetchData(`${getUrlApis()}/tareas-por-atenderse-hoy/${idSucursal}`)
+        const { data } = await fetchData(`${getUrlApis()}/tareas-externas/por-atenderse-hoy/${idSucursal}`)
+        return data
     } catch (error) {
         throw error
     }
@@ -21,7 +23,8 @@ export async function fetchTareasPorAtenderseHoy(idSucursal) {
 export const QUERY_TAREA_EXTERNA = 'tareaExterna'
 export async function fetchTareaExterna(idTareaExterna) {
     try {
-        return await fetchData(`${getUrlApis()}/tareas-externas/${idTareaExterna}`)
+        const { data } = await fetchData(`${getUrlApis()}/tareas-externas/${idTareaExterna}`)
+        return data
     } catch (error) {
         throw error
     }

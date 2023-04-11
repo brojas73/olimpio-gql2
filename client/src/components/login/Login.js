@@ -5,9 +5,9 @@ import {Button, Container, Form, Spinner} from 'react-bootstrap'
 import { useAuth } from '../../hooks/useAuth'
 
 import { useMutation } from "react-query"
+import { login } from "../../mutations/Login"
 
 import SucursalSelect from '../comun/SucursalSelect'
-import { login } from "../../mutations/Login"
 import { useTareasExternas } from "../../context/TareasExternasContext"
 
 const Login = ({onLoginOk, onLoginFail}) => {
@@ -22,15 +22,16 @@ const Login = ({onLoginOk, onLoginFail}) => {
 
   const { isLoading, mutate: doLogin } = useMutation({
     mutationFn: login, 
-    onSuccess: (userInfo) => {
+    onSuccess: (userInfo => {
       if (!userInfo || userInfo === 'undefined') {
         onLoginFail('La combinación usuario/contraseña es inválida')
       } else {
         setCredenciales(userInfo)
         setSucursalActual(parseInt(formInfo.sucursal))
-        onLoginOk(userInfo)
+        // onLoginOk(userInfo)
+        onLoginOk()
       }
-    }
+    })
   })
 
   function handleChange(e) {
@@ -39,7 +40,7 @@ const Login = ({onLoginOk, onLoginFail}) => {
 
   async function handleSubmit(event) {
     event.preventDefault()
-    await doLogin({
+    doLogin({
         usuario: formInfo.usuario,
         contrasena: formInfo.contrasena
     })

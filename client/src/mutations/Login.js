@@ -22,7 +22,7 @@ import { getUrlApis } from '../components/comun/utils'
 
 export async function login(credenciales) {
     try {
-        const response = await fetch(`${getUrlApis()}/login`, {
+        const response = await fetch(`${getUrlApis()}/usuarios/login`, {
             credentials: 'include',
             method: 'POST', 
             headers: {
@@ -30,7 +30,7 @@ export async function login(credenciales) {
             },
             body: JSON.stringify(credenciales)
         })
-        const data = await response.json()
+        const { data } = await response.json()
 
         if (data.length > 0) {
             const { id_usuario, nombre, id_rol } = data[0]
@@ -41,10 +41,4 @@ export async function login(credenciales) {
         console.log(err)
     }
 }
-
-
-
-
-
-
 

@@ -34,7 +34,7 @@ const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoCont
   const queryClient = useQueryClient()
   const { mutate: doActualizaEstadoTareaExterna } = useMutation ({
     mutationFn: actualizaEstadoTareaExterna,
-    onSuccess: (data) => {
+    onSuccess: ({data}) => {
       queryClient.setQueriesData(QUERY_TAREAS_EXTERNAS_ACTIVAS, (current) => (
         current.map(tareaExterna => (
           parseInt(tareaExterna.id_tarea_externa) === parseInt(data.id_tarea_externa) ? 
@@ -46,16 +46,16 @@ const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoCont
 
   const { mutate: doBorraTareaExterna } = useMutation ({
     mutationFn: borraTareaExterna,
-    onSuccess: (data) => {
+    onSuccess: (id_tarea_externa) => {
       queryClient.setQueriesData(QUERY_TAREAS_EXTERNAS_ACTIVAS, (current) => (
-        current.filter(tareaExterna => (parseInt(tareaExterna.id_tarea_externa) !== parseInt(data.id_tarea_externa)))
+        current.filter(tareaExterna => (parseInt(tareaExterna.id_tarea_externa) !== parseInt(id_tarea_externa)))
       ))
     }
   })
 
   const { mutate: doRedireccionaTareaExterna } = useMutation ({
     mutationFn: redireccionaTareaExterna,
-    onSuccess: (data) => {
+    onSuccess: ({data}) => {
       queryClient.setQueriesData(QUERY_TAREAS_EXTERNAS_ACTIVAS, (current) => (
         current.map(tareaExterna => (
           parseInt(tareaExterna.id_tarea_externa) === parseInt(data.id_tarea_externa) ? 
@@ -67,7 +67,7 @@ const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoCont
 
   const { mutate: doRecolectaTareaExternaForwarded } = useMutation ({
     mutationFn: recolectaTareaExternaForwarded,
-    onSuccess: (data) => {
+    onSuccess: ({data}) => {
       queryClient.setQueriesData(QUERY_TAREAS_EXTERNAS_ACTIVAS, (current) => (
         current.map(tareaExterna => (
           parseInt(tareaExterna.id_tarea_externa) === parseInt(data.id_tarea_externa) ? 

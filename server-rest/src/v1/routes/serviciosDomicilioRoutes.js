@@ -7,7 +7,7 @@ const router = express.Router()
 router.get('/', servicioDomicilioController.serviciosDomicilio)
 router.get('/:idServicioDomicilio', servicioDomicilioController.servicioDomicilio)
 router.post('/', servicioDomicilioController.creaServicioDomicilio)
-router.patch('/:idServicioDomicilio', servicioDomicilioController.actualizaEstadoServicioDomicilio)
+router.patch('/:idServicioDomicilio', servicioDomicilioController.actualizaServicioDomicilio)
 router.delete('/:idServicioDomicilio', servicioDomicilioController.borraServicioDomicilio)
 
 export default router 

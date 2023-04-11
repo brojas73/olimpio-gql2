@@ -12,14 +12,32 @@ const servicioDomicilio = async (req, res) => {
 }
 
 const creaServicioDomicilio = async (req, res) => {
-    const servicioDomicilioCreado = await serviciosDomicilioService.creaServicioDomicilio(req.body)
+    const { tipo_servicio } = req.body
+    let servicioDomicilioCreado
+
+    // Si es una recolección
+    if (tipo_servicio === 'R') 
+        servicioDomicilioCreado = await serviciosDomicilioService.creaRecoleccion(req.body)
+    // Es una entrega
+    else
+        servicioDomicilioCreado = await serviciosDomicilioService.creaEntrega(req.body)
+
     res.send(servicioDomicilioCreado)
 }
 
-const actualizaEstadoServicioDomicilio = async (req, res) => {
+const actualizaServicioDomicilio = async (req, res) => {
     const { idServicioDomicilio } = req.params
-    const { id_estado_servicio_domicilio, id_usuario } = req.body
-    const servicioDomicilioActualizado = await serviciosDomicilioService.actualizaEstadoServicioDomicilio(idServicioDomicilio, id_usuario, id_estado_servicio_domicilio)
+    const { id_estado_servicio_domicilio, id_usuario, infoPago } = req.body
+    let servicioDomicilioActualizado
+
+    if (!infoPago)
+        servicioDomicilioActualizado = await serviciosDomicilioService.actualizaEstadoServicioDomicilio(idServicioDomicilio, id_usuario, id_estado_servicio_domicilio)
+    else {
+        const { id_forma_pago, notas_pago, confirmar_pago, referencia_pago } = infoPago
+        const pagado = confirmar_pago ? 'Y' : 'N' 
+        servicioDomicilioActualizado = await serviciosDomicilioService.actualizaInfoPagoServicioDomicilio(idServicioDomicilio, id_forma_pago, notas_pago, pagado, referencia_pago, id_usuario)
+    }
+
     res.send(servicioDomicilioActualizado)
 }
 
@@ -33,6 +51,6 @@ export default {
     serviciosDomicilio,
     servicioDomicilio,
     creaServicioDomicilio,
-    actualizaEstadoServicioDomicilio,
+    actualizaServicioDomicilio,
     borraServicioDomicilio
 }

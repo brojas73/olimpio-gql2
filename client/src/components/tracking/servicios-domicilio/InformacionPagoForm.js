@@ -24,8 +24,7 @@ const InformacionPagoForm = () => {
         id_forma_pago: 0,
         notas_pago: '',
         confirmar_pago: false,
-        referencia_pago: '',
-        id_usuario: credenciales.id_usuario
+        referencia_pago: ''
     })
     const [errors, setErrors] = useState({})
 
@@ -48,7 +47,7 @@ const InformacionPagoForm = () => {
     function handleSubmit(event) {
         event.preventDefault()
         if (isValid()) {
-            doActualizaInfoPagoServicioDomicilio({id_servicio_domicilio: idServicioDomicilio, infoPago: formaPagoInfo})
+            doActualizaInfoPagoServicioDomicilio({id_servicio_domicilio: idServicioDomicilio, id_usuario: credenciales.id_usuario, infoPago: formaPagoInfo})
             navigate(-1)
         }
     }
@@ -76,7 +75,7 @@ const InformacionPagoForm = () => {
     
         if (id_forma_pago === 0) newErrors.id_forma_pago = 'Selecciona una forma de pago'
         if (confirmar_pago) {
-            if (!referencia_pago || isBlank(referencia_pago)) newErrors.referencia_pago = 'Captura una ferencia del pago'
+            if (!referencia_pago || isBlank(referencia_pago)) newErrors.referencia_pago = 'Captura una referencia del pago'
         }
 
         return newErrors

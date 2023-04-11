@@ -7,11 +7,12 @@ import { useTareasExternas } from '../../../context/TareasExternasContext'
 import { useAuth } from '../../../hooks/useAuth'
 import { formateaFechaForm, formateaHoraForm, isBlank} from '../../comun/utils'
 
+import PhoneNumberInput from '../../comun/PhoneNumberInput'
 import TipoServicioSelect from './TipoServicioSelect'
+import FormasPagoSelect from '../../comun/FormaPagoSelect'
 
 import { useMutation, useQueryClient } from 'react-query'
 import { creaServicioDomicilio } from '../../../mutations/ServicioDomicilio'
-import PhoneNumberInput from '../../comun/PhoneNumberInput'
 import { STATUS_SERVICIO_DOMICILIO } from '../../../context/ServiciosDomicilioContext'
 
 const NuevoServicioForm = ({onExito}) => {    
@@ -26,7 +27,9 @@ const NuevoServicioForm = ({onExito}) => {
     nombre: '',
     direccion: '',
     telefono: '',
-    ticket: ''
+    ticket: '',
+    id_forma_pago: 0,
+    notas_pago: ''
   })
   const [errors, setErrors] = useState({})
 
@@ -65,7 +68,16 @@ const NuevoServicioForm = ({onExito}) => {
   }
 
   function findFormErrors() {
-    const { tipo_servicio, fecha_requerida, hora_requerida, nombre, direccion, telefono, ticket } = servicioDomicilio
+    const { 
+        tipo_servicio, 
+        fecha_requerida, 
+        hora_requerida, 
+        nombre, 
+        direccion, 
+        telefono, 
+        ticket,
+        id_forma_pago
+    } = servicioDomicilio
     const newErrors = {}
 
     if (tipo_servicio === '') newErrors.tipo_servicio = 'Selecciona un tipo de servicio'
@@ -76,8 +88,10 @@ const NuevoServicioForm = ({onExito}) => {
     if (telefono.length !== 14) newErrors.telefono = 'Captura un teléfono válido (10 dígitos)' 
 
     // El ticket sólo se requiere cuando es una entrega
-    if (esEntrega())
+    if (esEntrega()) {
         if (!ticket || isBlank(ticket)) newErrors.ticket  = 'Captura el ticket' 
+        if (id_forma_pago === 0) newErrors.id_forma_pago = 'Selecciona una forma de pago'
+    }
 
     return newErrors
   }
@@ -98,14 +112,16 @@ const NuevoServicioForm = ({onExito}) => {
     event.preventDefault()
     if (isValid()) {
         const nuevoServicioDomicilio = {
-            tipo_servicio: servicioDomicilio.tipo_servicio,
             id_sucursal: sucursalActual,
+            tipo_servicio: servicioDomicilio.tipo_servicio,
+            ticket: servicioDomicilio.ticket,
+            id_forma_pago: servicioDomicilio.id_forma_pago,
+            notas_pago: servicioDomicilio.notas_pago,
             fecha_requerida: servicioDomicilio.fecha_requerida,
             hora_requerida: servicioDomicilio.hora_requerida,
             nombre: servicioDomicilio.nombre,
             direccion: servicioDomicilio.direccion,
             telefono: servicioDomicilio.telefono,
-            ticket: esEntrega() ? servicioDomicilio.ticket : '',
             id_estado_servicio_domicilio: esEntrega() ? STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_SUCURSAL : STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_CLIENTE,
             id_usuario: credenciales.id_usuario
         } 
@@ -139,20 +155,49 @@ const NuevoServicioForm = ({onExito}) => {
             </Form.Group>
             {
                 esEntrega() && (
-                    <Form.Group as={Col} className="mb-3">
-                        <Form.Label>Ticket</Form.Label>
-                        <Form.Control
-                            onChange={handleChange}
-                            value={servicioDomicilio.ticket}
-                            type='number'
-                            placeholder="Escribe el ticket a entregar..." 
-                            name='ticket' 
-                            isInvalid={ !!errors.ticket }
-                        />
-                        <Form.Control.Feedback type='invalid'>
-                            { errors.ticket }
-                        </Form.Control.Feedback>
-                    </Form.Group>
+                    <>
+                        <Form.Group as={Col} className="mb-3">
+                            <Form.Label>Ticket</Form.Label>
+                            <Form.Control
+                                onChange={handleChange}
+                                value={servicioDomicilio.ticket}
+                                type='number'
+                                placeholder="Escribe el ticket a entregar..." 
+                                name='ticket' 
+                                isInvalid={ !!errors.ticket }
+                            />
+                            <Form.Control.Feedback type='invalid'>
+                                { errors.ticket }
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <FormasPagoSelect 
+                                label='Forma de Pago'
+                                onChange={handleChange} 
+                                value={servicioDomicilio.id_forma_pago} 
+                                name='id_forma_pago' 
+                                isInvalid={ !!errors.id_forma_pago }
+                            />
+                            <Form.Control.Feedback type='invalid'>
+                                { errors.id_forma_pago }
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Notas</Form.Label>
+                            <Form.Control 
+                                as='textarea'
+                                rows={2}
+                                onChange={handleChange} 
+                                value={servicioDomicilio.notas_pago}
+                                name='notas_pago' 
+                                placeholder='Captura una nota sobre la forma de pago...'
+                                isInvalid={ !!errors.notas_pago }
+                            />
+                            <Form.Control.Feedback type='invalid'>
+                                { errors.notas_pago }
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                    </>
                 )
             }
             <Row>
@@ -224,7 +269,7 @@ const NuevoServicioForm = ({onExito}) => {
                     { errors.telefono }
                 </Form.Control.Feedback>
             </Form.Group>
-            <Button variant='primary' onClick={handleCancelar}>
+            <Button variant='secondary' onClick={handleCancelar}>
                 Cancelar
             </Button>
             {" "}

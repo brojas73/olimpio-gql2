@@ -100,7 +100,7 @@ const servicioDomicilio = (idServicioDomicilio) => {
     })
 }
 
-const creaServicioDomicilio = (servicioDomicilio) => {
+const creaRecoleccion = (servicioDomicilio) => {
     const q = `insert into servicio_domicilio (
         tipo_servicio,
         id_sucursal,
@@ -109,7 +109,6 @@ const creaServicioDomicilio = (servicioDomicilio) => {
         nombre,
         direccion,
         telefono,
-        ticket,
         id_estado_servicio_domicilio,
         id_creado_por,
         id_modificado_por
@@ -123,7 +122,6 @@ const creaServicioDomicilio = (servicioDomicilio) => {
         servicioDomicilio.nombre,
         servicioDomicilio.direccion,
         servicioDomicilio.telefono,
-        servicioDomicilio.ticket,
         servicioDomicilio.id_estado_servicio_domicilio,
         servicioDomicilio.id_usuario,
         servicioDomicilio.id_usuario
@@ -140,6 +138,52 @@ const creaServicioDomicilio = (servicioDomicilio) => {
         })
     })
 }
+
+const creaEntrega = (servicioDomicilio) => {
+    const q = `insert into servicio_domicilio (
+        id_sucursal,
+        tipo_servicio,
+        ticket,
+        id_forma_pago,
+        notas_pago,
+        fecha_requerida,
+        hora_requerida,
+        nombre,
+        direccion,
+        telefono,
+        id_estado_servicio_domicilio,
+        id_creado_por,
+        id_modificado_por
+    ) values (?)` 
+
+    const values = [
+        servicioDomicilio.id_sucursal, 
+        servicioDomicilio.tipo_servicio,
+        servicioDomicilio.ticket,
+        servicioDomicilio.id_forma_pago,
+        servicioDomicilio.notas_pago,
+        servicioDomicilio.fecha_requerida,
+        servicioDomicilio.hora_requerida,
+        servicioDomicilio.nombre,
+        servicioDomicilio.direccion,
+        servicioDomicilio.telefono,
+        servicioDomicilio.id_estado_servicio_domicilio,
+        servicioDomicilio.id_usuario,
+        servicioDomicilio.id_usuario
+    ]
+
+    return new Promise((resolve, reject) => {
+        pool.query(q, [values], (err, data) => {
+            if (err) {
+                console.log(err)
+                reject(err)
+            }
+
+            resolve(JSON.parse(JSON.stringify(data)))
+        })
+    })
+}
+
 
 const borraServicioDomicilio = (idServicioDomicilio) => {
     const q = `
@@ -190,11 +234,44 @@ const actualizaEstadoServicioDomicilio = (idServicioDomicilio, idUsuario, idEsta
     })
 }
 
+const actualizaInfoPagoServicioDomicilio = (idServicioDomicilio, idFormaPago, notasPago, pagado, referenciaPago, idUsuario) => {
+    const q = `
+        update   servicio_domicilio
+           set   fecha_modificacion = CURRENT_TIMESTAMP,
+                 id_modificado_por = ?,
+                 id_forma_pago = ?,
+                 notas_pago = ?,
+                 pagado = ?,
+                 referencia_pago = ?,
+                 id_confirmo_pago = ?,
+                 fecha_confirmacion_pago = CURRENT_TIMESTAMP
+           where id_servicio_domicilio = ?   
+    `
+
+    return new Promise((resolve, reject) => {
+        pool.query(q, [idUsuario, idFormaPago, notasPago, pagado, referenciaPago, idUsuario, idServicioDomicilio], (err) => {
+            if (err) {
+                console.log(err)
+                reject(err)
+            }
+
+            resolve({
+                status: 200,
+                mensaje: 'La información de pago del servicio a domicilio se actualizó exitosamente',
+                id_servicio_domicilio: idServicioDomicilio,
+                pagado: pagado
+            })
+        })
+    })
+}
+
 export default {
     serviciosDomicilio,
     serviciosDomicilioActivos,
     servicioDomicilio,
-    creaServicioDomicilio,
+    creaRecoleccion,
+    creaEntrega,
     borraServicioDomicilio,
     actualizaEstadoServicioDomicilio,
+    actualizaInfoPagoServicioDomicilio,
 }

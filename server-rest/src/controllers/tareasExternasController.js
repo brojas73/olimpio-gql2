@@ -41,7 +41,7 @@ const actualizaEstadoTareaExterna = async (req, res) => {
     if (!tipo_accion)
         tareaExterna = await tareasExternasService.actualizaEstadoTareaExterna(idTareaExterna, id_usuario, id_estado_tarea)
     else if (tipo_accion === 'redireccion')
-         tareaExterna = await tareasExternasService.redireccionaTareaExterna(idTareaExterna, id_usuario, id_sucursal_redireccion, id_estado_tarea)
+        tareaExterna = await tareasExternasService.redireccionaTareaExterna(idTareaExterna, id_usuario, id_sucursal_redireccion, id_estado_tarea)
     else if (tipo_accion === 'recolecta-redireccion')
         tareaExterna = await tareasExternasService.recolectaRedireccionTareaExterna(idTareaExterna, id_usuario, id_sucursal_redireccion, id_estado_tarea)
 

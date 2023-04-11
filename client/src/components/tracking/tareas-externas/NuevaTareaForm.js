@@ -210,7 +210,7 @@ const NuevaTareaForm = ({onExito}) => {
                     </Form.Control.Feedback>
                 </Form.Group>
             </Row>
-            <Button variant='primary' onClick={handleCancelar}>
+            <Button variant='secondary' onClick={handleCancelar}>
                 Cancelar
             </Button>
             {" "}

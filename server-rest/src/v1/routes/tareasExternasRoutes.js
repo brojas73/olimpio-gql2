@@ -4,7 +4,7 @@ import tareaExternaController from '../../controllers/tareasExternasController.j
 
 const router = express.Router()
 
-router.get('/', tareaExternaController.tareasExternas)
+router.get('/', tareaExternaController.tareasExternasActivas)
 router.get('/:idTareaExterna', tareaExternaController.tareaExterna)
 router.get('/por-atenderse-hoy/:idSucursal', tareaExternaController.porAtenderseHoy)
 router.post('/', tareaExternaController.creaTareaExterna)

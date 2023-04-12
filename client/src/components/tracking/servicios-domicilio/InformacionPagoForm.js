@@ -5,7 +5,7 @@ import { faLocationDot } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { Button, Card, Form, Spinner } from 'react-bootstrap'
-import { FaPhoneAlt, FaUserAlt } from 'react-icons/fa'
+import { FaPhoneAlt, FaTicketAlt, FaUserAlt } from 'react-icons/fa'
 
 import { useQuery, useMutation } from 'react-query'
 import { actualizaInfoPagoServicioDomicilio } from "../../../mutations/ServicioDomicilio"
@@ -13,7 +13,7 @@ import { useAuth } from '../../../hooks/useAuth'
 import { fetchServicioDomicilio, QUERY_SERVICIO_DOMICILIO } from '../../../queries/ServicioDomicilio'
 
 import FormasPagoSelect from '../../comun/FormaPagoSelect'
-import { isBlank, pagado } from '../../comun/utils'
+import { isBlank, pagado, esEntrega } from '../../comun/utils'
 
 const InformacionPagoForm = () => {
     const navigate = useNavigate()
@@ -102,6 +102,11 @@ const InformacionPagoForm = () => {
             <h2>Información del Pago</h2>
             <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
+                    {
+                        esEntrega(servicioDomicilio) && (
+                            <Card.Text className="mb-0"><FaTicketAlt /> {servicioDomicilio.ticket.padStart(6, '0')}</Card.Text>
+                        )
+                    }
                     <Card.Text className="mb-0">
                         <FaUserAlt /> {servicioDomicilio.nombre} 
                     </Card.Text>

@@ -1,48 +1,59 @@
 import DB from '../databases/tareasExternas.js'
 
 const tareasExternas = async () => {
-    const tareasExternas = await DB.tareasExternas()
-    return ({status: "OK", data: tareasExternas})
+    return await DB.tareasExternas()
 }
 
 const tareasExternasActivas = async () => {
-    const tareasExternas = await DB.tareasExternasActivas()
-    return ({status: "OK", data: tareasExternas})
+    return await DB.tareasExternasActivas()
 }
 
 const porAtenderseHoy = async (idSucursal) => {
-    const tareasExternas = await DB.porAtenderseHoy(idSucursal)
-    return ({status: "OK", data: tareasExternas})
+    return await DB.porAtenderseHoy(idSucursal)
 }
 
 const tareaExterna = async (idTareaExterna) => {
-    const tareaExterna = await DB.tareaExterna(idTareaExterna)
-    return ({status: "OK", data: tareaExterna})
+    return await DB.tareaExterna(idTareaExterna)
 }
 
 const creaTareaExterna = async (tareaExterna) => {
-    const nuevaTarea = await DB.creaTareaExterna(tareaExterna)
-    return ({status: "OK", data: tareaExterna})
+    try {
+        return await DB.creaTareaExterna(tareaExterna)
+    } catch (error) {
+        throw error
+    }
 }
 
 const borraTareaExterna = async (idTareaExterna) => {
-    const tareaExterna = await DB.borraTareaExterna(idTareaExterna)
-    return ({status: "OK", data: idTareaExterna})
+    try {
+        return await DB.borraTareaExterna(idTareaExterna)
+    } catch (error) {
+        throw error
+    }
 }
 
 const actualizaEstadoTareaExterna = async (idTareaExterna, idUsuario, idEstadoTareaExterna) => {
-    const tareaExterna = await DB.actualizaEstadoTareaExterna(idTareaExterna, idUsuario, idEstadoTareaExterna)
-    return ({status: "OK", data: tareaExterna})
+    try {
+        return await DB.actualizaEstadoTareaExterna(idTareaExterna, idUsuario, idEstadoTareaExterna)
+    } catch (error) {
+        throw error
+    }
 }
 
 const redireccionaTareaExterna = async (idTareaExterna, idUsuario, idSucursalRedireccion, idEstadoTareaExterna) => {
-    const tareaExterna = await DB.redireccionaTareaExterna(idTareaExterna, idUsuario, idEstadoTareaExterna, idSucursalRedireccion)
-    return ({status: "OK", data: tareaExterna})
+    try {
+        return await DB.redireccionaTareaExterna(idTareaExterna, idUsuario, idEstadoTareaExterna, idSucursalRedireccion)
+    } catch (error) {
+        throw error
+    }
 }
 
 const recolectaRedireccionTareaExterna = async (idTareaExterna, idUsuario, idSucursalRedireccion, idEstadoTareaExterna) => {
-    const tareaExterna = await DB.recolectaRedireccionTareaExterna(idTareaExterna, idUsuario, idEstadoTareaExterna, idSucursalRedireccion)
-    return ({status: "OK", data: tareaExterna})
+    try {
+        return DB.recolectaRedireccionTareaExterna(idTareaExterna, idUsuario, idEstadoTareaExterna, idSucursalRedireccion)
+    } catch (error) {
+        throw error
+    }
 }
 
 export default {

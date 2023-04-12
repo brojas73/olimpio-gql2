@@ -49,7 +49,10 @@ const tareasExternas = () => {
         pool.query(q, (err, data) => {
             if (err) {
                 console.log(err)
-                reject(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
             }
 
             resolve(JSON.parse(JSON.stringify(data)))
@@ -69,7 +72,10 @@ const tareasExternasActivas = () => {
         pool.query(q, (err, data) => {
             if (err) {
                 console.log(err)
-                reject(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
             }
 
             resolve(JSON.parse(JSON.stringify(data)))
@@ -107,7 +113,10 @@ const porAtenderseHoy = (idSucursal) => {
         pool.query(q, [idSucursal], (err, data) => {
             if (err) {
                 console.log(err)
-                reject(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
             }
 
             resolve(JSON.parse(JSON.stringify(data)))
@@ -126,7 +135,10 @@ const tareaExterna = (idTareaExterna) => {
         pool.query(q, [idTareaExterna], (err, data) => {
             if (err) {
                 console.log(err)
-                reject(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
             }
 
             resolve(JSON.parse(JSON.stringify(data)))
@@ -169,7 +181,10 @@ const creaTareaExterna = (tareaExterna) => {
         pool.query(q, [values], (err, data) => {
             if (err) {
                 console.log(err)
-                reject(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
             }
 
             resolve(JSON.parse(JSON.stringify(data)))
@@ -188,7 +203,10 @@ const borraTareaExterna = (idTareaExterna) => {
         pool.query(q, [idTareaExterna], (err, data) => {
             if (err) {
                 console.log(err)
-                reject(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
             }
 
             resolve({
@@ -213,7 +231,10 @@ const actualizaEstadoTareaExterna = (idTareaExterna, idUsuario, idEstadoTarea) =
         pool.query(q, [idUsuario, idEstadoTarea, idTareaExterna], (err, data) => {
             if (err) {
                 console.log(err)
-                reject(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
             }
 
             resolve({
@@ -240,7 +261,10 @@ const redireccionaTareaExterna = (idTareaExterna, idUsuario, idEstadoTarea, idSu
         pool.query(q, [idUsuario, idSucursalRedireccion, idEstadoTarea, idTareaExterna], (err, data) => {
             if (err) {
                 console.log(err)
-                reject(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
             }
 
             resolve({
@@ -268,7 +292,10 @@ const recolectaRedireccionTareaExterna = (idTareaExterna, idUsuario, idEstadoTar
         pool.query(q, [idUsuario, idSucursalRedireccion, idEstadoTarea, idTareaExterna], (err, data) => {
             if (err) {
                 console.log(err)
-                reject(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
             }
 
             resolve({

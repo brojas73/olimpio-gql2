@@ -7,7 +7,10 @@ const estadosServicioDomicilio = () => {
         pool.query(q, (err, data) => {
             if (err) {
                 console.log(err)
-                reject(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
             }
 
             resolve(JSON.parse(JSON.stringify(data)))
@@ -22,7 +25,10 @@ const estadosTareaExterna = () => {
         pool.query(q, (err, data) => {
             if (err) {
                 console.log(err)
-                reject(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
             }
 
             resolve(JSON.parse(JSON.stringify(data)))
@@ -37,7 +43,10 @@ const formasPago = () => {
         pool.query(q, (err, data) => {
             if (err) {
                 console.log(err)
-                reject(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
             }
 
             resolve(JSON.parse(JSON.stringify(data)))
@@ -52,7 +61,10 @@ const roles = () => {
         pool.query(q, (err, data) => {
             if (err) {
                 console.log(err)
-                reject(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
             }
 
             resolve(JSON.parse(JSON.stringify(data)))
@@ -67,7 +79,10 @@ const sucursales = () => {
         pool.query(q, (err, data) => {
             if (err) {
                 console.log(err)
-                reject(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
             }
 
             resolve(JSON.parse(JSON.stringify(data)))
@@ -82,7 +97,10 @@ const tiposServicio = () => {
         pool.query(q, (err, data) => {
             if (err) {
                 console.log(err)
-                reject(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
             }
 
             resolve(JSON.parse(JSON.stringify(data)))
@@ -97,7 +115,10 @@ const tiposTrabajo = () => {
         pool.query(q, (err, data) => {
             if (err) {
                 console.log(err)
-                reject(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
             }
 
             resolve(JSON.parse(JSON.stringify(data)))

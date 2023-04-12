@@ -1,7 +1,7 @@
 import { STATUS_TAREA } from '../../context/TareasExternasContext'
 
-const URL_APIS_DEV = 'http://localhost:3040/api/v1'
-const URL_APIS_PROD = 'http://5.183.8.10/api'
+const URL_APIS_DEV = 'http://localhost:3040/api-v1'
+const URL_APIS_PROD = 'http://5.183.8.10/api-v1'
 
 export function formateaFechaHora(fecha, hora, mostrarDia = true, mostrarAt = true) {
     const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']

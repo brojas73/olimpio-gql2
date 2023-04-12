@@ -54,7 +54,10 @@ const serviciosDomicilio = () => {
         pool.query(q, (err, data) => {
             if (err) {
                 console.log(err)
-                reject(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
             }
 
             resolve(JSON.parse(JSON.stringify(data)))
@@ -74,7 +77,10 @@ const serviciosDomicilioActivos = () => {
         pool.query(q, (err, data) => {
             if (err) {
                 console.log(err)
-                reject(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
             }
 
             resolve(JSON.parse(JSON.stringify(data)))
@@ -92,7 +98,10 @@ const servicioDomicilio = (idServicioDomicilio) => {
         pool.query(q, [idServicioDomicilio], (err, data) => {
             if (err) {
                 console.log(err)
-                reject(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
             }
 
             resolve(JSON.parse(JSON.stringify(data)))
@@ -131,7 +140,10 @@ const creaRecoleccion = (servicioDomicilio) => {
         pool.query(q, [values], (err, data) => {
             if (err) {
                 console.log(err)
-                reject(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
             }
 
             resolve(JSON.parse(JSON.stringify(data)))
@@ -176,7 +188,10 @@ const creaEntrega = (servicioDomicilio) => {
         pool.query(q, [values], (err, data) => {
             if (err) {
                 console.log(err)
-                reject(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
             }
 
             resolve(JSON.parse(JSON.stringify(data)))
@@ -196,7 +211,10 @@ const borraServicioDomicilio = (idServicioDomicilio) => {
         pool.query(q, [idServicioDomicilio], (err, data) => {
             if (err) {
                 console.log(err)
-                reject(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
             }
 
             resolve({
@@ -221,7 +239,10 @@ const actualizaEstadoServicioDomicilio = (idServicioDomicilio, idUsuario, idEsta
         pool.query(q, [idUsuario, idEstadoServicioDomicilio, idServicioDomicilio], (err, data) => {
             if (err) {
                 console.log(err)
-                reject(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
             }
 
             resolve({
@@ -252,7 +273,10 @@ const actualizaInfoPagoServicioDomicilio = (idServicioDomicilio, idFormaPago, no
         pool.query(q, [idUsuario, idFormaPago, notasPago, pagado, referenciaPago, idUsuario, idServicioDomicilio], (err) => {
             if (err) {
                 console.log(err)
-                reject(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
             }
 
             resolve({

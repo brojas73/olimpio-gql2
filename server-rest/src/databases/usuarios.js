@@ -17,7 +17,10 @@ const login = (usuario, contrasena) => {
         pool.query(q, [usuario, contrasena], (err, data) => {
             if (err) {
                 console.log(err)
-                reject(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
             }
 
             if (data) {

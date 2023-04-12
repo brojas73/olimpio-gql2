@@ -46,7 +46,10 @@ const tareasExternasLog = (ticket, descripcion) => {
         pool.query(q, [ticket, descripcion], (err, data) => {
             if (err) {
                 console.log(err)
-                reject(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
             }
 
             resolve(JSON.parse(JSON.stringify(data)))
@@ -66,7 +69,10 @@ const tareasExternasLogByTareaExterna = (idTareaExterna) => {
         pool.query(q, [idTareaExterna], (err, data) => {
             if (err) {
                 console.log(err)
-                reject(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
             }
 
             resolve(JSON.parse(JSON.stringify(data)))

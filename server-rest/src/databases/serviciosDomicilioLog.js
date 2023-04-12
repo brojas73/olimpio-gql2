@@ -53,8 +53,11 @@ const serviciosDomicilioLogByServicioDomicilio = (idServicioDomicilio) => {
         pool.query(q, [idServicioDomicilio], (err, data) => {
             if (err) {
                 console.log(err)
-                reject(err)
-            }
+                reject({
+                  status: 500,
+                  message: err?.message || err
+              })
+          }
 
             resolve(JSON.parse(JSON.stringify(data)))
         })

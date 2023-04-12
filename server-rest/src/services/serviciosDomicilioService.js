@@ -1,39 +1,51 @@
 import DB from '../databases/serviciosDomicilio.js'
 
 const serviciosDomicilio = async () => {
-    const serviciosDomicilio = await DB.serviciosDomicilio()
-    return ({status: "OK", data: serviciosDomicilio})
+    return await DB.serviciosDomicilio()
 }
 
 const servicioDomicilio = async (idServicioDomicilio) => {
-    const servicioDomicilio = await DB.servicioDomicilio(idServicioDomicilio)
-    return ({status: "OK", data: servicioDomicilio})
+    return await DB.servicioDomicilio(idServicioDomicilio)
 }
 
 const creaRecoleccion = async (servicioDomicilio) => {
-    await DB.creaRecoleccion(servicioDomicilio)
-    return ({status: "OK", data: servicioDomicilio})
+    try {
+        return await DB.creaRecoleccion(servicioDomicilio)
+    } catch (error) {
+        throw error
+    }
 }
 
 const creaEntrega = async (servicioDomicilio) => {
-    await DB.creaEntrega(servicioDomicilio)
-    return ({status: "OK", data: servicioDomicilio})
+    try {
+        return await DB.creaEntrega(servicioDomicilio)
+    } catch (error) {
+        throw error
+    }
 }
 
-
 const actualizaEstadoServicioDomicilio = async (idServicioDomicilio, idUsuario, idEstadoServicioDomicilio) => {
-    const servicioDomicilio = await DB.actualizaEstadoServicioDomicilio(idServicioDomicilio, idUsuario, idEstadoServicioDomicilio)
-    return ({status: "OK", data: servicioDomicilio})
+    try {
+        return await DB.actualizaEstadoServicioDomicilio(idServicioDomicilio, idUsuario, idEstadoServicioDomicilio)
+    } catch (error) {
+        throw error
+    }
 }
 
 const actualizaInfoPagoServicioDomicilio = async (idServicioDomicilio, idFormaPago, notasPago, pagado, referenciaPago, idUsuario) => {
-    const servicioDomicilio = await DB.actualizaInfoPagoServicioDomicilio(idServicioDomicilio, idFormaPago, notasPago, pagado, referenciaPago, idUsuario)
-    return ({status: "OK", data: servicioDomicilio})
+    try {
+        return await DB.actualizaInfoPagoServicioDomicilio(idServicioDomicilio, idFormaPago, notasPago, pagado, referenciaPago, idUsuario)
+    } catch (error) {
+        throw error
+    }
 }
 
 const borraServicioDomicilio = async (idServicioDomicilio) => {
-    const servicioDomicilio = await DB.borraServicioDomicilio(idServicioDomicilio)
-    return ({status: "OK", data: servicioDomicilio})
+    try {
+        return await DB.borraServicioDomicilio(idServicioDomicilio)
+    } catch (error) {
+        throw error
+    }
 }
 
 export default {

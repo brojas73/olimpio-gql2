@@ -15,7 +15,7 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
         else
             onContinuar(tareaExterna.id_tarea_externa)
     }
-
+ 
     function mostrarBotonAccionContinuar() {
         if (!textoContinuar)
             return false
@@ -36,7 +36,7 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
             case STATUS_TAREA.RECIBIDO_EN_SUCURSAL_ORIGEN: 
                 return esEncargado() || esMaquila()
             default:
-                break
+                return false
         }
     }
 

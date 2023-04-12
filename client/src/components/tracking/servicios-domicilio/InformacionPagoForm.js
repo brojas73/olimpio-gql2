@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 
-import { faLocationDot } from '@fortawesome/free-solid-svg-icons'
+import { faHouse, faLocationDot } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { Button, Card, Form, Spinner } from 'react-bootstrap'
@@ -111,7 +111,10 @@ const InformacionPagoForm = () => {
                         <FaUserAlt /> {servicioDomicilio.nombre} 
                     </Card.Text>
                     <Card.Text className="mb-0">
-                        <FontAwesomeIcon icon={faLocationDot} /> {servicioDomicilio.direccion}
+                        <FontAwesomeIcon icon={faHouse} /> {servicioDomicilio.direccion}
+                    </Card.Text>
+                    <Card.Text className="mb-0">
+                        <FontAwesomeIcon icon={faLocationDot} /> {servicioDomicilio.ubicacion}
                     </Card.Text>
                     <Card.Text className="mb-0">
                         <FaPhoneAlt /> {servicioDomicilio.telefono}

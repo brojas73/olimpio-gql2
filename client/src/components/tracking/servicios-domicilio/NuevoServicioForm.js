@@ -26,6 +26,7 @@ const NuevoServicioForm = ({onExito}) => {
     hora_requerida: formateaHoraForm(new Date()),
     nombre: '',
     direccion: '',
+    ubicacion: '',
     telefono: '',
     ticket: '',
     id_forma_pago: 0,
@@ -121,6 +122,7 @@ const NuevoServicioForm = ({onExito}) => {
             hora_requerida: servicioDomicilio.hora_requerida,
             nombre: servicioDomicilio.nombre,
             direccion: servicioDomicilio.direccion,
+            ubicacion: servicioDomicilio.ubicacion,
             telefono: servicioDomicilio.telefono,
             id_estado_servicio_domicilio: esEntrega() ? STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_SUCURSAL : STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_CLIENTE,
             id_usuario: credenciales.id_usuario
@@ -256,6 +258,16 @@ const NuevoServicioForm = ({onExito}) => {
                 <Form.Control.Feedback type='invalid'>
                     { errors.direccion }
                 </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group as={Col} className="mb-3">
+                <Form.Label>Ubicación</Form.Label>
+                <Form.Control 
+                    onChange={handleChange}
+                    value={servicioDomicilio.ubicacion}
+                    type='text'
+                    placeholder="Escribe la ubicación del cliente..." 
+                    name='ubicacion' 
+                />
             </Form.Group>
             <Form.Group as={Col} className="mb-3">
                 <Form.Label>Teléfono</Form.Label>

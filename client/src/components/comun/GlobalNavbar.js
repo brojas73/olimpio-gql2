@@ -42,6 +42,13 @@ const GlobalNavbar = ({onLogout}) => {
                         </Offcanvas.Body>
                     )
                 }
+                {
+                    !conectado && (
+                        <Nav className="justify-content-end flex-grow-1 pe-3">
+                            <Nav.Link href="/login">Login</Nav.Link>
+                        </Nav>
+                    )
+                }
             </Navbar.Offcanvas>
         </Navbar>
     )

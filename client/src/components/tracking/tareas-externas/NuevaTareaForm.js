@@ -12,6 +12,7 @@ import TipoServicioSelect from '../../comun/TipoServicioSelect'
 import TipoTrabajolSelect from '../../comun/TipoTrabajoSelect'
 
 import { useMutation, useQueryClient } from 'react-query'
+import { QUERY_TAREAS_EXTERNAS_ACTIVAS } from '../../../queries/TareaExterna'
 import { creaTareaExterna } from '../../../mutations/TareaExterna'
 
 const NuevaTareaForm = ({onExito}) => {    
@@ -34,7 +35,7 @@ const NuevaTareaForm = ({onExito}) => {
   const { mutate: doCreaTareaExterna } = useMutation ({
     mutationFn: creaTareaExterna,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['tareasExternasActivas'] })
+      queryClient.invalidateQueries({ queryKey: [QUERY_TAREAS_EXTERNAS_ACTIVAS] })
     }
   })
 

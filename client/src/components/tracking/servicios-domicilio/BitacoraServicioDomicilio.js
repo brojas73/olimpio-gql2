@@ -16,8 +16,9 @@ export default function BitacoraServicioDomicilio() {
   const navigate = useNavigate()
   const idServicioDomicilio = location.state.id_servicio_domicilio
 
-  const {isLoading, data: serviciosDomicilioLog} = useQuery(QUERY_SERVICIOS_DOMICILIO_LOG_BY_SERVICIO_DOMICILIO, 
-    () => fetchServiciosDomicilioLogByServicioDomicilio(idServicioDomicilio)
+  const {isLoading, data: serviciosDomicilioLog} = useQuery(
+    [QUERY_SERVICIOS_DOMICILIO_LOG_BY_SERVICIO_DOMICILIO, idServicioDomicilio],
+    fetchServiciosDomicilioLogByServicioDomicilio
   )
 
   const columns = [ 

@@ -11,9 +11,9 @@ export async function fetchTareasExternasActivas() {
 }
 
 export const QUERY_TAREAS_POR_ATENDERSE_HOY = 'tareasPorAtenderseHoy'
-export async function fetchTareasPorAtenderseHoy(idSucursal) {
+export async function fetchTareasPorAtenderseHoy({queryKey}) {
     try {
-        const { data } = await fetchData(`${getUrlApis()}/tareas-externas/por-atenderse-hoy/${idSucursal}`)
+        const { data } = await fetchData(`${getUrlApis()}/tareas-externas/por-atenderse-hoy/${queryKey[1]}`)
         return data
     } catch (error) {
         throw error
@@ -21,12 +21,11 @@ export async function fetchTareasPorAtenderseHoy(idSucursal) {
 }
 
 export const QUERY_TAREA_EXTERNA = 'tareaExterna'
-export async function fetchTareaExterna(idTareaExterna) {
+export async function fetchTareaExterna({queryKey}) {
     try {
-        const { data } = await fetchData(`${getUrlApis()}/tareas-externas/${idTareaExterna}`)
+        const { data } = await fetchData(`${getUrlApis()}/tareas-externas/${queryKey[1]}`)
         return data
     } catch (error) {
         throw error
     }
 }
-

@@ -10,7 +10,8 @@ export async function fetchServiciosDomicilioLog() {
 }
 
 export const QUERY_SERVICIOS_DOMICILIO_LOG_BY_SERVICIO_DOMICILIO = 'serviciosDomicilioLogByServicioDomicilio'
-export async function fetchServiciosDomicilioLogByServicioDomicilio(idServicioDomicilio) {
+export async function fetchServiciosDomicilioLogByServicioDomicilio({queryKey}) {
+    const idServicioDomicilio = queryKey[1]
     try {
         const { data } = await fetchData(`${getUrlApis()}/servicios-domicilio-log/${idServicioDomicilio}`)
         return data

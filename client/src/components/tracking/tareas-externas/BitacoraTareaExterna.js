@@ -16,8 +16,9 @@ export default function BitacoraTareaExterna() {
   const navigate = useNavigate()
   const idTareaExterna = location.state.id_tarea_externa
 
-  const {isLoading, data: tareasExternasLog} = useQuery(QUERY_TAREAS_EXTERNAS_LOG_BY_TAREA_EXTERNA, 
-    () => fetchTareasExternasLogByTareaExterna(idTareaExterna)
+  const {isLoading, data: tareasExternasLog} = useQuery(
+    [QUERY_TAREAS_EXTERNAS_LOG_BY_TAREA_EXTERNA, idTareaExterna],  
+    fetchTareasExternasLogByTareaExterna
   )
 
   const columns = [

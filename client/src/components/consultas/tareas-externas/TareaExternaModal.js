@@ -8,7 +8,10 @@ import { useQuery } from 'react-query'
 import { fetchTareaExterna, QUERY_TAREA_EXTERNA } from '../../../queries/TareaExterna'
 
 const TareaExternaModal = ({mostrar, idTareaExterna, onClose}) => {
-  const { data, isLoading } = useQuery(QUERY_TAREA_EXTERNA, () => fetchTareaExterna(idTareaExterna))
+  const { data, isLoading } = useQuery(
+    [QUERY_TAREA_EXTERNA, idTareaExterna], 
+    fetchTareaExterna
+  )
 
   if (isLoading) return <Spinner animation="border" />
 

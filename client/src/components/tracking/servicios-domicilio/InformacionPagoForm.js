@@ -32,17 +32,21 @@ const InformacionPagoForm = () => {
         mutationFn: actualizaInfoPagoServicioDomicilio,
     })
     
-    const { data, isLoading } = useQuery(QUERY_SERVICIO_DOMICILIO, () => fetchServicioDomicilio(idServicioDomicilio), {
-        onSuccess: (data) => {
-            const servicioDomicilio = data[0]
-            setFormaPagoInfo(prevValue => ({...prevValue, 
-                id_forma_pago: servicioDomicilio.id_forma_pago ? servicioDomicilio.id_forma_pago : 0,
-                notas_pago: servicioDomicilio.notas_pago ? servicioDomicilio.notas_pago : '',
-                confirmar_pago: pagado(servicioDomicilio),
-                referencia_pago: servicioDomicilio.referencia_pago ? servicioDomicilio.referencia_pago : ''
-            }))
+    const { data, isLoading } = useQuery(
+        [QUERY_SERVICIO_DOMICILIO, idServicioDomicilio], 
+        fetchServicioDomicilio, 
+        {
+            onSuccess: (data) => {
+                const servicioDomicilio = data[0]
+                setFormaPagoInfo(prevValue => ({...prevValue, 
+                    id_forma_pago: servicioDomicilio.id_forma_pago ? servicioDomicilio.id_forma_pago : 0,
+                    notas_pago: servicioDomicilio.notas_pago ? servicioDomicilio.notas_pago : '',
+                    confirmar_pago: pagado(servicioDomicilio),
+                    referencia_pago: servicioDomicilio.referencia_pago ? servicioDomicilio.referencia_pago : ''
+                }))
+            }
         }
-    })
+    )
 
     function handleSubmit(event) {
         event.preventDefault()

@@ -61,8 +61,6 @@ function App() {
     }
   })
 
-
-
   function handleLogout() {
     doLogout()
   }  

@@ -16,8 +16,10 @@ import { fetchTareasPorAtenderseHoy, QUERY_TAREAS_POR_ATENDERSE_HOY } from '../.
 export default function TareasPorAtenderseHoy() {
     const { sucursalActual } = useTareasExternas()
 
-    // const { isLoading, data: tareasExternas } = useQuery(['tareasPorAtenderseHoy', sucursalActual], () => fetchTareasPorAtenderseHoy(sucursalActual))
-    const { isLoading, data: tareasExternas } = useQuery(QUERY_TAREAS_POR_ATENDERSE_HOY, () => fetchTareasPorAtenderseHoy(sucursalActual))
+    const { isLoading, data: tareasExternas } = useQuery(
+        [QUERY_TAREAS_POR_ATENDERSE_HOY, sucursalActual], 
+        fetchTareasPorAtenderseHoy
+    )
 
     const [modalTarea, setModalTarea] = useState({mostrar: false, idTareaExterna: 0})
     const [filtro, setFiltro] = useState({ticket: '', descripcion: ''})

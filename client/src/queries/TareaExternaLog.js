@@ -11,7 +11,8 @@ export async function fetchTareasExternasLog() {
 }
 
 export const QUERY_TAREAS_EXTERNAS_LOG_BY_TAREA_EXTERNA = 'tareasExternasLogByTareaExterna'
-export async function fetchTareasExternasLogByTareaExterna(idTareaExterna) {
+export async function fetchTareasExternasLogByTareaExterna({queryKey}) {
+    const idTareaExterna = queryKey[1]
     try {
         const { data } = await fetchData(`${getUrlApis()}/tareas-externas-log/${idTareaExterna}`)
         return data

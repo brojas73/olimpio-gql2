@@ -1,5 +1,5 @@
 import { Button, Card, Col } from "react-bootstrap"
-import { FaTrashAlt, FaCheck, FaRegCalendarAlt, FaTicketAlt, FaTruck, FaUserAlt, FaPhoneAlt, FaDollarSign, FaClipboardList } from 'react-icons/fa'
+import { FaTrashAlt, FaCheck, FaRegCalendarAlt, FaTicketAlt, FaTruck, FaUserAlt, FaPhoneAlt, FaDollarSign, FaClipboardList, FaStickyNote } from 'react-icons/fa'
 import { faLandmark, faLocationDot, faHouse } from "@fortawesome/free-solid-svg-icons"
 
 import { useAuth } from "../../../hooks/useAuth"
@@ -121,6 +121,17 @@ const ServicioDomicilio = ({servicioDomicilio, textoContinuar, textoBorrar, onCo
                     <Card.Text className="mb-0">
                         <FaPhoneAlt /> {servicioDomicilio.telefono}
                     </Card.Text>
+                    <Card.Text>
+
+                    </Card.Text>
+                    {
+                        esEntrega(servicioDomicilio) && (
+                            <>
+                                <Card.Text className="mb-0"><FaDollarSign /> {servicioDomicilio.forma_pago}</Card.Text>
+                                <Card.Text className="mb-0"><FaStickyNote /> {servicioDomicilio.notas_pago}</Card.Text>
+                            </>
+                        )
+                    }
                 </Card.Body>
                 <Card.Footer className="d-flex justify-content-between align-items-center">
                     <small>

@@ -11,7 +11,8 @@ export async function fetchServiciosDomicilioActivos() {
 }
 
 export const QUERY_SERVICIO_DOMICILIO = 'servicioDomicilio'
-export async function fetchServicioDomicilio(idServicioDomicilio) {
+export async function fetchServicioDomicilio({queryKey}) {
+    const idServicioDomicilio = queryKey[1]
     try {
         const { data } = await fetchData(`${getUrlApis()}/servicios-domicilio/${idServicioDomicilio}`)
         return data
@@ -21,7 +22,7 @@ export async function fetchServicioDomicilio(idServicioDomicilio) {
 }
 
 export const QUERY_SERVICIOS_DOMICILIO_POR_PAGAR = 'servicioSDomicilioPorPagar'
-export async function fetchServiciosDomicilioPorPagar(idServicioDomicilio) {
+export async function fetchServiciosDomicilioPorPagar() {
     try {
         const { data } = await fetchData(`${getUrlApis()}/servicios-domicilio-por-pagar`)
         return data

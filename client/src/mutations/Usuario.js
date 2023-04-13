@@ -1,25 +1,6 @@
 // import { gql } from '@apollo/client'
 import { getUrlApis } from '../components/comun/utils'
 
-// export const LOGIN = gql`
-//     mutation Login($usuario: String!, $contrasena: String!) {
-//         login(usuario: $usuario, contrasena: $contrasena) {
-//             status {
-//                 successful
-//                 message
-//             }
-//             usuario {
-//                 id_usuario
-//                 usuario
-//                 nombre
-//                 rol {
-//                     id_rol
-//                 }
-//             }
-//         }
-//     }
-// `
-
 export async function login(credenciales) {
     try {
         const response = await fetch(`${getUrlApis()}/usuarios/login`, {
@@ -42,3 +23,16 @@ export async function login(credenciales) {
     }
 }
 
+export async function logout() {
+    try {
+        await fetch(`${getUrlApis()}/usuarios/logout`, {
+            credentials: 'include',
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+    } catch (err) {
+        console.log(err)
+    }
+}

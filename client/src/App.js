@@ -5,6 +5,7 @@ import { Route, Routes, useNavigate } from "react-router-dom"
 import Alert from 'react-bootstrap/Alert'
 import Container from 'react-bootstrap/Container'
 
+import { logout } from './mutations/Usuario'
 import { useTareasExternas } from "./context/TareasExternasContext"
 
 import IdleTimeoutHandler from "./components/comun/IdleTimeoutHandler"
@@ -27,7 +28,6 @@ import BitacoraTareaExterna from "./components/tracking/tareas-externas/Bitacora
 import Bitacora from "./components/consultas/tareas-externas/Bitacora"
 import TareasPorAtenderseHoy from "./components/consultas/tareas-externas/TareasPorAtenderseHoy"
 
-
 import ServiciosActivos from './components/tracking/servicios-domicilio/ServiciosActivos'
 import PendienteRecoleccionEnCliente from "./components/tracking/servicios-domicilio/PendienteRecoleccionEnCliente"
 import RecolectadosParaEntregaEnSucursal from "./components/tracking/servicios-domicilio/RecolectadosParaEntregaEnSucursal"
@@ -39,19 +39,32 @@ import RecolectadoParaEntregaACliente from "./components/tracking/servicios-domi
 import InformacionPagoForm from "./components/tracking/servicios-domicilio/InformacionPagoForm"
 import PorPagar from "./components/tracking/servicios-domicilio/PorPagar"
 import BitacoraServicioDomicilio from './components/tracking/servicios-domicilio/BitacoraServicioDomicilio'
+import { useMutation } from "react-query"
+import { useAuth } from "./hooks/useAuth"
 
 function App() {
   const navigate = useNavigate()
   const { conectado, setConectado } = useTareasExternas()
+  const { setCredenciales } = useAuth()
   const [alerta, setAlerta] = useState({
     mostrar: false,
     mensaje: '',
     tipo: 'success'
   })
 
+  const { mutate: doLogout } = useMutation({
+    mutationFn: logout, 
+    onSuccess: () => {
+      setCredenciales(null)
+      setConectado(false)
+      navigate('/login')
+    }
+  })
+
+
+
   function handleLogout() {
-    setConectado(false)
-    navigate('/login')
+    doLogout()
   }  
 
   function handleLoginOk() {

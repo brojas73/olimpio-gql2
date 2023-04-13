@@ -21,23 +21,23 @@ export const AuthProvider = ({children}) => {
     }
 
     function esMaquila() {
-        return parseInt(credenciales.id_rol) === ROLES.MAQUILA
+        return credenciales && parseInt(credenciales.id_rol) === ROLES.MAQUILA
     }
 
     function esEncargado() {
-        return (esAdmin() || parseInt(credenciales.id_rol) === ROLES.ENCARGADO)
+        return credenciales && (esAdmin() || parseInt(credenciales.id_rol) === ROLES.ENCARGADO)
     }
 
     function esChofer() {
-        return (esAdmin() || parseInt(credenciales.id_rol) === ROLES.CHOFER)
+        return credenciales && (esAdmin() || parseInt(credenciales.id_rol) === ROLES.CHOFER)
     }
 
     function esAdmin() {
-        return parseInt(credenciales.id_rol) === ROLES.ADMIN
+        return credenciales && (parseInt(credenciales.id_rol) === ROLES.ADMIN)
     }
 
     function getUsuario() {
-        return credenciales.nombre
+        return credenciales ? credenciales.nombre : 'Usuario'
     }
 
     return (

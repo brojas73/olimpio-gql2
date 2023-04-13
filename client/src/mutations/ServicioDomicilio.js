@@ -3,6 +3,7 @@ import { getUrlApis } from '../components/comun/utils'
 export async function creaServicioDomicilio(servicioDomicilio) {
     try {
         const response = await fetch(`${getUrlApis()}/servicios-domicilio`, {
+            credentials: 'include',
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(servicioDomicilio)
@@ -23,6 +24,7 @@ export async function creaServicioDomicilio(servicioDomicilio) {
 export async function actualizaEstadoServicioDomicilio({id_servicio_domicilio, id_estado_servicio_domicilio, id_usuario}) {
     try {
         const response = await fetch(`${getUrlApis()}/servicios-domicilio/${id_servicio_domicilio}`, {
+            credentials: 'include',
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id_servicio_domicilio, id_usuario, id_estado_servicio_domicilio })
@@ -43,6 +45,7 @@ export async function actualizaEstadoServicioDomicilio({id_servicio_domicilio, i
 export async function actualizaInfoPagoServicioDomicilio({id_servicio_domicilio, id_usuario, infoPago}) {
     try {
         const response = await fetch(`${getUrlApis()}/servicios-domicilio/${id_servicio_domicilio}`, {
+            credentials: 'include',
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({id_servicio_domicilio, id_usuario, infoPago})
@@ -63,6 +66,7 @@ export async function actualizaInfoPagoServicioDomicilio({id_servicio_domicilio,
 export async function borraServicioDomicilio({id_servicio_domicilio}) {
     try {
         const response = await fetch(`${getUrlApis()}/servicios-domicilio/${id_servicio_domicilio}`, {
+            credentials: 'include',
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id_servicio_domicilio })
@@ -79,6 +83,4 @@ export async function borraServicioDomicilio({id_servicio_domicilio}) {
         console.log(err)
     }
 }
-
-
 

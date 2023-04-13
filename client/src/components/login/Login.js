@@ -5,7 +5,7 @@ import {Button, Container, Form, Spinner} from 'react-bootstrap'
 import { useAuth } from '../../hooks/useAuth'
 
 import { useMutation } from "react-query"
-import { login } from "../../mutations/Login"
+import { login } from "../../mutations/Usuario"
 
 import SucursalSelect from '../comun/SucursalSelect'
 import { useTareasExternas } from "../../context/TareasExternasContext"
@@ -28,7 +28,6 @@ const Login = ({onLoginOk, onLoginFail}) => {
       } else {
         setCredenciales(userInfo)
         setSucursalActual(parseInt(formInfo.sucursal))
-        // onLoginOk(userInfo)
         onLoginOk()
       }
     })

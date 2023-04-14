@@ -6,10 +6,10 @@ import { useAuth } from "../../../hooks/useAuth"
 
 import { STATUS_SERVICIO_DOMICILIO, useServiciosDomicilio } from "../../../context/ServiciosDomicilioContext"
 
-import { formateaFecha, formateaFechaHora, esEntrega, pagado } from '../../comun/utils'
+import { formateaFecha, formateaFechaHora, esEntrega, pagado, servicioActivo } from '../../comun/utils'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
-const ServicioDomicilio = ({servicioDomicilio, textoContinuar, textoBorrar, onContinuar, onBorrar, onInformacionPago, onLog }) => {
+const ServicioDomicilio = ({servicioDomicilio, textoContinuar, textoBorrar, onContinuar, onBorrar, onInformacionPago, onLog, onCambiarFecha }) => {
     const { estadoSDActual } = useServiciosDomicilio()
     const { esEncargado, esChofer, credenciales } = useAuth()
 
@@ -121,26 +121,39 @@ const ServicioDomicilio = ({servicioDomicilio, textoContinuar, textoBorrar, onCo
                     <Card.Text className="mb-0">
                         <FaPhoneAlt /> {servicioDomicilio.telefono}
                     </Card.Text>
-                    <Card.Text>
-
-                    </Card.Text>
                     {
                         esEntrega(servicioDomicilio) && (
                             <>
-                                <Card.Text className="mb-0"><FaDollarSign /> {servicioDomicilio.forma_pago}</Card.Text>
-                                <Card.Text className="mb-0"><FaStickyNote /> {servicioDomicilio.notas_pago}</Card.Text>
+                                <Card.Text className="mb-0 mt-4 text-success"><FaDollarSign /> {servicioDomicilio.forma_pago.toUpperCase()} </Card.Text>
+                                <Card.Text className="mb-0 text-success"><FaStickyNote /> {servicioDomicilio.notas_pago} </Card.Text>
                             </>
                         )
                     }
                 </Card.Body>
-                <Card.Footer className="d-flex justify-content-between align-items-center">
-                    <small>
-                        <FaRegCalendarAlt /> 
-                        <span> </span>
-                        <span className="align-middle">
-                            {formateaFechaHora(servicioDomicilio.fecha_requerida, servicioDomicilio.hora_requerida)}
-                        </span>
-                    </small>
+                <Card.Footer className="d-flex justify-content-between align-items-center text-danger">
+                    {
+                        servicioActivo(servicioDomicilio) && esEncargado() ? (
+                            <Button 
+                                size="sm" 
+                                onClick={() => onCambiarFecha(servicioDomicilio.id_servicio_domicilio)} 
+                                variant='outline-danger'
+                            >
+                                <FaRegCalendarAlt /> 
+                                <span> </span>
+                                <span className="align-middle">
+                                    {formateaFechaHora(servicioDomicilio.fecha_requerida, servicioDomicilio.hora_requerida)}
+                                </span>
+                            </Button>
+                        ) : (
+                            <small>
+                                <FaRegCalendarAlt /> 
+                                <span> </span>
+                                <span className="align-middle">
+                                    {formateaFechaHora(servicioDomicilio.fecha_requerida, servicioDomicilio.hora_requerida)}
+                                </span>
+                            </small>
+                        )
+                    }
                     <div>
                         {
                             mostrarBotonAcccionBorrar() && (

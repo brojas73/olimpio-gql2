@@ -21,7 +21,7 @@ export async function creaServicioDomicilio(servicioDomicilio) {
     }
 }
 
-export async function actualizaEstadoServicioDomicilio({id_servicio_domicilio, id_estado_servicio_domicilio, id_usuario}) {
+export async function actualizaEstado({id_servicio_domicilio, id_estado_servicio_domicilio, id_usuario}) {
     try {
         const response = await fetch(`${getUrlApis()}/servicios-domicilio/${id_servicio_domicilio}`, {
             credentials: 'include',
@@ -42,13 +42,34 @@ export async function actualizaEstadoServicioDomicilio({id_servicio_domicilio, i
     }
 }
 
-export async function actualizaInfoPagoServicioDomicilio({id_servicio_domicilio, id_usuario, infoPago}) {
+export async function actualizaInfoPago({id_servicio_domicilio, id_usuario, infoPago}) {
     try {
         const response = await fetch(`${getUrlApis()}/servicios-domicilio/${id_servicio_domicilio}`, {
             credentials: 'include',
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({id_servicio_domicilio, id_usuario, infoPago})
+            body: JSON.stringify({id_servicio_domicilio, id_usuario, infoPago, tipoAccion: 'actualiza-informacion-pago'})
+        })
+
+        if (!response.ok) {
+            const mensaje = `Ocurrió un error: ${response.status}`
+            throw new Error(mensaje)
+        }
+
+        const data = await response.json()
+        return data
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+export async function actualizaFechaRequerida({id_servicio_domicilio, id_usuario, fechaRequerida}) {
+    try {
+        const response = await fetch(`${getUrlApis()}/servicios-domicilio/${id_servicio_domicilio}`, {
+            credentials: 'include',
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({id_servicio_domicilio, id_usuario, fechaRequerida, tipoAccion: 'actualiza-fecha-requerida'})
         })
 
         if (!response.ok) {

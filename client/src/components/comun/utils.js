@@ -1,4 +1,5 @@
 import { STATUS_TAREA } from '../../context/TareasExternasContext'
+import { STATUS_SERVICIO_DOMICILIO } from '../../context/ServiciosDomicilioContext'
 
 const URL_APIS_DEV = 'http://localhost:3040/api-v1'
 const URL_APIS_PROD = 'http://5.183.8.10/api-v1'
@@ -41,8 +42,6 @@ export function formateaHoraForm(fecha) {
                          String(fechaTmp.getMinutes()).padStart(2, '0')
   return horaFormateada
 }
-
-
 
 export const ticketFormatter = (data, row) => {
     return (
@@ -93,7 +92,6 @@ export function nombreEstadoServicioDomicilio(estadosServicioDomicilio, idEstado
   return (estadoServicioDomicilio ? estadoServicioDomicilio.nombre : 'Estado del Servicio')
 }
 
-
 export function isBlank(str) {
   return (!str || /^\s*$/.test(str))
 }
@@ -104,6 +102,13 @@ export function getUrlApis() {
 
 export function esEntrega(servicioDomicilio) {
   return servicioDomicilio.tipo_servicio === 'E'
+}
+
+export function servicioActivo(servicioDomicilio) {
+  return (
+    servicioDomicilio.id_estado_servicio_domicilio !== STATUS_SERVICIO_DOMICILIO.TERMINADO &&
+    servicioDomicilio.id_estado_servicio_domicilio !== STATUS_SERVICIO_DOMICILIO.CANCELADO 
+  )
 }
 
 export function pagado(servicioDomicilio) {

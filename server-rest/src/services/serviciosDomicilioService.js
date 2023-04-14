@@ -24,17 +24,25 @@ const creaEntrega = async (servicioDomicilio) => {
     }
 }
 
-const actualizaEstadoServicioDomicilio = async (idServicioDomicilio, idUsuario, idEstadoServicioDomicilio) => {
+const actualizaEstado = async (idServicioDomicilio, idUsuario, idEstadoServicioDomicilio) => {
     try {
-        return await DB.actualizaEstadoServicioDomicilio(idServicioDomicilio, idUsuario, idEstadoServicioDomicilio)
+        return await DB.actualizaEstado(idServicioDomicilio, idUsuario, idEstadoServicioDomicilio)
     } catch (error) {
         throw error
     }
 }
 
-const actualizaInfoPagoServicioDomicilio = async (idServicioDomicilio, idFormaPago, notasPago, pagado, referenciaPago, idUsuario) => {
+const actualizaInfoPago = async (idServicioDomicilio, idFormaPago, notasPago, pagado, referenciaPago, idUsuario) => {
     try {
-        return await DB.actualizaInfoPagoServicioDomicilio(idServicioDomicilio, idFormaPago, notasPago, pagado, referenciaPago, idUsuario)
+        return await DB.actualizaInfoPago(idServicioDomicilio, idFormaPago, notasPago, pagado, referenciaPago, idUsuario)
+    } catch (error) {
+        throw error
+    }
+}
+
+const actualizaFechaRequerida = async (idServicioDomicilio, fechaRequerida, horaRequerida, idUsuario) => {
+    try {
+        return await DB.actualizaFechaRequerida(idServicioDomicilio, fechaRequerida, horaRequerida, idUsuario)
     } catch (error) {
         throw error
     }
@@ -53,8 +61,9 @@ export default {
     servicioDomicilio,
     creaRecoleccion,
     creaEntrega,
-    actualizaEstadoServicioDomicilio,
-    actualizaInfoPagoServicioDomicilio,
+    actualizaEstado,
+    actualizaInfoPago,
+    actualizaFechaRequerida,
     borraServicioDomicilio
 }
 

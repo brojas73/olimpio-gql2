@@ -7,7 +7,7 @@ import { useAuth } from "../../../hooks/useAuth"
 
 import { useMutation, useQueryClient } from "react-query"
 import { QUERY_SERVICIOS_DOMICILIO_ACTIVOS } from "../../../queries/ServicioDomicilio"
-import { actualizaEstadoServicioDomicilio, borraServicioDomicilio} from "../../../mutations/ServicioDomicilio"
+import { actualizaEstado, borraServicioDomicilio} from "../../../mutations/ServicioDomicilio"
 
 import ServiciosDomicilioHeader from "./ServiciosDomicilioHeader"
 import ServicioDomicilio from "./ServicioDomicilioCard"
@@ -23,7 +23,7 @@ const ListaServiciosDomicilio = ({serviciosDomicilio, titulo, siguienteEstado, t
 
   const queryClient = useQueryClient()
   const { mutate: doActualizaEstadoServicioDomicilio } = useMutation ({
-    mutationFn: actualizaEstadoServicioDomicilio,
+    mutationFn: actualizaEstado,
     onSuccess: ({data}) => {
       queryClient.setQueriesData(QUERY_SERVICIOS_DOMICILIO_ACTIVOS, (current) => (
         current.map(serviciosDomicilio => (
@@ -82,6 +82,14 @@ const ListaServiciosDomicilio = ({serviciosDomicilio, titulo, siguienteEstado, t
     })
   }
 
+  function handleCambiarFecha(idServicioDomicilio) {
+    navigate('/servicios-domicilio/actualiza-fecha-requerida', {
+      state: {
+        id_servicio_domicilio: idServicioDomicilio
+      }
+    })
+  }
+
   return (
     <>
       <Confirmacion 
@@ -102,6 +110,7 @@ const ListaServiciosDomicilio = ({serviciosDomicilio, titulo, siguienteEstado, t
               onBorrar={handleBorrar}
               onLog={handleLog}
               onInformacionPago={handleInformacionPago}
+              onCambiarFecha={handleCambiarFecha}              
               key={servicioDomicilio.id_servicio_domicilio} 
           />
         ))

@@ -95,7 +95,7 @@ const creaServicioDomicilio = async (req, res) => {
 const actualizaServicioDomicilio = async (req, res) => {
     const { 
         params: {idServicioDomicilio},
-        body:   {id_estado_servicio_domicilio, id_usuario, infoPago}
+        body:   {id_estado_servicio_domicilio, id_usuario, infoPago, tipoAccion, fechaRequerida}
     } = req
     let servicioDomicilioActualizado
 
@@ -111,15 +111,54 @@ const actualizaServicioDomicilio = async (req, res) => {
         return
     }
 
+    if (
+        !tipoAccion &&
+        (!id_usuario || !id_estado_servicio_domicilio)
+    ) {
+        res
+            .status(400)
+            .send({
+                status: "FAILED",
+                data: {
+                    error: `
+                        No se recibió alguno de los parámetros siguientes:
+                        id_usuario, id_estado_servicio_domicilio
+                    `
+                }
+            })
+        return
+    }
+
+    if (
+        tipoAccion &&
+        !tipoAccion.includes('actualiza-fecha-requerida', 'actualiza-informacion-pago')
+    ) {
+        res
+            .status(400)
+            .send({
+                status: "FAILED",
+                data: {
+                    error: `
+                        El tipo de acción es inválido
+                    `
+                }
+            })
+        return
+    }
+
     try {
         // Si se está actualizando el estado del servicio
-        if (!infoPago)
-            servicioDomicilioActualizado = await serviciosDomicilioService.actualizaEstadoServicioDomicilio(idServicioDomicilio, id_usuario, id_estado_servicio_domicilio)
+        if (!tipoAccion)
+            servicioDomicilioActualizado = await serviciosDomicilioService.actualizaEstado(idServicioDomicilio, id_usuario, id_estado_servicio_domicilio)
         // Se está actualizando la información de pago
-        else {
+        else if (tipoAccion === 'actualiza-informacion-pago') {
             const { id_forma_pago, notas_pago, confirmar_pago, referencia_pago } = infoPago
             const pagado = confirmar_pago ? 'Y' : 'N' 
-            servicioDomicilioActualizado = await serviciosDomicilioService.actualizaInfoPagoServicioDomicilio(idServicioDomicilio, id_forma_pago, notas_pago, pagado, referencia_pago, id_usuario)
+            servicioDomicilioActualizado = await serviciosDomicilioService.actualizaInfoPago(idServicioDomicilio, id_forma_pago, notas_pago, pagado, referencia_pago, id_usuario)
+        // Se está actualizando la fecha de entrega
+        } else {
+            const { fecha_requerida, hora_requerida } = fechaRequerida
+            servicioDomicilioActualizado = await serviciosDomicilioService.actualizaFechaRequerida(idServicioDomicilio, fecha_requerida, hora_requerida, id_usuario)
         }
 
         res.send({status: "OK", data: servicioDomicilioActualizado})

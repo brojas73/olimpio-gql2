@@ -8,7 +8,7 @@ import { Button, Card, Form, Spinner } from 'react-bootstrap'
 import { FaPhoneAlt, FaTicketAlt, FaUserAlt } from 'react-icons/fa'
 
 import { useQuery, useMutation } from 'react-query'
-import { actualizaInfoPagoServicioDomicilio } from "../../../mutations/ServicioDomicilio"
+import { actualizaInfoPago } from "../../../mutations/ServicioDomicilio"
 import { useAuth } from '../../../hooks/useAuth'
 import { fetchServicioDomicilio, QUERY_SERVICIO_DOMICILIO } from '../../../queries/ServicioDomicilio'
 
@@ -28,8 +28,8 @@ const InformacionPagoForm = () => {
     })
     const [errors, setErrors] = useState({})
 
-    const { mutate: doActualizaInfoPagoServicioDomicilio } = useMutation ({
-        mutationFn: actualizaInfoPagoServicioDomicilio,
+    const { mutate: doActualizaInfoPago } = useMutation ({
+        mutationFn: actualizaInfoPago,
     })
     
     const { data, isLoading } = useQuery(
@@ -51,7 +51,7 @@ const InformacionPagoForm = () => {
     function handleSubmit(event) {
         event.preventDefault()
         if (isValid()) {
-            doActualizaInfoPagoServicioDomicilio({id_servicio_domicilio: idServicioDomicilio, id_usuario: credenciales.id_usuario, infoPago: formaPagoInfo})
+            doActualizaInfoPago({id_servicio_domicilio: idServicioDomicilio, id_usuario: credenciales.id_usuario, infoPago: formaPagoInfo})
             navigate(-1)
         }
     }
@@ -103,7 +103,9 @@ const InformacionPagoForm = () => {
     
     return (
         <>
-            <h2>Información del Pago</h2>
+            <Button variant="dark" size="md">
+                Información de Pago
+            </Button>
             <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
                     {

@@ -118,7 +118,7 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
                         {tareaExterna.descripcion}
                     </Card.Text>
                 </Card.Body>
-                <Card.Footer className="d-flex justify-content-between align-items-center">
+                <Card.Footer className="d-flex justify-content-between align-items-center text-danger">
                     <small>
                         <FaRegCalendarAlt /> 
                         <span> </span>

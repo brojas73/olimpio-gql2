@@ -4,7 +4,7 @@ const mainQuery = `
     select   sd.id_servicio_domicilio,
              sd.tipo_servicio,
              sd.id_sucursal,
-             sd.fecha_requerida,
+             date(sd.fecha_requerida) as fecha_requerida,
              sd.hora_requerida,
              sd.nombre,
              sd.direccion,
@@ -70,7 +70,7 @@ const serviciosDomicilioActivos = () => {
     const q = `
         ${mainQuery}
            where sd.estado = 1
-           and   sd.id_estado_tarea != 100
+           and   sd.id_estado_tarea < 100
         order by sd.fecha_creacion
     `
 
@@ -231,7 +231,7 @@ const borraServicioDomicilio = (idServicioDomicilio) => {
     })
 }
 
-const actualizaEstadoServicioDomicilio = (idServicioDomicilio, idUsuario, idEstadoServicioDomicilio) => {
+const actualizaEstado = (idServicioDomicilio, idUsuario, idEstadoServicioDomicilio) => {
     const q = `
         update   servicio_domicilio
            set   fecha_modificacion = CURRENT_TIMESTAMP,
@@ -260,7 +260,7 @@ const actualizaEstadoServicioDomicilio = (idServicioDomicilio, idUsuario, idEsta
     })
 }
 
-const actualizaInfoPagoServicioDomicilio = (idServicioDomicilio, idFormaPago, notasPago, pagado, referenciaPago, idUsuario) => {
+const actualizaInfoPago = (idServicioDomicilio, idFormaPago, notasPago, pagado, referenciaPago, idUsuario) => {
     const q = `
         update   servicio_domicilio
            set   fecha_modificacion = CURRENT_TIMESTAMP,
@@ -294,6 +294,37 @@ const actualizaInfoPagoServicioDomicilio = (idServicioDomicilio, idFormaPago, no
     })
 }
 
+const actualizaFechaRequerida = (idServicioDomicilio, fechaRequerida, horaRequerida, idUsuario) => {
+    const q = `
+        update   servicio_domicilio
+           set   fecha_modificacion = CURRENT_TIMESTAMP,
+                 id_modificado_por = ?,
+                 fecha_requerida = ?,
+                 hora_requerida = ?
+           where id_servicio_domicilio = ?   
+    `
+
+    return new Promise((resolve, reject) => {
+        pool.query(q, [idUsuario, fechaRequerida, horaRequerida, idServicioDomicilio], (err) => {
+            if (err) {
+                console.log(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
+            }
+
+            resolve({
+                status: 200,
+                mensaje: 'La fecha de entrega del servicio a domicilio se actualizó exitosamente',
+                id_servicio_domicilio: idServicioDomicilio,
+                fecha_requerida: fechaRequerida,
+                hora_requerida: horaRequerida
+            })
+        })
+    })
+}
+
 export default {
     serviciosDomicilio,
     serviciosDomicilioActivos,
@@ -301,6 +332,7 @@ export default {
     creaRecoleccion,
     creaEntrega,
     borraServicioDomicilio,
-    actualizaEstadoServicioDomicilio,
-    actualizaInfoPagoServicioDomicilio,
+    actualizaEstado,
+    actualizaInfoPago,
+    actualizaFechaRequerida
 }

@@ -8,7 +8,8 @@ export const STATUS_SERVICIO_DOMICILIO = {
     PENDIENTE_RECOLECCION_EN_SUCURSAL: 4,
     RECOLECTADO_PARA_ENTREGA_CLIENTE: 5,
     ENTREGADO_A_CLIENTE: 6,
-    TERMINADO: 100
+    TERMINADO: 100,
+    CANCELADO: 101
 } 
 
 const ServiciosDomicilioContext = React.createContext()

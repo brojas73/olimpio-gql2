@@ -114,7 +114,7 @@ const borraTareaExterna = async (req, res) => {
 
     try {
         const tareaExterna = await tareasExternasService.borraTareaExterna(idTareaExterna)
-        res.status(204).send({status: "OK", tareaExterna})
+        res.send({status: "OK", data: tareaExterna})
     } catch (error) {
         res
             .status(error?.status || 500)

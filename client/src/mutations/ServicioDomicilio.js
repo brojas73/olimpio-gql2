@@ -98,7 +98,8 @@ export async function borraServicioDomicilio({id_servicio_domicilio}) {
             throw new Error(mensaje)
         }
 
-        const data = await response.json()
+        const json = await response.json()
+        const { data } = json
         return data
     } catch (err) {
         console.log(err)

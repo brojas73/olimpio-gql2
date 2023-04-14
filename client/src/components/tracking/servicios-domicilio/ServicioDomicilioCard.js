@@ -124,7 +124,8 @@ const ServicioDomicilio = ({servicioDomicilio, textoContinuar, textoBorrar, onCo
                     {
                         esEntrega(servicioDomicilio) && (
                             <>
-                                <Card.Text className="mb-0 mt-4 text-success"><FaDollarSign /> {servicioDomicilio.forma_pago.toUpperCase()} </Card.Text>
+                                {/* <Card.Text className="mb-0 mt-4 text-success"><FaDollarSign /> {servicioDomicilio.forma_pago.toUpperCase()} </Card.Text> */}
+                                <Card.Text className="mb-0 mt-4 text-success"><FaDollarSign /> {servicioDomicilio.forma_pago?.toUpperCase()} </Card.Text>
                                 <Card.Text className="mb-0 text-success"><FaStickyNote /> {servicioDomicilio.notas_pago} </Card.Text>
                             </>
                         )

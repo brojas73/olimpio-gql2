@@ -200,7 +200,7 @@ const borraTareaExterna = (idTareaExterna) => {
     `
 
     return new Promise((resolve, reject) => {
-        pool.query(q, [idTareaExterna], (err, data) => {
+        pool.query(q, [idTareaExterna], (err, _) => {
             if (err) {
                 console.log(err)
                 reject({

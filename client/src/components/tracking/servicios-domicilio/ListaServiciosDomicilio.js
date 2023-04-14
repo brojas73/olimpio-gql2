@@ -36,9 +36,9 @@ const ListaServiciosDomicilio = ({serviciosDomicilio, titulo, siguienteEstado, t
 
   const { mutate: doBorraServicioDomicilio } = useMutation ({
     mutationFn: borraServicioDomicilio,
-    onSuccess: ({data}) => {
+    onSuccess: ({id_servicio_domicilio}) => {
       queryClient.setQueriesData(QUERY_SERVICIOS_DOMICILIO_ACTIVOS, (current) => (
-        current.filter(servicioDomicilio => (parseInt(servicioDomicilio.id_servicio_domicilio) !== parseInt(data.id_servicio_domicilio)))
+        current.filter(servicioDomicilio => (parseInt(servicioDomicilio.id_servicio_domicilio) !== parseInt(id_servicio_domicilio)))
       ))
     }
   })

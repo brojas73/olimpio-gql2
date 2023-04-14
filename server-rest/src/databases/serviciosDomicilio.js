@@ -70,7 +70,7 @@ const serviciosDomicilioActivos = () => {
     const q = `
         ${mainQuery}
            where sd.estado = 1
-           and   sd.id_estado_tarea < 100
+           and   sd.id_estado_servicio_domicilio < 100
         order by sd.fecha_creacion
     `
 
@@ -213,7 +213,7 @@ const borraServicioDomicilio = (idServicioDomicilio) => {
     `
 
     return new Promise((resolve, reject) => {
-        pool.query(q, [idServicioDomicilio], (err, data) => {
+        pool.query(q, [idServicioDomicilio], (err, _) => {
             if (err) {
                 console.log(err)
                 reject({

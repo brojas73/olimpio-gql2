@@ -46,7 +46,7 @@ const ListaTareasExternas = ({tareasExternas, titulo, siguienteEstado, textoCont
 
   const { mutate: doBorraTareaExterna } = useMutation ({
     mutationFn: borraTareaExterna,
-    onSuccess: (id_tarea_externa) => {
+    onSuccess: ({id_tarea_externa}) => {
       queryClient.setQueriesData(QUERY_TAREAS_EXTERNAS_ACTIVAS, (current) => (
         current.filter(tareaExterna => (parseInt(tareaExterna.id_tarea_externa) !== parseInt(id_tarea_externa)))
       ))

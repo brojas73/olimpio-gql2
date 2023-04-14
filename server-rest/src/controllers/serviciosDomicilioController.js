@@ -5,6 +5,11 @@ const serviciosDomicilio = async (_, res) => {
     res.send({status: "OK", data: serviciosDomicilio})
 }
 
+const serviciosDomicilioActivos = async (_, res) => {
+    const serviciosDomicilio = await serviciosDomicilioService.serviciosDomicilioActivos()
+    res.send({status: "OK", data: serviciosDomicilio})
+}
+
 const servicioDomicilio = async (req, res) => {
     const {
         params: { idServicioDomicilio }
@@ -131,7 +136,8 @@ const actualizaServicioDomicilio = async (req, res) => {
 
     if (
         tipoAccion &&
-        !tipoAccion.includes('actualiza-fecha-requerida', 'actualiza-informacion-pago')
+        tipoAccion !== 'actualiza-fecha-requerida' &&
+        tipoAccion !== 'actualiza-informacion-pago'
     ) {
         res
             .status(400)
@@ -188,7 +194,7 @@ const borraServicioDomicilio = async (req, res) => {
 
     try {
         const servicioDomicilioBorrado = await serviciosDomicilioService.borraServicioDomicilio(idServicioDomicilio)
-        res.status(204).send({status: "OK", data: servicioDomicilioBorrado})
+        res.send({status: "OK", data: servicioDomicilioBorrado})
     } catch (error) {
         res
             .status(error?.status || 500)
@@ -198,6 +204,7 @@ const borraServicioDomicilio = async (req, res) => {
 
 export default {
     serviciosDomicilio,
+    serviciosDomicilioActivos,
     servicioDomicilio,
     creaServicioDomicilio,
     actualizaServicioDomicilio,

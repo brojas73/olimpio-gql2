@@ -4,6 +4,10 @@ const serviciosDomicilio = async () => {
     return await DB.serviciosDomicilio()
 }
 
+const serviciosDomicilioActivos = async () => {
+    return await DB.serviciosDomicilioActivos()
+}
+
 const servicioDomicilio = async (idServicioDomicilio) => {
     return await DB.servicioDomicilio(idServicioDomicilio)
 }
@@ -58,6 +62,7 @@ const borraServicioDomicilio = async (idServicioDomicilio) => {
 
 export default {
     serviciosDomicilio,
+    serviciosDomicilioActivos,
     servicioDomicilio,
     creaRecoleccion,
     creaEntrega,

@@ -24,7 +24,7 @@ export async function fetchServicioDomicilio({queryKey}) {
 export const QUERY_SERVICIOS_DOMICILIO_POR_PAGAR = 'servicioSDomicilioPorPagar'
 export async function fetchServiciosDomicilioPorPagar() {
     try {
-        const { data } = await fetchData(`${getUrlApis()}/servicios-domicilio-por-pagar`)
+        const { data } = await fetchData(`${getUrlApis()}/servicios-domicilio/por-pagar`)
         return data
     } catch (error) {
         throw error

@@ -16,6 +16,7 @@ import v1UsuariosRouter from './v1/routes/usuariosRoutes.js'
 
 dotenv.config()
 const PORT = process.env.PORT || 3040;
+// const origin = process.env.ORIGIN || 'http://5.183.8.10'
 const origin = process.env.ORIGIN || 'http://5.183.8.10:8080'
 
 const main = () => {

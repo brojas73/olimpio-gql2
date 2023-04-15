@@ -89,6 +89,29 @@ const serviciosDomicilioActivos = () => {
     })
 }
 
+const serviciosDomicilioPorPagar = () => {
+    const q = `
+        ${mainQuery}
+           where sd.pagado = 'N'
+           and   sd.estado = 1
+        order by sd.fecha_creacion
+    `
+
+    return new Promise((resolve, reject) => {
+        pool.query(q, (err, data) => {
+            if (err) {
+                console.log(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
+            }
+
+            resolve(JSON.parse(JSON.stringify(data)))
+        })
+    })
+}
+
 const servicioDomicilio = (idServicioDomicilio) => {
     const q = `
         ${mainQuery}
@@ -328,6 +351,7 @@ const actualizaFechaRequerida = (idServicioDomicilio, fechaRequerida, horaRequer
 export default {
     serviciosDomicilio,
     serviciosDomicilioActivos,
+    serviciosDomicilioPorPagar,
     servicioDomicilio,
     creaRecoleccion,
     creaEntrega,

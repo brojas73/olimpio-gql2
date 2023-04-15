@@ -74,7 +74,7 @@ const ListaServiciosDomicilio = ({serviciosDomicilio, titulo, siguienteEstado, t
     })
   }
 
-  function handleInformacionPago(idServicioDomicilio) {
+  function handleEditarInformacionPago(idServicioDomicilio) {
     navigate('/servicios-domicilio/actualiza-informacion-pago', {
       state: {
         id_servicio_domicilio: idServicioDomicilio
@@ -84,6 +84,14 @@ const ListaServiciosDomicilio = ({serviciosDomicilio, titulo, siguienteEstado, t
 
   function handleCambiarFecha(idServicioDomicilio) {
     navigate('/servicios-domicilio/actualiza-fecha-requerida', {
+      state: {
+        id_servicio_domicilio: idServicioDomicilio
+      }
+    })
+  }
+
+  function handleEditarInformacionGeneral(idServicioDomicilio) {
+    navigate('/servicios-domicilio/actualiza-informacion-general', {
       state: {
         id_servicio_domicilio: idServicioDomicilio
       }
@@ -109,7 +117,8 @@ const ListaServiciosDomicilio = ({serviciosDomicilio, titulo, siguienteEstado, t
               onContinuar={handleContinuar}
               onBorrar={handleBorrar}
               onLog={handleLog}
-              onInformacionPago={handleInformacionPago}
+              onEditarInformacionPago={handleEditarInformacionPago}
+              onEditarInformacionGeneral={handleEditarInformacionGeneral}
               onCambiarFecha={handleCambiarFecha}              
               key={servicioDomicilio.id_servicio_domicilio} 
           />

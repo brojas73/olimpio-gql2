@@ -29,8 +29,8 @@ const RecolectadoParaEntregaEnSucursal = () => {
       serviciosDomicilio={serviciosFiltrados} 
       titulo='Recolectados para Entrega en Sucursal'
       siguienteEstado={STATUS_SERVICIO_DOMICILIO.RECIBIDO_EN_SUCURSAL}
-      textoContinuar='Recibir'
-      textoConfirmacion='¿Seguro que quieres recibir el servicio a domicilio?'
+      textoContinuar='Entregar'
+      textoConfirmacion='¿Seguro que quieres entregar el servicio a domicilio?'
     />
   )
 }

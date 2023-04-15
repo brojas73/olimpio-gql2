@@ -6,6 +6,7 @@ import isConnected from '../../middleware.js'
 const router = express.Router()
 
 router.get('/', isConnected(), servicioDomicilioController.serviciosDomicilioActivos)
+router.get('/por-pagar', isConnected(), servicioDomicilioController.serviciosDomicilioPorPagar)
 router.get('/:idServicioDomicilio', isConnected(), servicioDomicilioController.servicioDomicilio)
 router.post('/', isConnected(), servicioDomicilioController.creaServicioDomicilio)
 router.patch('/:idServicioDomicilio', isConnected(), servicioDomicilioController.actualizaServicioDomicilio)

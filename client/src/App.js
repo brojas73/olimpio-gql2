@@ -42,6 +42,7 @@ import BitacoraServicioDomicilio from './components/tracking/servicios-domicilio
 import { useMutation } from "react-query"
 import { useAuth } from "./hooks/useAuth"
 import FechaRequeridaForm from "./components/tracking/servicios-domicilio/FechaRequeridaForm"
+import InformacionGeneralForm from "./components/tracking/servicios-domicilio/InformacionGeneralForm"
 
 function App() {
   const navigate = useNavigate()
@@ -127,6 +128,7 @@ function App() {
             <Route path='entregados-a-cliente' element={<EntregadosACliente />} />
             <Route path='actualiza-informacion-pago' element={<InformacionPagoForm />} />
             <Route path='actualiza-fecha-requerida' element={<FechaRequeridaForm />} />
+            <Route path='actualiza-informacion-general' element={<InformacionGeneralForm />} />
             <Route path='por-pagar' element={<PorPagar />} />
             <Route path='bitacora-servicio-domicilio' element={<BitacoraServicioDomicilio />} />
         </Route>

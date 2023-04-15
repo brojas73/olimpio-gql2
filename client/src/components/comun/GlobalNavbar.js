@@ -1,3 +1,5 @@
+import { useLocation } from "react-router-dom"
+
 import { Link } from "react-router-dom"
 import { Navbar, Offcanvas, Nav, NavDropdown } from "react-bootstrap"
 
@@ -11,6 +13,7 @@ import UsuarioDropDown from "./UsuarioDropDown"
 const GlobalNavbar = ({onLogout}) => {
     const { conectado, sucursalActual, setSucursalActual  } = useTareasExternas()
     const { getUsuario } = useAuth()
+    const location = useLocation()
 
     function handleOnSelect() {
         console.log('GlobalNavbar.handlerOnSelect')
@@ -26,7 +29,7 @@ const GlobalNavbar = ({onLogout}) => {
                     conectado && (
                         <Offcanvas.Body>
                             <Nav className="justify-content-start flex-grow-1 pe-3">
-                                <NavDropdown title="Tracking">
+                                <NavDropdown title={location.pathname.includes('tareas-activas') ? 'Tareas Externas' : 'Servicios a Domicilio'}>
                                     <NavDropdown.Item as={Link} onSelect={handleOnSelect} to='/tracking/tareas-activas'>Tareas Externas</NavDropdown.Item>
                                     <NavDropdown.Item as={Link} to='/servicios-domicilio/servicios-activos'>Servicios a Domicilio</NavDropdown.Item>
                                 </NavDropdown>

@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { Form } from "react-bootstrap"
 
-const PhoneNumberInput = ({placeholder, required, name, onChange, isInvalid}) => {
-  const[inputValue, setIputValue] = useState('')
+const PhoneNumberInput = ({placeholder, required, name, onChange, isInvalid, initialValue}) => {
+  const[inputValue, setIputValue] = useState(initialValue ? initialValue : '')
 
   function handleChange(e) {
     const formattedPhoneNumber = formatPhoneNumber(e.target.value)

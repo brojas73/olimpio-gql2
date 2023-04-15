@@ -1,6 +1,6 @@
 import { Button, Card, Col } from "react-bootstrap"
 import { FaTrashAlt, FaCheck, FaRegCalendarAlt, FaTicketAlt, FaTruck, FaUserAlt, FaPhoneAlt, FaDollarSign, FaClipboardList, FaStickyNote } from 'react-icons/fa'
-import { faLandmark, faLocationDot, faHouse } from "@fortawesome/free-solid-svg-icons"
+import { faLandmark, faLocationDot, faHouse, faPencil } from "@fortawesome/free-solid-svg-icons"
 
 import { useAuth } from "../../../hooks/useAuth"
 
@@ -9,7 +9,17 @@ import { STATUS_SERVICIO_DOMICILIO, useServiciosDomicilio } from "../../../conte
 import { formateaFecha, formateaFechaHora, esEntrega, pagado, servicioActivo } from '../../comun/utils'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
-const ServicioDomicilio = ({servicioDomicilio, textoContinuar, textoBorrar, onContinuar, onBorrar, onInformacionPago, onLog, onCambiarFecha }) => {
+const ServicioDomicilio = ({
+    servicioDomicilio, 
+    textoContinuar, 
+    textoBorrar, 
+    onContinuar, 
+    onBorrar, 
+    onEditarInformacionPago, 
+    onLog, 
+    onCambiarFecha,
+    onEditarInformacionGeneral 
+}) => {
     const { estadoSDActual } = useServiciosDomicilio()
     const { esEncargado, esChofer, credenciales } = useAuth()
 
@@ -21,7 +31,7 @@ const ServicioDomicilio = ({servicioDomicilio, textoContinuar, textoBorrar, onCo
             case STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_CLIENTE: 
                 return esChofer()
             case STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_SUCURSAL:
-                return esEncargado()
+                return esChofer()
             case STATUS_SERVICIO_DOMICILIO.RECIBIDO_EN_SUCURSAL:
                 return esEncargado()
             case STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_SUCURSAL:
@@ -73,7 +83,7 @@ const ServicioDomicilio = ({servicioDomicilio, textoContinuar, textoBorrar, onCo
                                     <Button 
                                         size="sm"
                                         variant="outline-success"
-                                        onClick={() => onInformacionPago(servicioDomicilio.id_servicio_domicilio)}
+                                        onClick={() => onEditarInformacionPago(servicioDomicilio.id_servicio_domicilio)}
                                     >
                                         <FaDollarSign /> 
                                         <span> </span>
@@ -104,11 +114,29 @@ const ServicioDomicilio = ({servicioDomicilio, textoContinuar, textoBorrar, onCo
                     </div>
                 </Card.Header>
                 <Card.Body>
+                    <div className="d-flex justify-content-between align-items-center">
                     {
                         esEntrega(servicioDomicilio) && (
-                            <Card.Text className="mb-0"><FaTicketAlt /> {servicioDomicilio.ticket.padStart(6, '0')}</Card.Text>
+                            <Card.Text className="mb-0"><FaTicketAlt /> {servicioDomicilio.ticket?.padStart(6, '0')} </Card.Text>
                         )
                     }
+                    {
+                        esEncargado() && (
+                            <>
+                            <span></span>
+                            <Button 
+                                size="sm"
+                                variant="outline-primary"
+                                onClick={() => onEditarInformacionGeneral(servicioDomicilio.id_servicio_domicilio)}
+                            >
+                                <FontAwesomeIcon icon={faPencil} /> 
+                                <span> </span>
+                                <span className="align-middle"> Editar </span>
+                            </Button>
+                            </>
+                        )
+                    }
+                    </div>
                     <Card.Text className="mb-0">
                         <FaUserAlt /> {servicioDomicilio.nombre} 
                     </Card.Text>
@@ -124,7 +152,6 @@ const ServicioDomicilio = ({servicioDomicilio, textoContinuar, textoBorrar, onCo
                     {
                         esEntrega(servicioDomicilio) && (
                             <>
-                                {/* <Card.Text className="mb-0 mt-4 text-success"><FaDollarSign /> {servicioDomicilio.forma_pago.toUpperCase()} </Card.Text> */}
                                 <Card.Text className="mb-0 mt-4 text-success"><FaDollarSign /> {servicioDomicilio.forma_pago?.toUpperCase()} </Card.Text>
                                 <Card.Text className="mb-0 text-success"><FaStickyNote /> {servicioDomicilio.notas_pago} </Card.Text>
                             </>
@@ -133,6 +160,8 @@ const ServicioDomicilio = ({servicioDomicilio, textoContinuar, textoBorrar, onCo
                 </Card.Body>
                 <Card.Footer className="d-flex justify-content-between align-items-center text-danger">
                     {
+                        // Si aún se pude acutalizar la fecha de entrega, pongo un botón para modificarla, en otro
+                        // caso, sólo pongo la información de la fecha de entrega
                         servicioActivo(servicioDomicilio) && esEncargado() ? (
                             <Button 
                                 size="sm" 

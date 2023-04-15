@@ -10,6 +10,11 @@ const serviciosDomicilioActivos = async (_, res) => {
     res.send({status: "OK", data: serviciosDomicilio})
 }
 
+const serviciosDomicilioPorPagar = async (_, res) => {
+    const serviciosDomicilio = await serviciosDomicilioService.serviciosDomicilioPorPagar()
+    res.send({status: "OK", data: serviciosDomicilio})
+}
+
 const servicioDomicilio = async (req, res) => {
     const {
         params: { idServicioDomicilio }
@@ -205,6 +210,7 @@ const borraServicioDomicilio = async (req, res) => {
 export default {
     serviciosDomicilio,
     serviciosDomicilioActivos,
+    serviciosDomicilioPorPagar,
     servicioDomicilio,
     creaServicioDomicilio,
     actualizaServicioDomicilio,

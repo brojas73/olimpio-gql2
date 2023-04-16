@@ -56,6 +56,14 @@ const actualizaFechaRequerida = async (idServicioDomicilio, fechaRequerida, hora
     }
 }
 
+const actualizaInformacionGeneral = async (idServicioDomicilio, nombre, direccion, colonia, municipio, cp, ubicacion, telefono, idUsuario) => {
+    try {
+        return await DB.actualizaInformacionGeneral(idServicioDomicilio, nombre, direccion, colonia, municipio, cp, ubicacion, telefono, idUsuario)
+    } catch (error) {
+        throw error
+    }
+}
+
 const borraServicioDomicilio = async (idServicioDomicilio) => {
     try {
         return await DB.borraServicioDomicilio(idServicioDomicilio)
@@ -74,6 +82,7 @@ export default {
     actualizaEstado,
     actualizaInfoPago,
     actualizaFechaRequerida,
+    actualizaInformacionGeneral,
     borraServicioDomicilio
 }
 

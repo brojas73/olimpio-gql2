@@ -104,6 +104,10 @@ export function esEntrega(servicioDomicilio) {
   return servicioDomicilio.tipo_servicio === 'E'
 }
 
+export function esRecoleccion(servicioDomicilio) {
+  return servicioDomicilio.tipo_servicio === 'R'
+}
+
 export function servicioActivo(servicioDomicilio) {
   return (
     servicioDomicilio.id_estado_servicio_domicilio !== STATUS_SERVICIO_DOMICILIO.TERMINADO &&

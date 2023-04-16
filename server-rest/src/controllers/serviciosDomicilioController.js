@@ -105,7 +105,7 @@ const creaServicioDomicilio = async (req, res) => {
 const actualizaServicioDomicilio = async (req, res) => {
     const { 
         params: {idServicioDomicilio},
-        body:   {id_estado_servicio_domicilio, id_usuario, infoPago, tipoAccion, fechaRequerida}
+        body:   {id_estado_servicio_domicilio, id_usuario, infoPago, tipoAccion, fechaRequerida, informacionGeneral}
     } = req
     let servicioDomicilioActualizado
 
@@ -142,7 +142,8 @@ const actualizaServicioDomicilio = async (req, res) => {
     if (
         tipoAccion &&
         tipoAccion !== 'actualiza-fecha-requerida' &&
-        tipoAccion !== 'actualiza-informacion-pago'
+        tipoAccion !== 'actualiza-informacion-pago' &&
+        tipoAccion !== 'actualiza-informacion-general'
     ) {
         res
             .status(400)
@@ -167,9 +168,13 @@ const actualizaServicioDomicilio = async (req, res) => {
             const pagado = confirmar_pago ? 'Y' : 'N' 
             servicioDomicilioActualizado = await serviciosDomicilioService.actualizaInfoPago(idServicioDomicilio, id_forma_pago, notas_pago, pagado, referencia_pago, id_usuario)
         // Se está actualizando la fecha de entrega
-        } else {
+        } else if (tipoAccion == 'actualiza-fecha-requerida') {
             const { fecha_requerida, hora_requerida } = fechaRequerida
             servicioDomicilioActualizado = await serviciosDomicilioService.actualizaFechaRequerida(idServicioDomicilio, fecha_requerida, hora_requerida, id_usuario)
+        // Se está actualizando la información general
+        } else {
+            const { nombre, direccion, colonia, municipio, cp, ubicacion, telefono } = informacionGeneral
+            servicioDomicilioActualizado = await serviciosDomicilioService.actualizaInformacionGeneral(idServicioDomicilio, nombre, direccion, colonia, municipio, cp, ubicacion, telefono, id_usuario)
         }
 
         res.send({status: "OK", data: servicioDomicilioActualizado})

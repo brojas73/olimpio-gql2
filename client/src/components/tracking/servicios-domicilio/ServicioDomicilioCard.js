@@ -1,13 +1,14 @@
 import { Button, Card, Col } from "react-bootstrap"
-import { FaTrashAlt, FaCheck, FaRegCalendarAlt, FaTicketAlt, FaTruck, FaUserAlt, FaPhoneAlt, FaDollarSign, FaClipboardList, FaStickyNote } from 'react-icons/fa'
+import { FaTrashAlt, FaCheck, FaRegCalendarAlt, FaTicketAlt, FaTruck, FaUserAlt, FaPhoneAlt, FaDollarSign, FaClipboardList, FaStickyNote, FaSquarespace } from 'react-icons/fa'
 import { faLandmark, faLocationDot, faHouse, faPencil } from "@fortawesome/free-solid-svg-icons"
 
 import { useAuth } from "../../../hooks/useAuth"
 
 import { STATUS_SERVICIO_DOMICILIO, useServiciosDomicilio } from "../../../context/ServiciosDomicilioContext"
 
-import { formateaFecha, formateaFechaHora, esEntrega, pagado, servicioActivo } from '../../comun/utils'
+import { formateaFecha, formateaFechaHora, esEntrega, esRecoleccion, pagado, servicioActivo } from '../../comun/utils'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse"
 
 const ServicioDomicilio = ({
     servicioDomicilio, 
@@ -114,35 +115,71 @@ const ServicioDomicilio = ({
                     </div>
                 </Card.Header>
                 <Card.Body>
-                    <div className="d-flex justify-content-between align-items-center">
                     {
-                        esEntrega(servicioDomicilio) && (
+                        esEntrega(servicioDomicilio) && esEncargado() ? (
+                            <div className="d-flex justify-content-between align-items-center">
+                                <Card.Text className="mb-0"><FaTicketAlt /> {servicioDomicilio.ticket?.padStart(6, '0')} </Card.Text>
+                                <span></span>
+                                <Button 
+                                    size="sm"
+                                    variant="outline-primary"
+                                    onClick={() => onEditarInformacionGeneral(servicioDomicilio.id_servicio_domicilio)}
+                                >
+                                    <FontAwesomeIcon icon={faPencil} /> 
+                                    <span> </span>
+                                    <span className="align-middle"> Editar </span>
+                                </Button>
+                            </div>
+                        ) : esEntrega(servicioDomicilio) && !esEncargado() && (
                             <Card.Text className="mb-0"><FaTicketAlt /> {servicioDomicilio.ticket?.padStart(6, '0')} </Card.Text>
                         )
                     }
                     {
-                        esEncargado() && (
-                            <>
-                            <span></span>
-                            <Button 
-                                size="sm"
-                                variant="outline-primary"
-                                onClick={() => onEditarInformacionGeneral(servicioDomicilio.id_servicio_domicilio)}
-                            >
-                                <FontAwesomeIcon icon={faPencil} /> 
-                                <span> </span>
-                                <span className="align-middle"> Editar </span>
-                            </Button>
-                            </>
+                        esRecoleccion(servicioDomicilio) && esEncargado() ? (
+                            <div className="d-flex justify-content-between align-items-center">
+                                <Card.Text className="mb-0">
+                                    <FaUserAlt /> {servicioDomicilio.nombre} 
+                                </Card.Text>
+                                <Button 
+                                    size="sm"
+                                    variant="outline-primary"
+                                    onClick={() => onEditarInformacionGeneral(servicioDomicilio.id_servicio_domicilio)}
+                                >
+                                    <FontAwesomeIcon icon={faPencil} /> 
+                                    <span> </span>
+                                    <span className="align-middle"> Editar </span>
+                                </Button>
+                            </div>
+                        ) : (
+                            <Card.Text className="mb-0">
+                                <FaUserAlt /> {servicioDomicilio.nombre} 
+                            </Card.Text>
                         )
                     }
-                    </div>
-                    <Card.Text className="mb-0">
-                        <FaUserAlt /> {servicioDomicilio.nombre} 
-                    </Card.Text>
                     <Card.Text className="mb-0">
                         <FontAwesomeIcon icon={faHouse} /> {servicioDomicilio.direccion}
                     </Card.Text>
+                    {
+                        servicioDomicilio.colonia && (
+                            <Card.Text className="mb-0">
+                            &nbsp; &nbsp; &nbsp;COL. {servicioDomicilio.colonia}
+                            </Card.Text>
+                        )
+                    }
+                    {
+                        servicioDomicilio.municipio && (
+                            <Card.Text className="mb-0">
+                            &nbsp; &nbsp; &nbsp;DEL. {servicioDomicilio.municipio}
+                            </Card.Text>
+                        )
+                    }
+                    {
+                        servicioDomicilio.cp && (
+                            <Card.Text className="mb-0">
+                            &nbsp; &nbsp; &nbsp;C.P. {servicioDomicilio.cp}
+                            </Card.Text>
+                        )
+                    }
                     <Card.Text className="mb-0">
                         <FontAwesomeIcon icon={faLocationDot} /> {servicioDomicilio.ubicacion}
                     </Card.Text>

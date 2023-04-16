@@ -84,6 +84,27 @@ export async function actualizaFechaRequerida({id_servicio_domicilio, id_usuario
     }
 }
 
+export async function actualizaInformacionGeneral({id_servicio_domicilio, id_usuario, informacionGeneral}) {
+    try {
+        const response = await fetch(`${getUrlApis()}/servicios-domicilio/${id_servicio_domicilio}`, {
+            credentials: 'include',
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({id_servicio_domicilio, id_usuario, informacionGeneral, tipoAccion: 'actualiza-informacion-general'})
+        })
+
+        if (!response.ok) {
+            const mensaje = `Ocurrió un error: ${response.status}`
+            throw new Error(mensaje)
+        }
+
+        const data = await response.json()
+        return data
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 export async function borraServicioDomicilio({id_servicio_domicilio}) {
     try {
         const response = await fetch(`${getUrlApis()}/servicios-domicilio/${id_servicio_domicilio}`, {

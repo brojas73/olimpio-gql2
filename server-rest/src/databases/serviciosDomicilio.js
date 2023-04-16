@@ -8,6 +8,9 @@ const mainQuery = `
              sd.hora_requerida,
              sd.nombre,
              sd.direccion,
+             sd.colonia,
+             sd.municipio,
+             sd.cp,
              sd.ubicacion,
              sd.telefono,
              sd.ticket,
@@ -188,6 +191,9 @@ const creaEntrega = (servicioDomicilio) => {
         hora_requerida,
         nombre,
         direccion,
+        colonia,
+        municipio,
+        cp,
         ubicacion,
         telefono,
         id_estado_servicio_domicilio,
@@ -205,6 +211,9 @@ const creaEntrega = (servicioDomicilio) => {
         servicioDomicilio.hora_requerida,
         servicioDomicilio.nombre,
         servicioDomicilio.direccion,
+        servicioDomicilio.colonia,
+        servicioDomicilio.municipio,
+        servicioDomicilio.cp,
         servicioDomicilio.ubicacion,
         servicioDomicilio.telefono,
         servicioDomicilio.id_estado_servicio_domicilio,
@@ -348,6 +357,47 @@ const actualizaFechaRequerida = (idServicioDomicilio, fechaRequerida, horaRequer
     })
 }
 
+const actualizaInformacionGeneral = (idServicioDomicilio, nombre, direccion, colonia, municipio, cp, ubicacion, telefono, idUsuario) => {
+    const q = `
+        update   servicio_domicilio
+           set   fecha_modificacion = CURRENT_TIMESTAMP,
+                 id_modificado_por = ?,
+                 nombre = ?,
+                 direccion = ?,
+                 colonia = ?,
+                 municipio = ?,
+                 cp = ?,
+                 ubicacion = ?,
+                 telefono = ?
+           where id_servicio_domicilio = ?   
+    `
+
+    return new Promise((resolve, reject) => {
+        pool.query(q, [idUsuario, nombre, direccion, colonia, municipio, cp, ubicacion, telefono, idServicioDomicilio], (err) => {
+            if (err) {
+                console.log(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
+            }
+
+            resolve({
+                status: 200,
+                mensaje: 'La informacion general del servicio a domicilio se actualizó exitosamente',
+                id_servicio_domicilio: idServicioDomicilio,
+                nombre: nombre,
+                direccion: direccion,
+                colonia: colonia,
+                municipio: municipio,
+                cp: cp,
+                ubicacion: ubicacion,
+                telefono: telefono
+            })
+        })
+    })
+}
+
 export default {
     serviciosDomicilio,
     serviciosDomicilioActivos,
@@ -358,5 +408,6 @@ export default {
     borraServicioDomicilio,
     actualizaEstado,
     actualizaInfoPago,
-    actualizaFechaRequerida
+    actualizaFechaRequerida,
+    actualizaInformacionGeneral
 }

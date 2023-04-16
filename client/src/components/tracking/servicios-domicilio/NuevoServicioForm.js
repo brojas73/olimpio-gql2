@@ -26,6 +26,9 @@ const NuevoServicioForm = ({onExito}) => {
     hora_requerida: formateaHoraForm(new Date()),
     nombre: '',
     direccion: '',
+    colonia: '',
+    municipio: '',
+    cp: '',
     ubicacion: '',
     telefono: '',
     ticket: '',
@@ -258,6 +261,36 @@ const NuevoServicioForm = ({onExito}) => {
                 <Form.Control.Feedback type='invalid'>
                     { errors.direccion }
                 </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group as={Col} className="mb-3">
+                <Form.Label>Colonia</Form.Label>
+                <Form.Control 
+                    onChange={handleChange}
+                    value={servicioDomicilio.colonia}
+                    type='text'
+                    placeholder="Escribe la colonia del cliente..." 
+                    name='colonia' 
+                />
+            </Form.Group>
+            <Form.Group as={Col} className="mb-3">
+                <Form.Label>Delegación</Form.Label>
+                <Form.Control 
+                    onChange={handleChange}
+                    value={servicioDomicilio.municipio}
+                    type='text'
+                    placeholder="Escribe la delegación del cliente..." 
+                    name='municipio' 
+                />
+            </Form.Group>
+            <Form.Group as={Col} className="mb-3">
+                <Form.Label>Código Postal</Form.Label>
+                <Form.Control 
+                    onChange={handleChange}
+                    value={servicioDomicilio.cp}
+                    type='text'
+                    placeholder="Escribe el código postal del cliente..." 
+                    name='cp' 
+                />
             </Form.Group>
             <Form.Group as={Col} className="mb-3">
                 <Form.Label>Ubicación</Form.Label>

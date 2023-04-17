@@ -1,7 +1,7 @@
 import DB from '../databases/catalogos.js'
 
 const estadosServicioDomicilio = async () => {
-    return await DB.estadosServicioDomicilioActivos()
+    return await DB.estadosServicioDomicilio()
 }
 
 const estadosTareaExterna = async () => {

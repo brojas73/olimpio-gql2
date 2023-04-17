@@ -1,4 +1,4 @@
-import { Button, Card, Col } from "react-bootstrap"
+import { Button, Card, Col, Nav, NavLink } from "react-bootstrap"
 import { FaCheck, FaRegCalendarAlt, FaTicketAlt, FaTruck, FaUserAlt, FaPhoneAlt, FaDollarSign, FaClipboardList, FaStickyNote } from 'react-icons/fa'
 import { faLandmark, faLocationDot, faHouse, faPencil, faBan } from "@fortawesome/free-solid-svg-icons"
 
@@ -8,6 +8,7 @@ import { STATUS_SERVICIO_DOMICILIO, useServiciosDomicilio } from "../../../conte
 
 import { formateaFecha, formateaFechaHora, esEntrega, esRecoleccion, pagado, servicioActivo } from '../../comun/utils'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse"
 
 const ServicioDomicilio = ({
     servicioDomicilio, 
@@ -75,40 +76,55 @@ const ServicioDomicilio = ({
         <Col>
             <Card >
                 <Card.Header>
-                    <Card.Subtitle className="text-primary d-flex justify-content-between align-items-center">
-                        {servicioDomicilio.estado_servicio_domicilio}
-                        <div>
-                            <Button 
+                    <div className="d-flex justify-content-between align-items-center">
+                        <Card.Subtitle className="text-primary ">
+                            {servicioDomicilio.estado_servicio_domicilio}
+                        </Card.Subtitle>
+                        <div className="d-flex justify-content-between align-items-center">
+                            {/* <Button 
                                 variant='outline-dark'
                                 size="sm"
                                 onClick={() => onLog(servicioDomicilio.id_servicio_domicilio)} 
-                                >
-                                <FaClipboardList /> 
-                                <span> </span>
-                                <span className="align-middle">
-                                    Log
-                                </span>
-                            </Button>
-                            <span> </span>
+                            > */}
+                            <NavLink 
+                                onClick={() => onLog(servicioDomicilio.id_servicio_domicilio)}
+                                className="link-dark"
+                            >
+                                <small>
+                                    <FaClipboardList /> 
+                                    <span> </span>
+                                    <span className="align-middle">
+                                        Log
+                                    </span>
+                                </small>
+                            </NavLink>
+                            {/* </Button> */}
+                            &nbsp;&nbsp;
                             {
                                 esEncargado() && (
-                                    <Button 
-                                        size="sm"
-                                        variant="outline-success"
+                                    // <Button 
+                                    //     size="sm"
+                                    //     variant="outline-success"
+                                    //     onClick={() => onEditarInformacionPago(servicioDomicilio.id_servicio_domicilio)}
+                                    // >
+                                    <NavLink
                                         onClick={() => onEditarInformacionPago(servicioDomicilio.id_servicio_domicilio)}
+                                        className="link-success"
                                     >
-                                        <FaDollarSign /> 
-                                        <span> </span>
-                                        <span className="align-middle">
-                                            {
-                                                pagado(servicioDomicilio) ? 'Pagado' : 'Pago'
-                                            }
-                                        </span>
-                                    </Button>
+                                        <small>
+                                            <FaDollarSign /> 
+                                                <span className="align-middle">
+                                                {
+                                                    pagado(servicioDomicilio) ? 'Pagado' : 'Pago'
+                                                }
+                                            </span>
+                                        </small>
+                                    </NavLink>
+                                    // </Button>
                                 )
                             }
                         </div>
-                    </Card.Subtitle>
+                    </div>
                     <div className="d-flex justify-content-between align-items-center mt-2">
                         <Card.Subtitle>
                             {`${servicioDomicilio.tipo_servicio_descripcion} `}
@@ -131,15 +147,22 @@ const ServicioDomicilio = ({
                             <div className="d-flex justify-content-between align-items-center">
                                 <Card.Text className="mb-0"><FaTicketAlt /> {servicioDomicilio.ticket?.padStart(6, '0')} </Card.Text>
                                 <span></span>
-                                <Button 
+                                {/* <Button 
                                     size="sm"
                                     variant="outline-primary"
                                     onClick={() => onEditarInformacionGeneral(servicioDomicilio.id_servicio_domicilio)}
+                                > */}
+                                <NavLink 
+                                    onClick={() => onEditarInformacionGeneral(servicioDomicilio.id_servicio_domicilio)}
+                                    className="link-primary"
                                 >
+                                    <small>
                                     <FontAwesomeIcon icon={faPencil} /> 
                                     <span> </span>
                                     <span className="align-middle"> Editar </span>
-                                </Button>
+                                    </small>
+                                </NavLink>
+                                {/* </Button> */}
                             </div>
                         ) : esEntrega(servicioDomicilio) && !esEncargado() && (
                             <Card.Text className="mb-0"><FaTicketAlt /> {servicioDomicilio.ticket?.padStart(6, '0')} </Card.Text>
@@ -151,15 +174,25 @@ const ServicioDomicilio = ({
                                 <Card.Text className="mb-0">
                                     <FaUserAlt /> {servicioDomicilio.nombre} 
                                 </Card.Text>
-                                <Button 
+                                {/* <Button 
                                     size="sm"
                                     variant="outline-primary"
                                     onClick={() => onEditarInformacionGeneral(servicioDomicilio.id_servicio_domicilio)}
+                                > */}
+                                <NavLink 
+                                    className="link-primary"
+                                    onClick={() => onEditarInformacionGeneral(servicioDomicilio.id_servicio_domicilio)}
                                 >
-                                    <FontAwesomeIcon icon={faPencil} /> 
+                                    <small>
+                                        <FontAwesomeIcon icon={faPencil} />
+                                        <span> </span>
+                                        Editar
+                                    </small>
+                                </NavLink>
+                                    {/* <FontAwesomeIcon icon={faPencil} /> 
                                     <span> </span>
-                                    <span className="align-middle"> Editar </span>
-                                </Button>
+                                    <span className="align-middle"> Editar </span> */}
+                                {/* </Button> */}
                             </div>
                         ) : (
                             <Card.Text className="mb-0">
@@ -218,65 +251,88 @@ const ServicioDomicilio = ({
                         )
                     }
                 </Card.Body>
-                <Card.Footer className="d-flex justify-content-between align-items-center text-danger">
+                <Card.Footer className="d-flex justify-content-between align-items-center">
+                    <div>
                     {
                         // Si aún se pude acutalizar la fecha de entrega, pongo un botón para modificarla, en otro
                         // caso, sólo pongo la información de la fecha de entrega
                         servicioActivo(servicioDomicilio) && esEncargado() ? (
-                            <Button 
-                                size="sm" 
-                                onClick={() => onCambiarFecha(servicioDomicilio.id_servicio_domicilio)} 
-                                variant='outline-danger'
+                            // <Button 
+                            //     size="sm" 
+                            //     onClick={() => onCambiarFecha(servicioDomicilio.id_servicio_domicilio)} 
+                            //     variant='outline-danger'
+                            // >
+                            <NavLink 
+                                onClick={() => onCambiarFecha(servicioDomicilio.id_servicio_domicilio)}
+                                className="link-primary"
                             >
-                                <FaRegCalendarAlt /> 
-                                <span> </span>
-                                <span className="align-middle">
-                                    {/* {formateaFechaHora(servicioDomicilio.fecha_requerida, servicioDomicilio.hora_requerida, false, false)} */}
+                                <small>
+                                    <FaRegCalendarAlt /> 
+                                    <span className="align-middle">
+                                    <span> </span>
                                     {formateaFechaHora(servicioDomicilio.fecha_requerida, servicioDomicilio.hora_requerida)}
-                                </span>
-                            </Button>
+                                    </span>
+                                </small>
+                            </NavLink>
+                            // </Button>
                         ) : (
                             <small>
                                 <FaRegCalendarAlt /> 
-                                <span> </span>
                                 <span className="align-middle">
+                                    <span> </span>
                                     {formateaFechaHora(servicioDomicilio.fecha_requerida, servicioDomicilio.hora_requerida)}
                                 </span>
                             </small>
-                        )
+                )
                     }
-                    <div>
+                    </div>
+                    <div className="d-flex justify-content-between align-items-center">
                         {
                             mostrarBotonAcccionCancelar() && (
                                 <>
-                                    <Button 
+                                    {/* <Button 
                                         size="sm" 
                                         onClick={() => onCancelar(servicioDomicilio.id_servicio_domicilio)} 
                                         variant='outline-danger'
+                                    > */}
+                                    <NavLink 
+                                        onClick={() => onCancelar(servicioDomicilio.id_servicio_domicilio)} 
+                                        className="link-danger"
                                     >
-                                        <FontAwesomeIcon icon={faBan} />
-                                        <span> </span>
                                         <span className="align-middle">
-                                            Cancelar
+                                            <small>
+                                                <FontAwesomeIcon icon={faBan} />
+                                                <span> </span>
+                                                Cancelar
+                                            </small>
                                         </span>
-                                    </Button>
+                                    </NavLink>
+                                    {/* </Button> */}
                                     <span> </span>
                                 </>
                             )
                         }
+                        &nbsp;&nbsp;
                         {
                             mostrarBotonAccionContinuar() && (
-                                <Button 
-                                    size="sm"
-                                    variant="outline-primary"
+                                // <Button 
+                                //     size="sm"
+                                //     variant="outline-primary"
+                                //     onClick={() => onContinuar(servicioDomicilio.id_servicio_domicilio)}
+                                // >
+                                <NavLink 
                                     onClick={() => onContinuar(servicioDomicilio.id_servicio_domicilio)}
+                                    className="link-primary"
                                 >
-                                    <FaCheck /> 
-                                    <span> </span>
+                                    <small>
                                     <span className="align-middle">
+                                        <FaCheck /> 
+                                        <span> </span>
                                         {textoContinuar}
                                     </span>
-                                </Button>
+                                    </small>
+                                </NavLink>
+                                // </Button>
                             )
                         }
                     </div>

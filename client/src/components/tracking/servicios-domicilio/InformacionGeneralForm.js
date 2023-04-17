@@ -148,7 +148,7 @@ const InformacionGeneralForm = () => {
                 </Form.Control.Feedback>
             </Form.Group>
             <Form.Group as={Col} className="mb-3">
-                <Form.Label>Colonia</Form.Label>
+                <Form.Label>Colonia <small>(opcional)</small></Form.Label>
                 <Form.Control 
                     onChange={handleChange}
                     value={formaInformacionGeneral.colonia}
@@ -158,7 +158,7 @@ const InformacionGeneralForm = () => {
                 />
             </Form.Group>
             <Form.Group as={Col} className="mb-3">
-                <Form.Label>Delegación</Form.Label>
+                <Form.Label>Delegación <small>(opcional)</small></Form.Label>
                 <Form.Control 
                     onChange={handleChange}
                     value={formaInformacionGeneral.municipio}
@@ -168,7 +168,7 @@ const InformacionGeneralForm = () => {
                 />
             </Form.Group>
             <Form.Group as={Col} className="mb-3">
-                <Form.Label>Código Postal</Form.Label>
+                <Form.Label>Código Postal <small>(opcional)</small></Form.Label>
                 <Form.Control 
                     onChange={handleChange}
                     value={formaInformacionGeneral.cp}
@@ -178,7 +178,7 @@ const InformacionGeneralForm = () => {
                 />
             </Form.Group>
             <Form.Group as={Col} className="mb-3">
-                <Form.Label>Ubicación</Form.Label>
+                <Form.Label>Ubicación <small>(opcional)</small></Form.Label>
                 <Form.Control 
                     onChange={handleChange}
                     value={formaInformacionGeneral.ubicacion}

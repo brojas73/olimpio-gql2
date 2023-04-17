@@ -10,12 +10,18 @@ import { useQuery } from 'react-query'
 import { fetchEstadosServiciosDomicilio, QUERY_ESTADOS_SERVICIO_DOMICILIO } from '../../queries/EstadoServicioDomicilio'
 
 const EstadosServicioDomicilioDropDown = ({onSelect, idSelected }) => {
-  const { data: estadosServicioDomicilio, isLoading } = useQuery(QUERY_ESTADOS_SERVICIO_DOMICILIO, fetchEstadosServiciosDomicilio, { staleTime: Infinity, cacheTime: Infinity})
+  const { data: estadosServicioDomicilio, isLoading } = useQuery(
+    QUERY_ESTADOS_SERVICIO_DOMICILIO, 
+    fetchEstadosServiciosDomicilio, 
+    { staleTime: Infinity, cacheTime: Infinity}
+  )
   const location = useLocation()
   
   if (isLoading) return <Spinner animation='border' />
 
-  const titulo = location.pathname.includes('servicios-activos') ? 'Estado del Servicio' : nombreEstadoServicioDomicilio(estadosServicioDomicilio, idSelected)
+  const titulo = location.pathname.includes('servicios-activos') ? 
+                    'Estado del Servicio' : 
+                    nombreEstadoServicioDomicilio(estadosServicioDomicilio, idSelected)
   
   return (
     <NavDropdown title={titulo}>

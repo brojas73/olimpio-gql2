@@ -1,4 +1,4 @@
-import { Button, Card, Col, Nav, NavLink } from "react-bootstrap"
+import { Card, Col, NavLink } from "react-bootstrap"
 import { FaCheck, FaRegCalendarAlt, FaTicketAlt, FaTruck, FaUserAlt, FaPhoneAlt, FaDollarSign, FaClipboardList, FaStickyNote } from 'react-icons/fa'
 import { faLandmark, faLocationDot, faHouse, faPencil, faBan } from "@fortawesome/free-solid-svg-icons"
 
@@ -8,7 +8,6 @@ import { STATUS_SERVICIO_DOMICILIO, useServiciosDomicilio } from "../../../conte
 
 import { formateaFecha, formateaFechaHora, esEntrega, esRecoleccion, pagado, servicioActivo } from '../../comun/utils'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse"
 
 const ServicioDomicilio = ({
     servicioDomicilio, 
@@ -80,12 +79,7 @@ const ServicioDomicilio = ({
                         <Card.Subtitle className="text-primary ">
                             {servicioDomicilio.estado_servicio_domicilio}
                         </Card.Subtitle>
-                        <div className="d-flex justify-content-between align-items-center">
-                            {/* <Button 
-                                variant='outline-dark'
-                                size="sm"
-                                onClick={() => onLog(servicioDomicilio.id_servicio_domicilio)} 
-                            > */}
+                        <div className="d-flex justify-content-between">
                             <NavLink 
                                 onClick={() => onLog(servicioDomicilio.id_servicio_domicilio)}
                                 className="link-dark"
@@ -97,16 +91,10 @@ const ServicioDomicilio = ({
                                         Log
                                     </span>
                                 </small>
+                                &nbsp;&nbsp;
                             </NavLink>
-                            {/* </Button> */}
-                            &nbsp;&nbsp;
                             {
                                 esEncargado() && (
-                                    // <Button 
-                                    //     size="sm"
-                                    //     variant="outline-success"
-                                    //     onClick={() => onEditarInformacionPago(servicioDomicilio.id_servicio_domicilio)}
-                                    // >
                                     <NavLink
                                         onClick={() => onEditarInformacionPago(servicioDomicilio.id_servicio_domicilio)}
                                         className="link-success"
@@ -120,7 +108,6 @@ const ServicioDomicilio = ({
                                             </span>
                                         </small>
                                     </NavLink>
-                                    // </Button>
                                 )
                             }
                         </div>
@@ -147,11 +134,6 @@ const ServicioDomicilio = ({
                             <div className="d-flex justify-content-between align-items-center">
                                 <Card.Text className="mb-0"><FaTicketAlt /> {servicioDomicilio.ticket?.padStart(6, '0')} </Card.Text>
                                 <span></span>
-                                {/* <Button 
-                                    size="sm"
-                                    variant="outline-primary"
-                                    onClick={() => onEditarInformacionGeneral(servicioDomicilio.id_servicio_domicilio)}
-                                > */}
                                 <NavLink 
                                     onClick={() => onEditarInformacionGeneral(servicioDomicilio.id_servicio_domicilio)}
                                     className="link-primary"
@@ -162,7 +144,6 @@ const ServicioDomicilio = ({
                                     <span className="align-middle"> Editar </span>
                                     </small>
                                 </NavLink>
-                                {/* </Button> */}
                             </div>
                         ) : esEntrega(servicioDomicilio) && !esEncargado() && (
                             <Card.Text className="mb-0"><FaTicketAlt /> {servicioDomicilio.ticket?.padStart(6, '0')} </Card.Text>
@@ -174,11 +155,6 @@ const ServicioDomicilio = ({
                                 <Card.Text className="mb-0">
                                     <FaUserAlt /> {servicioDomicilio.nombre} 
                                 </Card.Text>
-                                {/* <Button 
-                                    size="sm"
-                                    variant="outline-primary"
-                                    onClick={() => onEditarInformacionGeneral(servicioDomicilio.id_servicio_domicilio)}
-                                > */}
                                 <NavLink 
                                     className="link-primary"
                                     onClick={() => onEditarInformacionGeneral(servicioDomicilio.id_servicio_domicilio)}
@@ -189,10 +165,6 @@ const ServicioDomicilio = ({
                                         Editar
                                     </small>
                                 </NavLink>
-                                    {/* <FontAwesomeIcon icon={faPencil} /> 
-                                    <span> </span>
-                                    <span className="align-middle"> Editar </span> */}
-                                {/* </Button> */}
                             </div>
                         ) : (
                             <Card.Text className="mb-0">
@@ -257,11 +229,6 @@ const ServicioDomicilio = ({
                         // Si aún se pude acutalizar la fecha de entrega, pongo un botón para modificarla, en otro
                         // caso, sólo pongo la información de la fecha de entrega
                         servicioActivo(servicioDomicilio) && esEncargado() ? (
-                            // <Button 
-                            //     size="sm" 
-                            //     onClick={() => onCambiarFecha(servicioDomicilio.id_servicio_domicilio)} 
-                            //     variant='outline-danger'
-                            // >
                             <NavLink 
                                 onClick={() => onCambiarFecha(servicioDomicilio.id_servicio_domicilio)}
                                 className="link-primary"
@@ -274,7 +241,6 @@ const ServicioDomicilio = ({
                                     </span>
                                 </small>
                             </NavLink>
-                            // </Button>
                         ) : (
                             <small>
                                 <FaRegCalendarAlt /> 
@@ -289,50 +255,35 @@ const ServicioDomicilio = ({
                     <div className="d-flex justify-content-between align-items-center">
                         {
                             mostrarBotonAcccionCancelar() && (
-                                <>
-                                    {/* <Button 
-                                        size="sm" 
-                                        onClick={() => onCancelar(servicioDomicilio.id_servicio_domicilio)} 
-                                        variant='outline-danger'
-                                    > */}
-                                    <NavLink 
-                                        onClick={() => onCancelar(servicioDomicilio.id_servicio_domicilio)} 
-                                        className="link-danger"
-                                    >
-                                        <span className="align-middle">
-                                            <small>
-                                                <FontAwesomeIcon icon={faBan} />
-                                                <span> </span>
-                                                Cancelar
-                                            </small>
-                                        </span>
-                                    </NavLink>
-                                    {/* </Button> */}
-                                    <span> </span>
-                                </>
+                                <NavLink 
+                                    onClick={() => onCancelar(servicioDomicilio.id_servicio_domicilio)} 
+                                    className="link-danger"
+                                >
+                                    <span className="align-middle">
+                                        <small>
+                                            <FontAwesomeIcon icon={faBan} />
+                                            <span> </span>
+                                            Cancelar
+                                        </small>
+                                    </span>
+                                    &nbsp;&nbsp;
+                                </NavLink>
                             )
                         }
-                        &nbsp;&nbsp;
                         {
                             mostrarBotonAccionContinuar() && (
-                                // <Button 
-                                //     size="sm"
-                                //     variant="outline-primary"
-                                //     onClick={() => onContinuar(servicioDomicilio.id_servicio_domicilio)}
-                                // >
                                 <NavLink 
                                     onClick={() => onContinuar(servicioDomicilio.id_servicio_domicilio)}
                                     className="link-primary"
                                 >
-                                    <small>
                                     <span className="align-middle">
-                                        <FaCheck /> 
-                                        <span> </span>
-                                        {textoContinuar}
+                                        <small>
+                                            <FaCheck /> 
+                                            <span> </span>
+                                            {textoContinuar}
+                                        </small>
                                     </span>
-                                    </small>
                                 </NavLink>
-                                // </Button>
                             )
                         }
                     </div>

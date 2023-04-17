@@ -1,4 +1,4 @@
-import { Button, Card, Col } from "react-bootstrap"
+import { Card, Col, NavLink } from "react-bootstrap"
 import { FaClipboardList, FaArrowAltCircleRight, FaTrashAlt, FaCheck, FaRegCalendarAlt, FaTicketAlt, FaShareSquare } from 'react-icons/fa'
 
 import { useAuth } from "../../../hooks/useAuth"
@@ -70,17 +70,18 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
                 <Card.Header>
                     <div className="d-flex justify-content-between align-items-center">
                         <Card.Subtitle className="text-primary">{tareaExterna.estado_tarea}</Card.Subtitle>
-                        <Button 
-                            size="sm" 
+                        <NavLink 
                             onClick={() => onLog(tareaExterna.id_tarea_externa)} 
-                            variant="outline-dark"
+                            className="link-dark"
                         >
-                            <FaClipboardList /> 
-                            <span> </span>
-                            <span className="align-middle">
-                                Log
-                            </span>
-                        </Button>
+                            <small>
+                                <FaClipboardList /> 
+                                <span> </span>
+                                <span className="align-middle">
+                                    Log
+                                </span>
+                            </small>
+                        </NavLink>
                     </div>
                     <div className="d-flex justify-content-between align-items-center">
                         <Card.Title>
@@ -118,64 +119,65 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
                         {tareaExterna.descripcion}
                     </Card.Text>
                 </Card.Body>
-                <Card.Footer className="d-flex justify-content-between align-items-center text-danger">
-                    <small>
-                        <FaRegCalendarAlt /> 
-                        <span> </span>
-                        <span className="align-middle">
-                            {formateaFechaHora(tareaExterna.fecha_requerida, tareaExterna.hora_requerida)}
-                        </span>
-                    </small>
+                <Card.Footer className="d-flex justify-content-between align-items-center">
                     <div>
+                        <small>
+                            <FaRegCalendarAlt /> 
+                            <span className="align-middle">
+                                <span> </span>
+                                {formateaFechaHora(tareaExterna.fecha_requerida, tareaExterna.hora_requerida)}
+                            </span>
+                        </small>
+                    </div>
+                    <div className="d-flex justify-content-between align-items-center">
                         {
                             mostrarBotonAcccionBorrar() && (
-                                <>
-                                    <Button 
-                                        size="sm" 
-                                        onClick={() => onBorrar(tareaExterna.id_tarea_externa)} 
-                                        variant='outline-danger'
-                                    >
+                                <NavLink
+                                    onClick={() => onBorrar(tareaExterna.id_tarea_externa)} 
+                                    className="link-danger"
+                                >
+                                    <small>
                                         <FaTrashAlt />
                                         <span> </span>
                                         <span className="align-middle">
                                             {textoBorrar}
                                         </span>
-                                    </Button>
-                                    <span> </span>
-                                </>
+                                    </small>
+                                    &nbsp;&nbsp;
+                                </NavLink>
                             )
                         }
                         {
                             mostrarBotonAccionForward() && (
-                                <>
-                                    <Button 
-                                        size="sm" 
-                                        onClick={() => onForward(tareaExterna.id_tarea_externa)} 
-                                        variant='outline-secondary'
-                                    >
+                                <NavLink
+                                    onClick={() => onForward(tareaExterna.id_tarea_externa)} 
+                                    className="link-secondary"
+                                >
+                                    <small>
                                         <FaShareSquare />
                                         <span> </span>
                                         <span className="align-middle">
                                             {textoForward}
                                         </span>
-                                    </Button>
-                                    <span> </span>
-                                </>
+                                    </small>
+                                    &nbsp;&nbsp;
+                                </NavLink>
                             )
                         }
                         {
                             mostrarBotonAccionContinuar() && (
-                                <Button 
-                                    size="sm"
+                                <NavLink
                                     onClick={handleContinuar}
-                                    variant='outline-primary'
+                                    className="link-primary"
                                 >
-                                    <FaCheck /> 
-                                    <span> </span>
-                                    <span className="align-middle">
-                                        {textoContinuar}
-                                    </span>
-                                </Button>
+                                    <small>
+                                        <FaCheck /> 
+                                        <span> </span>
+                                        <span className="align-middle">
+                                            {textoContinuar}
+                                        </span>
+                                    </small>
+                                </NavLink>
                             )
                         }
                     </div>

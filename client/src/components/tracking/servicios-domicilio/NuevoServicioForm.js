@@ -287,7 +287,7 @@ const NuevoServicioForm = ({onExito}) => {
                 <Form.Control 
                     onChange={handleChange}
                     value={servicioDomicilio.cp}
-                    type='text'
+                    type='number'
                     placeholder="Escribe el código postal del cliente..." 
                     name='cp' 
                 />

@@ -172,7 +172,7 @@ const InformacionGeneralForm = () => {
                 <Form.Control 
                     onChange={handleChange}
                     value={formaInformacionGeneral.cp}
-                    type='text'
+                    type='number'
                     placeholder="Escribe el código postal del cliente..." 
                     name='cp' 
                 />

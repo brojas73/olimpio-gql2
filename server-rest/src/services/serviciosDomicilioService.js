@@ -64,6 +64,14 @@ const actualizaInformacionGeneral = async (idServicioDomicilio, nombre, direccio
     }
 }
 
+const cancelaServicioDomicilio = async (idServicioDomicilio, notaCancelacion, idEstadoServicioDomicilio, idUsuario) => {
+    try {
+        return await DB.cancelaServicioDomicilio(idServicioDomicilio, notaCancelacion, idEstadoServicioDomicilio, idUsuario)
+    } catch (error) {
+        throw error
+    }
+}
+
 const borraServicioDomicilio = async (idServicioDomicilio) => {
     try {
         return await DB.borraServicioDomicilio(idServicioDomicilio)
@@ -83,6 +91,7 @@ export default {
     actualizaInfoPago,
     actualizaFechaRequerida,
     actualizaInformacionGeneral,
-    borraServicioDomicilio
+    borraServicioDomicilio,
+    cancelaServicioDomicilio
 }
 

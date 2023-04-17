@@ -37,6 +37,7 @@ import EntregadosACliente from "./components/tracking/servicios-domicilio/Entreg
 import PendienteRecoleccionEnSucursal from "./components/tracking/servicios-domicilio/PendienteRecoleccionEnSucursal"
 import RecolectadoParaEntregaACliente from "./components/tracking/servicios-domicilio/RecolectadoParaEntregaACliente"
 import InformacionPagoForm from "./components/tracking/servicios-domicilio/InformacionPagoForm"
+import CancelarForm from "./components/tracking/servicios-domicilio/CancelarForm"
 import PorPagar from "./components/tracking/servicios-domicilio/PorPagar"
 import BitacoraServicioDomicilio from './components/tracking/servicios-domicilio/BitacoraServicioDomicilio'
 import { useMutation } from "react-query"
@@ -126,6 +127,7 @@ function App() {
             <Route path='pendiente-recoleccion-en-sucursal' element={<PendienteRecoleccionEnSucursal />} />
             <Route path='recolectados-para-entrega-a-cliente' element={<RecolectadoParaEntregaACliente />} />
             <Route path='entregados-a-cliente' element={<EntregadosACliente />} />
+            <Route path='cancelar' element={<CancelarForm />} />
             <Route path='actualiza-informacion-pago' element={<InformacionPagoForm />} />
             <Route path='actualiza-fecha-requerida' element={<FechaRequeridaForm />} />
             <Route path='actualiza-informacion-general' element={<InformacionGeneralForm />} />

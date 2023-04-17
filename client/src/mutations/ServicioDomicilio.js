@@ -1,4 +1,5 @@
 import { getUrlApis } from '../components/comun/utils'
+import { STATUS_SERVICIO_DOMICILIO } from '../context/ServiciosDomicilioContext'
 
 export async function creaServicioDomicilio(servicioDomicilio) {
     try {
@@ -91,6 +92,33 @@ export async function actualizaInformacionGeneral({id_servicio_domicilio, id_usu
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({id_servicio_domicilio, id_usuario, informacionGeneral, tipoAccion: 'actualiza-informacion-general'})
+        })
+
+        if (!response.ok) {
+            const mensaje = `Ocurrió un error: ${response.status}`
+            throw new Error(mensaje)
+        }
+
+        const data = await response.json()
+        return data
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+export async function cancelaServicioDomicilio({id_servicio_domicilio, id_usuario, informacionCancelacion}) {
+    try {
+        const response = await fetch(`${getUrlApis()}/servicios-domicilio/${id_servicio_domicilio}`, {
+            credentials: 'include',
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id_servicio_domicilio, 
+                id_usuario, 
+                id_estado_servicio_domicilio: STATUS_SERVICIO_DOMICILIO.CANCELADO, 
+                informacionCancelacion, 
+                tipoAccion: 'cancelacion'
+            })
         })
 
         if (!response.ok) {

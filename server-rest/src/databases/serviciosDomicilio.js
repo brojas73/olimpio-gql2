@@ -398,6 +398,39 @@ const actualizaInformacionGeneral = (idServicioDomicilio, nombre, direccion, col
     })
 }
 
+const cancelaServicioDomicilio = (idServicioDomicilio, notaCancelacion, idEstadoServicioDomicilio, idUsuario) => {
+    const q = `
+        update   servicio_domicilio
+           set   fecha_modificacion = CURRENT_TIMESTAMP,
+                 id_modificado_por = ?,
+                 id_cancelado_por = ?,
+                 fecha_cancelacion = CURRENT_TIMESTAMP,
+                 nota_cancelacion = ?,
+                 id_estado_servicio_domicilio = ?
+           where id_servicio_domicilio = ?   
+    `
+
+    return new Promise((resolve, reject) => {
+        pool.query(q, [idUsuario, idUsuario, notaCancelacion, idEstadoServicioDomicilio, idServicioDomicilio], (err) => {
+            if (err) {
+                console.log(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
+            }
+
+            resolve({
+                status: 200,
+                mensaje: 'El servicio a domicilio se canceló exitosamente',
+                id_servicio_domicilio: idServicioDomicilio,
+                id_estado_servicio_domicilio: idEstadoServicioDomicilio
+            })
+        })
+    })
+}
+
+
 export default {
     serviciosDomicilio,
     serviciosDomicilioActivos,
@@ -406,6 +439,7 @@ export default {
     creaRecoleccion,
     creaEntrega,
     borraServicioDomicilio,
+    cancelaServicioDomicilio,
     actualizaEstado,
     actualizaInfoPago,
     actualizaFechaRequerida,

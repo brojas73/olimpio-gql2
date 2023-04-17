@@ -98,6 +98,14 @@ const ListaServiciosDomicilio = ({serviciosDomicilio, titulo, siguienteEstado, t
     })
   }
 
+  function handleCancelar(idServicioDomicilio) {
+    navigate('/servicios-domicilio/cancelar', {
+      state: {
+        id_servicio_domicilio: idServicioDomicilio
+      }
+    })
+  }
+
   return (
     <>
       <Confirmacion 
@@ -116,6 +124,7 @@ const ListaServiciosDomicilio = ({serviciosDomicilio, titulo, siguienteEstado, t
               textoBorrar={textoBorrar}
               onContinuar={handleContinuar}
               onBorrar={handleBorrar}
+              onCancelar={handleCancelar}
               onLog={handleLog}
               onEditarInformacionPago={handleEditarInformacionPago}
               onEditarInformacionGeneral={handleEditarInformacionGeneral}

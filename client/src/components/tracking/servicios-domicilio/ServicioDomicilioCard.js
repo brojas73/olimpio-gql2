@@ -1,6 +1,6 @@
 import { Button, Card, Col } from "react-bootstrap"
-import { FaTrashAlt, FaCheck, FaRegCalendarAlt, FaTicketAlt, FaTruck, FaUserAlt, FaPhoneAlt, FaDollarSign, FaClipboardList, FaStickyNote, FaSquarespace } from 'react-icons/fa'
-import { faLandmark, faLocationDot, faHouse, faPencil } from "@fortawesome/free-solid-svg-icons"
+import { FaCheck, FaRegCalendarAlt, FaTicketAlt, FaTruck, FaUserAlt, FaPhoneAlt, FaDollarSign, FaClipboardList, FaStickyNote } from 'react-icons/fa'
+import { faLandmark, faLocationDot, faHouse, faPencil, faBan } from "@fortawesome/free-solid-svg-icons"
 
 import { useAuth } from "../../../hooks/useAuth"
 
@@ -8,7 +8,6 @@ import { STATUS_SERVICIO_DOMICILIO, useServiciosDomicilio } from "../../../conte
 
 import { formateaFecha, formateaFechaHora, esEntrega, esRecoleccion, pagado, servicioActivo } from '../../comun/utils'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse"
 
 const ServicioDomicilio = ({
     servicioDomicilio, 
@@ -16,6 +15,7 @@ const ServicioDomicilio = ({
     textoBorrar, 
     onContinuar, 
     onBorrar, 
+    onCancelar,
     onEditarInformacionPago, 
     onLog, 
     onCambiarFecha,
@@ -46,19 +46,30 @@ const ServicioDomicilio = ({
         }
     }
 
-    function mostrarBotonAcccionBorrar() {
-        if (!textoBorrar)
-            return false
+    // function mostrarBotonAcccionBorrar() {
+    //     if (!textoBorrar)
+    //         return false
 
+    //     return (
+    //         (
+    //             parseInt(estadoSDActual) === STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_CLIENTE || 
+    //             parseInt(estadoSDActual) === STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_SUCURSAL
+    //         ) && 
+    //         parseInt(servicioDomicilio.id_creado_por) === parseInt(credenciales.id_usuario) &&
+    //         esEncargado()
+    //     )
+    // }
+
+    function mostrarBotonAcccionCancelar() {
         return (
             (
-                parseInt(estadoSDActual) === STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_CLIENTE || 
-                parseInt(estadoSDActual) === STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_SUCURSAL
+                parseInt(estadoSDActual) !== STATUS_SERVICIO_DOMICILIO.TERMINADO && 
+                parseInt(estadoSDActual) !== STATUS_SERVICIO_DOMICILIO.CANCELADO
             ) && 
-            parseInt(servicioDomicilio.id_creado_por) === parseInt(credenciales.id_usuario) &&
             esEncargado()
         )
     }
+
 
     return (
         <Col>
@@ -180,9 +191,13 @@ const ServicioDomicilio = ({
                             </Card.Text>
                         )
                     }
-                    <Card.Text className="mb-0">
-                        <FontAwesomeIcon icon={faLocationDot} /> {servicioDomicilio.ubicacion}
-                    </Card.Text>
+                    {
+                        servicioDomicilio.ubicacion && (
+                            <Card.Text className="mb-0">
+                                <FontAwesomeIcon icon={faLocationDot} /> {servicioDomicilio.ubicacion}
+                            </Card.Text>
+                        )
+                    }
                     <Card.Text className="mb-0">
                         <FaPhoneAlt /> {servicioDomicilio.telefono}
                     </Card.Text>
@@ -223,17 +238,17 @@ const ServicioDomicilio = ({
                     }
                     <div>
                         {
-                            mostrarBotonAcccionBorrar() && (
+                            mostrarBotonAcccionCancelar() && (
                                 <>
                                     <Button 
                                         size="sm" 
-                                        onClick={() => onBorrar(servicioDomicilio.id_servicio_domicilio)} 
+                                        onClick={() => onCancelar(servicioDomicilio.id_servicio_domicilio)} 
                                         variant='outline-danger'
                                     >
-                                        <FaTrashAlt /> 
+                                        <FontAwesomeIcon icon={faBan} />
                                         <span> </span>
                                         <span className="align-middle">
-                                            {textoBorrar}
+                                            Cancelar
                                         </span>
                                     </Button>
                                     <span> </span>

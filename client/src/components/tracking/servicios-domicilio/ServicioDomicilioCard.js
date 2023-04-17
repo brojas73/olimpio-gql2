@@ -22,7 +22,7 @@ const ServicioDomicilio = ({
     onEditarInformacionGeneral 
 }) => {
     const { estadoSDActual } = useServiciosDomicilio()
-    const { esEncargado, esChofer, credenciales } = useAuth()
+    const { esEncargado, esChofer } = useAuth()
 
     function mostrarBotonAccionContinuar() {
         if (!textoContinuar)
@@ -63,8 +63,8 @@ const ServicioDomicilio = ({
     function mostrarBotonAcccionCancelar() {
         return (
             (
-                parseInt(estadoSDActual) !== STATUS_SERVICIO_DOMICILIO.TERMINADO && 
-                parseInt(estadoSDActual) !== STATUS_SERVICIO_DOMICILIO.CANCELADO
+                parseInt(servicioDomicilio.id_estado_servicio_domicilio) !== STATUS_SERVICIO_DOMICILIO.TERMINADO && 
+                parseInt(servicioDomicilio.id_estado_servicio_domicilio) !== STATUS_SERVICIO_DOMICILIO.CANCELADO
             ) && 
             esEncargado()
         )
@@ -202,11 +202,19 @@ const ServicioDomicilio = ({
                         <FaPhoneAlt /> {servicioDomicilio.telefono}
                     </Card.Text>
                     {
-                        esEntrega(servicioDomicilio) && (
-                            <>
-                                <Card.Text className="mb-0 mt-4 text-success"><FaDollarSign /> {servicioDomicilio.forma_pago?.toUpperCase()} </Card.Text>
-                                <Card.Text className="mb-0 text-success"><FaStickyNote /> {servicioDomicilio.notas_pago} </Card.Text>
-                            </>
+                        esEntrega(servicioDomicilio) && servicioDomicilio.forma_pago && (
+                            <Card.Text className="mb-0 mt-4 text-success">
+                                <FaDollarSign /> 
+                                {servicioDomicilio.forma_pago?.toUpperCase()} 
+                            </Card.Text>
+                        )
+                    }
+                    {
+                        esEntrega(servicioDomicilio) && servicioDomicilio.notas_pago && (
+                            <Card.Text className="mb-0 text-success">
+                                <FaStickyNote /> 
+                                {servicioDomicilio.notas_pago} 
+                            </Card.Text>
                         )
                     }
                 </Card.Body>
@@ -223,6 +231,7 @@ const ServicioDomicilio = ({
                                 <FaRegCalendarAlt /> 
                                 <span> </span>
                                 <span className="align-middle">
+                                    {/* {formateaFechaHora(servicioDomicilio.fecha_requerida, servicioDomicilio.hora_requerida, false, false)} */}
                                     {formateaFechaHora(servicioDomicilio.fecha_requerida, servicioDomicilio.hora_requerida)}
                                 </span>
                             </Button>

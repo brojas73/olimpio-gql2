@@ -119,9 +119,14 @@ const InformacionPagoForm = () => {
                     <Card.Text className="mb-0">
                         <FontAwesomeIcon icon={faHouse} /> {servicioDomicilio.direccion}
                     </Card.Text>
-                    <Card.Text className="mb-0">
-                        <FontAwesomeIcon icon={faLocationDot} /> {servicioDomicilio.ubicacion}
-                    </Card.Text>
+                    {
+                        servicioDomicilio.ubicacion && (
+                            <Card.Text className="mb-0">
+                                <FontAwesomeIcon icon={faLocationDot} /> 
+                                {servicioDomicilio.ubicacion}
+                            </Card.Text>
+                        )
+                    }
                     <Card.Text className="mb-0">
                         <FaPhoneAlt /> {servicioDomicilio.telefono}
                     </Card.Text>

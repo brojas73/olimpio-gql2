@@ -1,13 +1,18 @@
 import React, { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 
-import { Button, Col, Form } from 'react-bootstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHouse, faLocationDot } from '@fortawesome/free-solid-svg-icons'
 
-import { useMutation } from 'react-query'
+import { Button, Card, Col, Form, Spinner } from 'react-bootstrap'
+import { FaPhoneAlt, FaTicketAlt, FaUserAlt } from 'react-icons/fa'
+
+import { useMutation, useQuery } from 'react-query'
 import { cancelaServicioDomicilio } from "../../../mutations/ServicioDomicilio"
 import { useAuth } from '../../../hooks/useAuth'
 
-import { isBlank } from '../../comun/utils'
+import { isBlank, esEntrega } from '../../comun/utils'
+import { QUERY_SERVICIO_DOMICILIO, fetchServicioDomicilio } from '../../../queries/ServicioDomicilio'
 
 const InformacionGeneralForm = () => {
     const navigate = useNavigate()
@@ -18,6 +23,9 @@ const InformacionGeneralForm = () => {
         nota_cancelacion: '',
     })
     const [errors, setErrors] = useState({})
+
+    const { data, isLoading } = useQuery([QUERY_SERVICIO_DOMICILIO, idServicioDomicilio], fetchServicioDomicilio)
+
 
     const { mutate: doCancelaServicioDomicilio } = useMutation ({
         mutationFn: cancelaServicioDomicilio,
@@ -70,6 +78,10 @@ const InformacionGeneralForm = () => {
     
         return true
     }
+
+    if (isLoading) return <Spinner animation="border" />
+
+    const servicioDomicilio = data[0]
     
     return (
         <>
@@ -77,6 +89,30 @@ const InformacionGeneralForm = () => {
                 Cancelción de Servicio
             </Button>
             <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3">
+                    {
+                        esEntrega(servicioDomicilio) && (
+                            <Card.Text className="mb-0"><FaTicketAlt /> {servicioDomicilio.ticket.padStart(6, '0')}</Card.Text>
+                        )
+                    }
+                    <Card.Text className="mb-0">
+                        <FaUserAlt /> {servicioDomicilio.nombre} 
+                    </Card.Text>
+                    <Card.Text className="mb-0">
+                        <FontAwesomeIcon icon={faHouse} /> {servicioDomicilio.direccion}
+                    </Card.Text>
+                    {
+                        servicioDomicilio.ubicacion && (
+                            <Card.Text className="mb-0">
+                                <FontAwesomeIcon icon={faLocationDot} /> 
+                                {servicioDomicilio.ubicacion}
+                            </Card.Text>
+                        )
+                    }
+                    <Card.Text className="mb-0">
+                        <FaPhoneAlt /> {servicioDomicilio.telefono}
+                    </Card.Text>
+                </Form.Group>
                 <Form.Group as={Col} className="mb-3">
                     <Form.Label>Motivo de la Cancelación</Form.Label>
                     <Form.Control

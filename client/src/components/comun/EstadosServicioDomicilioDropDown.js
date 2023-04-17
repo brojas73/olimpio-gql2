@@ -21,7 +21,11 @@ const EstadosServicioDomicilioDropDown = ({onSelect, idSelected }) => {
     <NavDropdown title={titulo}>
     {
       estadosServicioDomicilio 
-        .filter(estadoServicioDomicilio => parseInt(estadoServicioDomicilio.id_estado_servicio_domicilio) !== STATUS_SERVICIO_DOMICILIO.TERMINADO)
+        .filter(estadoServicioDomicilio => 
+          parseInt(estadoServicioDomicilio.id_estado_servicio_domicilio) !== STATUS_SERVICIO_DOMICILIO.TERMINADO &&
+          parseInt(estadoServicioDomicilio.id_estado_servicio_domicilio) !== STATUS_SERVICIO_DOMICILIO.CANCELADO
+        )
+
         .map(estadoServicioDomicilio => (
           <NavDropdown.Item 
             as={Link}

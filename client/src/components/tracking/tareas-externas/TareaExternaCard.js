@@ -76,30 +76,25 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
                         >
                             <small>
                                 <FaClipboardList /> 
-                                <span> </span>
-                                <span className="align-middle">
+                                <span className="align-middle ms-1">
                                     Log
                                 </span>
                             </small>
                         </NavLink>
                     </div>
                     <div className="d-flex justify-content-between align-items-center">
-                        <Card.Title>
-                            <FaTicketAlt /> 
-                            <span> </span>
-                            <span className="align-middle">
-                               {tareaExterna.ticket.padStart(6, '0')}
-                            </span>
-                        </Card.Title>
                         <Card.Subtitle>
-                            { tareaExterna.sucursal_origen }
-                            <span> </span> <FaArrowAltCircleRight /> <span> </span>
-                            { tareaExterna.sucursal_destino }
+                            <FaTicketAlt className="me-1"/> 
+                            <span className="align-middle">
+                                {tareaExterna.ticket.padStart(6, '0')}
+                            </span>
+                        </Card.Subtitle>
+                        <Card.Subtitle>
+                            { tareaExterna.sucursal_origen } <FaArrowAltCircleRight className="mx-1"/> { tareaExterna.sucursal_destino }
                             {
                                 esRedireccionada(tareaExterna) && (
                                     <>
-                                        <span> </span> <FaArrowAltCircleRight /> <span> </span>
-                                        {tareaExterna.sucursal_redireccion}
+                                        <FaArrowAltCircleRight className="mx-1"/>{tareaExterna.sucursal_redireccion}
                                     </>
                                 )
                             }
@@ -123,8 +118,7 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
                     <div>
                         <small>
                             <FaRegCalendarAlt /> 
-                            <span className="align-middle">
-                                <span> </span>
+                            <span className="align-middle ms-1">
                                 {formateaFechaHora(tareaExterna.fecha_requerida, tareaExterna.hora_requerida)}
                             </span>
                         </small>
@@ -138,12 +132,10 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
                                 >
                                     <small>
                                         <FaTrashAlt />
-                                        <span> </span>
-                                        <span className="align-middle">
+                                        <span className="align-middle ms-1">
                                             {textoBorrar}
                                         </span>
                                     </small>
-                                    &nbsp;&nbsp;
                                 </NavLink>
                             )
                         }
@@ -155,12 +147,10 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
                                 >
                                     <small>
                                         <FaShareSquare />
-                                        <span> </span>
-                                        <span className="align-middle">
+                                        <span className="align-middle ms-1">
                                             {textoForward}
                                         </span>
                                     </small>
-                                    &nbsp;&nbsp;
                                 </NavLink>
                             )
                         }
@@ -168,12 +158,11 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
                             mostrarBotonAccionContinuar() && (
                                 <NavLink
                                     onClick={handleContinuar}
-                                    className="link-primary"
+                                    className="link-primary ms-2"
                                 >
                                     <small>
-                                        <FaCheck /> 
-                                        <span> </span>
                                         <span className="align-middle">
+                                            <FaCheck className="me-1"/> 
                                             {textoContinuar}
                                         </span>
                                     </small>

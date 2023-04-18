@@ -29,8 +29,8 @@ const EntregadosACliente = () => {
       serviciosDomicilio={serviciosFiltrados} 
       titulo='Entregados a Cliente'
       siguienteEstado={STATUS_SERVICIO_DOMICILIO.TERMINADO}
-      textoContinuar='Entregar'
-      textoConfirmacion='¿Seguro que quieres entregar el servicio a domicilio?'
+      textoContinuar='Terminar'
+      textoConfirmacion='¿Seguro que quieres terminar el servicio a domicilio?'
     />
   )
 }

@@ -120,6 +120,28 @@ const InformacionPagoForm = () => {
                         <FontAwesomeIcon icon={faHouse} /> {servicioDomicilio.direccion}
                     </Card.Text>
                     {
+                        servicioDomicilio.colonia && (
+                            <Card.Text className="mb-0 ms-4"> COL. {servicioDomicilio.colonia}</Card.Text>
+                        )
+                    }
+                    {
+                        servicioDomicilio.municipio && (
+                            <Card.Text className="mb-0 ms-4">DEL. {servicioDomicilio.municipio}</Card.Text>
+                        )
+                    }
+                    {
+                        servicioDomicilio.cp && (
+                            <Card.Text className="mb-0 ms-4">C.P. {servicioDomicilio.cp}</Card.Text>
+                        )
+                    }
+                    {
+                        servicioDomicilio.ubicacion && (
+                            <Card.Text className="mb-0">
+                                <FontAwesomeIcon icon={faLocationDot} /> {servicioDomicilio.ubicacion}
+                            </Card.Text>
+                        )
+                    }
+                    {
                         servicioDomicilio.ubicacion && (
                             <Card.Text className="mb-0">
                                 <FontAwesomeIcon icon={faLocationDot} /> 

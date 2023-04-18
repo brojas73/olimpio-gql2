@@ -85,23 +85,21 @@ const ServicioDomicilio = ({
                                 className="link-dark"
                             >
                                 <small>
-                                    <FaClipboardList /> 
-                                    <span> </span>
+                                    <FaClipboardList className="me-1"/> 
                                     <span className="align-middle">
                                         Log
                                     </span>
                                 </small>
-                                &nbsp;&nbsp;
                             </NavLink>
                             {
                                 esEncargado() && (
                                     <NavLink
                                         onClick={() => onEditarInformacionPago(servicioDomicilio.id_servicio_domicilio)}
-                                        className="link-success"
+                                        className="link-success ms-2"
                                     >
                                         <small>
                                             <FaDollarSign /> 
-                                                <span className="align-middle">
+                                            <span className="align-middle">
                                                 {
                                                     pagado(servicioDomicilio) ? 'Pagado' : 'Pago'
                                                 }
@@ -139,9 +137,10 @@ const ServicioDomicilio = ({
                                     className="link-primary"
                                 >
                                     <small>
-                                    <FontAwesomeIcon icon={faPencil} /> 
-                                    <span> </span>
-                                    <span className="align-middle"> Editar </span>
+                                        <FontAwesomeIcon icon={faPencil} className="me-1"/> 
+                                        <span> 
+                                            Editar 
+                                        </span>
                                     </small>
                                 </NavLink>
                             </div>
@@ -160,9 +159,10 @@ const ServicioDomicilio = ({
                                     onClick={() => onEditarInformacionGeneral(servicioDomicilio.id_servicio_domicilio)}
                                 >
                                     <small>
-                                        <FontAwesomeIcon icon={faPencil} />
-                                        <span> </span>
-                                        Editar
+                                        <FontAwesomeIcon icon={faPencil} className="me-1"/>
+                                        <span>
+                                            Editar
+                                        </span>
                                     </small>
                                 </NavLink>
                             </div>
@@ -177,23 +177,17 @@ const ServicioDomicilio = ({
                     </Card.Text>
                     {
                         servicioDomicilio.colonia && (
-                            <Card.Text className="mb-0">
-                            &nbsp; &nbsp; &nbsp;COL. {servicioDomicilio.colonia}
-                            </Card.Text>
+                            <Card.Text className="mb-0 ms-4"> COL. {servicioDomicilio.colonia}</Card.Text>
                         )
                     }
                     {
                         servicioDomicilio.municipio && (
-                            <Card.Text className="mb-0">
-                            &nbsp; &nbsp; &nbsp;DEL. {servicioDomicilio.municipio}
-                            </Card.Text>
+                            <Card.Text className="mb-0 ms-4">DEL. {servicioDomicilio.municipio}</Card.Text>
                         )
                     }
                     {
                         servicioDomicilio.cp && (
-                            <Card.Text className="mb-0">
-                            &nbsp; &nbsp; &nbsp;C.P. {servicioDomicilio.cp}
-                            </Card.Text>
+                            <Card.Text className="mb-0 ms-4">C.P. {servicioDomicilio.cp}</Card.Text>
                         )
                     }
                     {
@@ -223,7 +217,7 @@ const ServicioDomicilio = ({
                         )
                     }
                 </Card.Body>
-                <Card.Footer className="d-flex justify-content-between align-items-center">
+                <Card.Footer className="d-flex justify-content-between">
                     <div>
                     {
                         // Si aún se pude acutalizar la fecha de entrega, pongo un botón para modificarla, en otro
@@ -234,39 +228,31 @@ const ServicioDomicilio = ({
                                 className="link-primary"
                             >
                                 <small>
-                                    <FaRegCalendarAlt /> 
+                                    <FaRegCalendarAlt className="me-1"/> 
                                     <span className="align-middle">
-                                    <span> </span>
-                                    {formateaFechaHora(servicioDomicilio.fecha_requerida, servicioDomicilio.hora_requerida)}
+                                        {formateaFechaHora(servicioDomicilio.fecha_requerida, servicioDomicilio.hora_requerida)}
                                     </span>
                                 </small>
                             </NavLink>
                         ) : (
-                            <small>
-                                <FaRegCalendarAlt /> 
-                                <span className="align-middle">
-                                    <span> </span>
-                                    {formateaFechaHora(servicioDomicilio.fecha_requerida, servicioDomicilio.hora_requerida)}
-                                </span>
+                            <small className="align-middle">
+                                <FaRegCalendarAlt className="me-1"/> 
+                                {formateaFechaHora(servicioDomicilio.fecha_requerida, servicioDomicilio.hora_requerida)}
                             </small>
-                )
+                        )
                     }
                     </div>
-                    <div className="d-flex justify-content-between align-items-center">
+                    <div className="d-flex justify-content-between">
                         {
                             mostrarBotonAcccionCancelar() && (
                                 <NavLink 
                                     onClick={() => onCancelar(servicioDomicilio.id_servicio_domicilio)} 
                                     className="link-danger"
                                 >
-                                    <span className="align-middle">
-                                        <small>
-                                            <FontAwesomeIcon icon={faBan} />
-                                            <span> </span>
-                                            Cancelar
-                                        </small>
-                                    </span>
-                                    &nbsp;&nbsp;
+                                    <small>
+                                        <FontAwesomeIcon icon={faBan} className="me-1"/>
+                                        Cancelar
+                                    </small>
                                 </NavLink>
                             )
                         }
@@ -274,15 +260,12 @@ const ServicioDomicilio = ({
                             mostrarBotonAccionContinuar() && (
                                 <NavLink 
                                     onClick={() => onContinuar(servicioDomicilio.id_servicio_domicilio)}
-                                    className="link-primary"
+                                    className="link-primary ms-2"
                                 >
-                                    <span className="align-middle">
-                                        <small>
-                                            <FaCheck /> 
-                                            <span> </span>
-                                            {textoContinuar}
-                                        </small>
-                                    </span>
+                                    <small>
+                                        <FaCheck className="me-1"/> 
+                                        {textoContinuar}
+                                    </small>
                                 </NavLink>
                             )
                         }

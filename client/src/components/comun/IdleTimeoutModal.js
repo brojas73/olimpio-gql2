@@ -1,4 +1,5 @@
 import { Modal, Button } from 'react-bootstrap'
+import { TAMANO_CONTROLES } from './utils'
 
 const IdleTimeoutModal = ({showModal, handleContinue, handleLogout}) => {
     return (
@@ -8,8 +9,8 @@ const IdleTimeoutModal = ({showModal, handleContinue, handleLogout}) => {
             </Modal.Header>
             <Modal.Body>¿Quieres continuar con la sesión?</Modal.Body>
             <Modal.Footer>
-                <Button variant='secondary' onClick={handleLogout}>Salir</Button>
-                <Button variant='primary' onClick={handleContinue}>Continuar Sesión</Button>
+                <Button variant='secondary' onClick={handleLogout} size={TAMANO_CONTROLES}>Salir</Button>
+                <Button variant='primary' onClick={handleContinue} size={TAMANO_CONTROLES}>Continuar Sesión</Button>
             </Modal.Footer>
         </Modal>
     )

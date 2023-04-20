@@ -15,11 +15,11 @@ const Filtros = () => {
     } = useTareasExternas()
 
     return (
-        <Navbar expand='sm' className="mb-3">
-            <Navbar.Toggle aria-controls="offcanvasNavbar-expand-sm"/>
-            <Navbar.Offcanvas aria-labelledby="offcanvasNavbarLabel-expand-sm">
-                <Offcanvas.Header closeButton>Filtros</Offcanvas.Header>
-                    <Offcanvas.Body>
+        <Navbar /* expand='sm' */ className="mb-1">
+            {/* <Navbar.Toggle aria-controls="offcanvasNavbar-expand-sm"/> */}
+            {/* <Navbar.Offcanvas aria-labelledby="offcanvasNavbarLabel-expand-sm"> */}
+                {/* <Offcanvas.Header closeButton>Filtros</Offcanvas.Header> */}
+                    {/* <Offcanvas.Body> */}
                         <Nav className="flex-grow-1 pe-3 align-items-center">
                             <Form>
                                 <Form.Control
@@ -41,8 +41,8 @@ const Filtros = () => {
                                 onSelect={setEstadoActual}
                             />
                         </Nav>
-                    </Offcanvas.Body>
-            </Navbar.Offcanvas>
+                    {/* </Offcanvas.Body> */}
+            {/* </Navbar.Offcanvas> */}
         </Navbar>
     )
 }

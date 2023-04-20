@@ -12,6 +12,7 @@ import { logout } from '../../mutations/Usuario'
 // Components
 import IdleTimeoutHandler from './IdleTimeoutHandler'
 import GlobalNavbar from './GlobalNavbar'
+import { FONT_SIZE_TABS, TAMANO_CONTROLES } from './utils'
 
 const TabsOlimpio = () => {
     const navigate = useNavigate()
@@ -48,18 +49,18 @@ const TabsOlimpio = () => {
 
             {
                 conectado && (
-                    <>
-                        <Tabs
-                            defaultActiveKey='tareas-externas'
-                            id='olimpio-tab'
-                            className='mb-3'
-                            onSelect={key => handleSelect(key)}
-                        >
-                            <Tab title='Tareas Externas' eventKey='tareas-externas'></Tab>
-                            <Tab title='Servicios a Domicilio' eventKey='servicios-domicilio'></Tab>
-                            <Tab title='Consultas' eventKey='consultas'></Tab>
-                        </Tabs>
-                    </>
+                    <Tabs
+                        defaultActiveKey='tareas-externas'
+                        id='olimpio-tab'
+                        className='mb-3'
+                        onSelect={key => handleSelect(key)}
+                        style={{fontSize: `${FONT_SIZE_TABS}`}}
+                        fill
+                    >
+                        <Tab title='Tareas Externas' eventKey='tareas-externas' ></Tab>
+                        <Tab title='Servicios a Domicilio' eventKey='servicios-domicilio' ></Tab>
+                        <Tab title='Consultas' eventKey='consultas'></Tab>
+                    </Tabs>
                 )   
             }
         </>

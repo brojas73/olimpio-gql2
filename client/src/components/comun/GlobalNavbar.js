@@ -12,29 +12,29 @@ const GlobalNavbar = ({onLogout}) => {
     const { getUsuario } = useAuth()
 
     return (
-        <Navbar bg="dark" variant="dark" expand='sm' className="mb-3 sticky-top"> 
-            <Navbar.Brand as={Link} to="/" className="mx-3">Olimpio</Navbar.Brand>
-            <Navbar.Toggle aria-controls="offcanvasNavbar-expand-sm"/>
-            <Navbar.Offcanvas aria-labelledby="offcanvasNavbarLabel-expand-sm">
-                <Offcanvas.Header closeButton>Olimpio</Offcanvas.Header>
+        <Navbar bg="dark" variant="dark" className="mb-3 sticky-top"> 
+            <Navbar.Brand as={Link} to="/" className="mx-2">Olimpio</Navbar.Brand>
+            {/* <Navbar.Toggle aria-controls="offcanvasNavbar-expand-sm"/> */}
+            {/* <Navbar.Offcanvas aria-labelledby="offcanvasNavbarLabel-expand-sm"> */}
+                {/* <Offcanvas.Header closeButton>Olimpio</Offcanvas.Header> */}
                 {
                     conectado && ( 
-                        <Offcanvas.Body>
-                            <Nav className="justify-content-end flex-grow-1 me-3">
+                        // <Offcanvas.Body>
+                            <Nav className="justify-content-end flex-grow-1 me-2">
                                 <SucursalesDropDown idSelected={sucursalActual} onSelect={setSucursalActual} showIcon={true} />
                                 <UsuarioDropDown title={getUsuario()} onLogout={onLogout}/>
                             </Nav>
-                        </Offcanvas.Body>
+                        // </Offcanvas.Body>
                     )
                 }
                 {
                     !conectado && (
-                        <Nav className="justify-content-end flex-grow-1 me-3">
+                        <Nav className="justify-content-end flex-grow-1 me-2">
                             <Nav.Link href="/login">Login</Nav.Link>
                         </Nav>
                     )
                 }
-            </Navbar.Offcanvas>
+            {/* </Navbar.Offcanvas> */}
         </Navbar>
     )
 }

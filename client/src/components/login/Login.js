@@ -13,6 +13,7 @@ import { login } from "../../mutations/Usuario"
 
 // Components
 import SucursalSelect from '../comun/SucursalSelect'
+import { TAMANO_CONTROLES } from "../comun/utils"
 
 const Login = ({onLoginOk}) => {
   const { setCredenciales } = useAuth()
@@ -80,7 +81,7 @@ const Login = ({onLoginOk}) => {
       </Alert>
 
       <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3">
+          <Form.Group className="mb-2">
               <SucursalSelect 
                   label='Sucursal Inicial'
                   onChange={handleChange} 
@@ -88,9 +89,10 @@ const Login = ({onLoginOk}) => {
                   name='sucursal' 
               />            
           </Form.Group>
-          <Form.Group className="mb-3">
-              <Form.Label>Usuario</Form.Label>
+          <Form.Group className="mb-2">
+              <Form.Label column={TAMANO_CONTROLES}>Usuario</Form.Label>
               <Form.Control 
+                  size={TAMANO_CONTROLES}
                   type='text'
                   placeholder="Escribe tu usuario..." 
                   onChange={handleChange}
@@ -98,9 +100,11 @@ const Login = ({onLoginOk}) => {
                   value={formInfo.usuario}
               />
           </Form.Group>
-          <Form.Group className="mb-3">
-              <Form.Label>Contraseña</Form.Label>
+          <Form.Group className="mb-2">
+              <Form.Label column={TAMANO_CONTROLES}>
+                Contraseña</Form.Label>
               <Form.Control 
+                  size={TAMANO_CONTROLES}
                   type='password'
                   placeholder="Escribe tu contraseña..." 
                   onChange={handleChange}
@@ -111,6 +115,7 @@ const Login = ({onLoginOk}) => {
           <Button 
               variant='primary' 
               type='submit'
+              size={TAMANO_CONTROLES}
           >
               Ingresar
           </Button>

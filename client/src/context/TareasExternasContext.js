@@ -40,18 +40,20 @@ export function TareasExternasProvider({children}) {
     const [conectado, setConectado] = useState(false)
     const [sucursalActual, setSucursalActual] = useState(SUCURSAL_DEFAULT)
     const [estadoActual, setEstadoActual] = useState(STATUS_TAREA.TAREAS_ACTIVAS)
+    const [tipoConsultaActual, setTipoConsultaActual] = useState(0)
 
     const [ticketFiltro, setTicketFiltro] = useState('')
+    const [descripcionFiltro, setDescripcionFiltro] = useState('')
     const [sucursalFiltro, setSucursalFiltro] = useState(0)
     const [tipoServicioFiltro, setTipoServicioFiltro] = useState(0)
     const [tipoTrabajoFiltro, setTipoTrabajoFiltro] = useState(0)
 
     return (
         <TareasExternasContext.Provider value={{
-            conectado, sucursalActual, estadoActual,
-            ticketFiltro, sucursalFiltro, tipoServicioFiltro, tipoTrabajoFiltro, 
-            setConectado, setSucursalActual, setEstadoActual,
-            setTicketFiltro, setSucursalFiltro, setTipoServicioFiltro, setTipoTrabajoFiltro
+            conectado, sucursalActual, estadoActual, tipoConsultaActual,
+            ticketFiltro, sucursalFiltro, tipoServicioFiltro, tipoTrabajoFiltro, descripcionFiltro,
+            setConectado, setSucursalActual, setEstadoActual, setTipoConsultaActual,
+            setTicketFiltro, setSucursalFiltro, setTipoServicioFiltro, setTipoTrabajoFiltro, setDescripcionFiltro
         }}>
             <TareasExternasUpdateContext.Provider value={{}}>
                 {children}

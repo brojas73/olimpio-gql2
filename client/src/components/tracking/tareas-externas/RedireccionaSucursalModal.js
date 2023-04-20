@@ -73,8 +73,8 @@ const RedireccionaSucursalModal = ({mostrar, onConfirmar}) => {
                         </Form.Control.Feedback>
                     </Form.Group>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={handlerCancelar}>Cancelar</Button>
-                        <Button variant="primary" onClick={handlerSubmit}>Desviar</Button>
+                        <Button variant="secondary" onClick={handlerCancelar} size="sm">Cancelar</Button>
+                        <Button variant="primary" onClick={handlerSubmit} size="sm">Desviar</Button>
                     </Modal.Footer>
                 </Form>
             </Modal.Body>

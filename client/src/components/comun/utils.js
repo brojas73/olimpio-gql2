@@ -4,6 +4,15 @@ import { STATUS_SERVICIO_DOMICILIO } from '../../context/ServiciosDomicilioConte
 const URL_APIS_DEV = 'http://localhost:3040/api-v1'
 const URL_APIS_PROD = 'http://5.183.8.10/api-v1'
 
+export const TIPO_CONSULTA_TE = {
+  TIPO_CONSULTA: 0,
+  POR_ATENDERSE_HOY: 1,
+  BITACORA: 2
+}
+
+export const TAMANO_CONTROLES = "sm"
+export const FONT_SIZE_DROPDOWN = "90%"
+
 export function formateaFechaHora(fecha, hora, mostrarDia = true, mostrarAt = true) {
     const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
     const dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
@@ -73,23 +82,30 @@ export async function fetchData(url) {
 }    
 
 export function nombreSucursal(sucursales, idSucursal) {
+  if (!sucursales)
+    return 'Sucursal'
   const sucursal = sucursales.find(sucursal => parseInt(sucursal.id_sucursal) === parseInt(idSucursal))
   return (sucursal ? sucursal.nombre : 'Sucursal')
 }
 
 export function nombreUsuario(usuarios, idUsuario) {
-  const usuario = usuarios.find(usuario => parseInt(usuario.id_usuario) === parseInt(idUsuario))
-  return (usuario ? usuario.nombre : 'Usuario')
+  if (!usuarios)
+    return 'Usuario'
+
+  return usuarios.find(usuario => parseInt(usuario.id_usuario) === parseInt(idUsuario)).nombre
 }
 
 export function nombreEstadoTarea(estadosTarea, idEstadoTarea) {
-  const estadoTarea = estadosTarea.find(estadoTarea => parseInt(estadoTarea.id_estado_tarea) === parseInt(idEstadoTarea))
-  return (estadoTarea ? estadoTarea.nombre : 'Estado')
+  if (!estadosTarea)
+    return 'Estado'
+  return estadosTarea.find(estadoTarea => parseInt(estadoTarea.id_estado_tarea) === parseInt(idEstadoTarea)).nombre
 }
 
 export function nombreEstadoServicioDomicilio(estadosServicioDomicilio, idEstadoServicioDomicilio) {
-  const estadoServicioDomicilio = estadosServicioDomicilio.find(estadoServicioDomicilio => parseInt(estadoServicioDomicilio.id_estado_servicio_domicilio) === parseInt(idEstadoServicioDomicilio))
-  return (estadoServicioDomicilio ? estadoServicioDomicilio.nombre : 'Estado del Servicio')
+  if (!estadosServicioDomicilio)
+    return 'Estado del Servicio'
+  
+  return estadosServicioDomicilio.find(estadoServicioDomicilio => parseInt(estadoServicioDomicilio.id_estado_servicio_domicilio) === parseInt(idEstadoServicioDomicilio)).nombre
 }
 
 export function isBlank(str) {

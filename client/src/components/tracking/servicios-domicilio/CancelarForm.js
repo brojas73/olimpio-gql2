@@ -11,7 +11,7 @@ import { useMutation, useQuery } from 'react-query'
 import { cancelaServicioDomicilio } from "../../../mutations/ServicioDomicilio"
 import { useAuth } from '../../../hooks/useAuth'
 
-import { isBlank, esEntrega } from '../../comun/utils'
+import { isBlank, esEntrega, TAMANO_CONTROLES } from '../../comun/utils'
 import { QUERY_SERVICIO_DOMICILIO, fetchServicioDomicilio } from '../../../queries/ServicioDomicilio'
 
 const InformacionGeneralForm = () => {
@@ -85,8 +85,8 @@ const InformacionGeneralForm = () => {
     
     return (
         <>
-            <Button variant="dark" size="md">
-                Cancelción de Servicio
+            <Button variant="dark" size={TAMANO_CONTROLES}>
+                Cancelción de Servicio a Domicilio
             </Button>
             <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
@@ -113,9 +113,10 @@ const InformacionGeneralForm = () => {
                         <FaPhoneAlt /> {servicioDomicilio.telefono}
                     </Card.Text>
                 </Form.Group>
-                <Form.Group as={Col} className="mb-3">
-                    <Form.Label>Motivo de la Cancelación</Form.Label>
+                <Form.Group as={Col} className="mb-2">
+                    <Form.Label column={TAMANO_CONTROLES}>Motivo de la Cancelación</Form.Label>
                     <Form.Control
+                        size={TAMANO_CONTROLES}
                         as='textarea'
                         rows={2}
                         onChange={handleChange}
@@ -128,8 +129,8 @@ const InformacionGeneralForm = () => {
                         { errors.nota_cancelacion }
                     </Form.Control.Feedback>
                 </Form.Group>
-                <Button variant="secondary" onClick={handleCancelar}>Cancelar</Button><span> </span>
-                <Button variant="primary" onClick={handleSubmit}>Guardar</Button>
+                <Button variant="secondary" onClick={handleCancelar} size={TAMANO_CONTROLES}>Regresar</Button><span> </span>
+                <Button variant="primary" onClick={handleSubmit} size={TAMANO_CONTROLES}>Cancelar Servicio a Domicilio</Button>
             </Form>
         </>
     )

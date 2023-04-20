@@ -6,7 +6,7 @@ import { NavDropdown, Spinner  } from "react-bootstrap"
 import { useQuery } from "react-query"
 import { fetchSucursales, QUERY_SUCURSALES } from "../../queries/Sucursal"
 
-import { nombreSucursal } from "./utils"
+import { FONT_SIZE_DROPDOWN, nombreSucursal } from "./utils"
 
 const SucursalesDropDown = ({onSelect, titleOption, showIcon, idSelected}) => {
   const { data: sucursales, isLoading } = useQuery(QUERY_SUCURSALES, fetchSucursales, { staleTime: Infinity, cacheTime: Infinity})
@@ -14,19 +14,23 @@ const SucursalesDropDown = ({onSelect, titleOption, showIcon, idSelected}) => {
   if (isLoading) return <Spinner animation="border" />
 
   return (
-    <NavDropdown title={
+    <NavDropdown style={{ fontSize: `${FONT_SIZE_DROPDOWN}` }} title={
       <span>
         { showIcon && (<FontAwesomeIcon icon={faLandmark} />) } {nombreSucursal(sucursales, idSelected)}
       </span>
     }>
     {
       titleOption && (
-        <NavDropdown.Item
-          key={0}
-          onClick={() => onSelect(0)}
-        >
-          Sucursal
-        </NavDropdown.Item>
+        <>
+          <NavDropdown.Item
+            key={0}
+            onClick={() => onSelect(0)}
+            style={{ fontSize: `${FONT_SIZE_DROPDOWN}` }}
+          >
+            Sucursal
+          </NavDropdown.Item>
+          <NavDropdown.Divider />
+        </>
       )
     }
     {
@@ -34,7 +38,8 @@ const SucursalesDropDown = ({onSelect, titleOption, showIcon, idSelected}) => {
           <NavDropdown.Item 
               key={sucursal.id_sucursal}
               onClick={() => onSelect(sucursal.id_sucursal)}
-          >
+              style={{ fontSize: `${FONT_SIZE_DROPDOWN}` }}
+            >
             {sucursal.nombre}
           </NavDropdown.Item>
       ))

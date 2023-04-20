@@ -8,6 +8,7 @@ export const STATUS_SERVICIO_DOMICILIO = {
     PENDIENTE_RECOLECCION_EN_SUCURSAL: 4,
     RECOLECTADO_PARA_ENTREGA_CLIENTE: 5,
     ENTREGADO_A_CLIENTE: 6,
+    PENDIENTE_DE_PAGO: 7,
     TERMINADO: 100,
     CANCELADO: 101
 } 
@@ -24,16 +25,15 @@ export function useServiciosDomicilioUpdate() {
 }
 
 export function ServiciosDomicilioProvider({children}) {
-    const [estadoSDActual, setEstadoSDActual] = useState(STATUS_SERVICIO_DOMICILIO.SERVICIOS_DOMICILIO_ACTIVOS)
-
+    const [estadoActual, setEstadoActual] = useState(STATUS_SERVICIO_DOMICILIO.SERVICIOS_DOMICILIO_ACTIVOS)
     const [ticketFiltro, setTicketFiltro] = useState('')
     const [sucursalFiltro, setSucursalFiltro] = useState(0)
 
     return (
         <ServiciosDomicilioContext.Provider value={{
-            estadoSDActual,
+            estadoActual,
             ticketFiltro, sucursalFiltro,
-            setEstadoSDActual,
+            setEstadoActual,
             setTicketFiltro, setSucursalFiltro
         }}>
             <ServiciosDomicilioUpdateContext.Provider value={{}}>

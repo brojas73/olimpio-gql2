@@ -1,14 +1,17 @@
-import { Navbar, Container, Button, Badge } from 'react-bootstrap'
+import { Navbar, Button, Badge } from 'react-bootstrap'
 
 const TituloConsultas = ({titulo, renglones}) => {
     return (
         <Navbar>
-            <Container className="justify-content-start">
-                <Button variant="dark" size="md">
-                    {titulo} { " "}
-                    <Badge bg="primary">{renglones}</Badge>
-                </Button>
-            </Container>
+            {
+                titulo && (
+                    <Button variant="dark" size="sm">
+                        {titulo}
+                        &nbsp;
+                        <Badge bg="primary" pill>{renglones}</Badge>
+                    </Button>
+                )
+            }
         </Navbar>
     )
 }

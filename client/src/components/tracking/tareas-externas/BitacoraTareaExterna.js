@@ -4,7 +4,7 @@ import { Button, Spinner } from "react-bootstrap"
 import BootstrapTable from "react-bootstrap-table-next"
 import paginationFactory from 'react-bootstrap-table2-paginator'
 
-import { fechaFormatter } from '../../comun/utils'
+import { fechaFormatter, TAMANO_CONTROLES } from '../../comun/utils'
 
 import { useQuery } from 'react-query'
 import { fetchTareasExternasLogByTareaExterna, QUERY_TAREAS_EXTERNAS_LOG_BY_TAREA_EXTERNA } from '../../../queries/TareaExternaLog'
@@ -46,6 +46,7 @@ export default function BitacoraTareaExterna() {
       <Button 
         onClick={() => navigate(-1)}
         variant='secondary'
+        size={TAMANO_CONTROLES}
       >
          Regresar
       </Button>

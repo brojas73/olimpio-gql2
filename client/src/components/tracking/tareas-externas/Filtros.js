@@ -14,19 +14,16 @@ const Filtros = () => {
         setSucursalFiltro
     } = useTareasExternas()
 
-    function onSubmit(event) {
-        event.preventDefault()
-    }
-
     return (
         <Navbar expand='sm' className="mb-3">
             <Navbar.Toggle aria-controls="offcanvasNavbar-expand-sm"/>
             <Navbar.Offcanvas aria-labelledby="offcanvasNavbarLabel-expand-sm">
                 <Offcanvas.Header closeButton>Filtros</Offcanvas.Header>
                     <Offcanvas.Body>
-                        <Nav className="flex-grow-1 pe-3">
-                            <Form onSubmit={onSubmit}>
+                        <Nav className="flex-grow-1 pe-3 align-items-center">
+                            <Form>
                                 <Form.Control
+                                    size="sm"
                                     type='search'
                                     placeholder="Ticket..."
                                     aria-label="Search"

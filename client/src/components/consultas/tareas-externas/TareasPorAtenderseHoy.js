@@ -56,30 +56,30 @@ export default function TareasPorAtenderseHoy() {
 
     return (
         <>
-        {
-            modalTarea.mostrar && (
-            <TareaExternaModal 
-                mostrar={modalTarea.mostrar} 
-                idTareaExterna={modalTarea.idTareaExterna}
-                onClose={() => setModalTarea(prevValue => ({...prevValue, mostrar: false}))} 
+            {
+                modalTarea.mostrar && (
+                <TareaExternaModal 
+                    mostrar={modalTarea.mostrar} 
+                    idTareaExterna={modalTarea.idTareaExterna}
+                    onClose={() => setModalTarea(prevValue => ({...prevValue, mostrar: false}))} 
+                />
+                )
+            }
+            <Filtros 
+                ticketFiltro={filtro.ticket} 
+                descripcionFiltro={filtro.descripcion} 
+                onChange={handleChange}
             />
-            )
-        }
-        <Filtros 
-            ticketFiltro={filtro.ticket} 
-            descripcionFiltro={filtro.descripcion} 
-            onChange={handleChange}
-        />
-        <TituloConsultas titulo="Tareas por Atenderse Hoy" renglones={tareasFiltradas.length} />
+            <TituloConsultas titulo="Tareas por Atenderse Hoy" renglones={tareasFiltradas.length} />
 
-        <BootstrapTable 
-            keyField="id_tarea_externa" 
-            data={tareasFiltradas} 
-            columns={columns} 
-            striped hover condensed 
-            pagination={paginationFactory()}
-            rowEvents={tableRowEvents}
-        />
+            <BootstrapTable 
+                keyField="id_tarea_externa" 
+                data={tareasFiltradas} 
+                columns={columns} 
+                striped hover condensed 
+                pagination={paginationFactory()}
+                rowEvents={tableRowEvents}
+            />
         </>
     )
 }

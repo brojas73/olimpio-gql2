@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { Button, Container, Form, Row, Col, Navbar } from 'react-bootstrap'
+import { Button, Form, Row, Col, Navbar } from 'react-bootstrap'
 
 import { STATUS_TAREA, useTareasExternas } from '../../../context/TareasExternasContext'
 import { useAuth } from '../../../hooks/useAuth'
-import { formateaFechaForm, formateaHoraForm, isBlank } from '../../comun/utils'
+import { TAMANO_CONTROLES, formateaFechaForm, formateaHoraForm, isBlank } from '../../comun/utils'
 
 import SucursalSelect from '../../comun/SucursalSelect'
 import TipoServicioSelect from '../../comun/TipoServicioSelect'
@@ -104,19 +104,18 @@ const NuevaTareaForm = ({onExito}) => {
   }
 
   return (
-    <Container>
+    <>
         <Navbar>
-            <Container className="justify-content-start">
-                <Button variant="dark" size="md">
-                    Nueva Tarea Externa
-                </Button>
-            </Container>
+            <Button variant="dark" size={TAMANO_CONTROLES}>
+                Nueva Tarea Externa
+            </Button>
         </Navbar>
         <Form onSubmit={onSubmit}>
             <Row>
-                <Form.Group as={Col} className="mb-3">
-                    <Form.Label># de Ticket</Form.Label>
+                <Form.Group as={Col} className="mb-2">
+                    <Form.Label column={TAMANO_CONTROLES}># de Ticket</Form.Label>
                     <Form.Control
+                        size={TAMANO_CONTROLES}
                         onChange={handleChange}
                         value={tareaExterna.ticket}
                         type='number'
@@ -128,7 +127,7 @@ const NuevaTareaForm = ({onExito}) => {
                         { errors.ticket }
                     </Form.Control.Feedback>
                 </Form.Group>
-                <Form.Group as={Col} className="mb-3">
+                <Form.Group as={Col} className="mb-2">
                     <SucursalSelect 
                         label='Sucursal Destino'
                         onChange={handleChange} 
@@ -142,9 +141,10 @@ const NuevaTareaForm = ({onExito}) => {
                     </Form.Control.Feedback>
                 </Form.Group>
             </Row>
-            <Form.Group className="mb-3">
-                <Form.Label>Descripción</Form.Label>
+            <Form.Group className="mb-2">
+                <Form.Label column={TAMANO_CONTROLES}>Descripción</Form.Label>
                 <Form.Control 
+                    size={TAMANO_CONTROLES}
                     onChange={handleChange}
                     value={tareaExterna.descripcion}
                     type='text'
@@ -157,7 +157,7 @@ const NuevaTareaForm = ({onExito}) => {
                     </Form.Control.Feedback>
             </Form.Group>
             <Row>
-                <Form.Group as={Col} className="mb-3">
+                <Form.Group as={Col} className="mb-2">
                     <TipoTrabajolSelect 
                         label="Tipo de Trabajo"
                         onChange={handleChange}
@@ -169,7 +169,7 @@ const NuevaTareaForm = ({onExito}) => {
                         { errors.id_tipo_trabajo }
                     </Form.Control.Feedback>
                 </Form.Group>
-                <Form.Group as={Col} className="mb-3">
+                <Form.Group as={Col} className="mb-2">
                     <TipoServicioSelect 
                         label='Tipo de Servicio'
                         onChange={handleChange}
@@ -183,9 +183,10 @@ const NuevaTareaForm = ({onExito}) => {
                 </Form.Group>
             </Row>
             <Row>
-                <Form.Group as={Col} className="mb-3">
-                    <Form.Label>Fecha Requerida</Form.Label>
+                <Form.Group as={Col} className="mb-2">
+                    <Form.Label column={TAMANO_CONTROLES}>Fecha Requerida</Form.Label>
                     <Form.Control
+                        size={TAMANO_CONTROLES}
                         type='date'
                         onChange={handleChange}
                         value={tareaExterna.fecha_requerida}
@@ -197,9 +198,10 @@ const NuevaTareaForm = ({onExito}) => {
                         { errors.fecha_requerida }
                     </Form.Control.Feedback>
                 </Form.Group>
-                <Form.Group as={Col} className="mb-3">
-                    <Form.Label>Hora Requerida</Form.Label>
+                <Form.Group as={Col} className="mb-2">
+                    <Form.Label column={TAMANO_CONTROLES}>Hora Requerida</Form.Label>
                     <Form.Control
+                        size={TAMANO_CONTROLES}
                         type='time'
                         onChange={handleChange}
                         value={tareaExterna.hora_requerida}
@@ -211,15 +213,15 @@ const NuevaTareaForm = ({onExito}) => {
                     </Form.Control.Feedback>
                 </Form.Group>
             </Row>
-            <Button variant='secondary' onClick={handleCancelar}>
+            <Button variant='secondary' size={TAMANO_CONTROLES} onClick={handleCancelar}>
                 Cancelar
             </Button>
             {" "}
-            <Button variant='primary' type='submit'>
+            <Button variant='primary' size={TAMANO_CONTROLES} type='submit'>
                 Crear Tarea Externa
             </Button>
         </Form>
-    </Container>
+    </>
   )
 }
 

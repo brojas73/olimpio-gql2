@@ -1,9 +1,8 @@
-import { useLocation } from "react-router-dom"
 import { Link } from 'react-router-dom'
 
 import { NavDropdown, Spinner } from 'react-bootstrap'
 
-import { nombreEstadoServicioDomicilio } from './utils'
+import { FONT_SIZE_DROPDOWN, nombreEstadoServicioDomicilio } from './utils'
 import { STATUS_SERVICIO_DOMICILIO } from "../../context/ServiciosDomicilioContext"
 
 import { useQuery } from 'react-query'
@@ -15,16 +14,12 @@ const EstadosServicioDomicilioDropDown = ({onSelect, idSelected }) => {
     fetchEstadosServiciosDomicilio, 
     { staleTime: Infinity, cacheTime: Infinity}
   )
-  const location = useLocation()
+  const titulo = nombreEstadoServicioDomicilio(estadosServicioDomicilio, idSelected)
   
   if (isLoading) return <Spinner animation='border' />
 
-  const titulo = location.pathname.includes('servicios-activos') ? 
-                    'Estado del Servicio' : 
-                    nombreEstadoServicioDomicilio(estadosServicioDomicilio, idSelected)
-  
   return (
-    <NavDropdown title={titulo}>
+    <NavDropdown title={titulo} style={{ fontSize: `${FONT_SIZE_DROPDOWN}` }}>
     {
       estadosServicioDomicilio 
         .filter(estadoServicioDomicilio => 
@@ -32,16 +27,38 @@ const EstadosServicioDomicilioDropDown = ({onSelect, idSelected }) => {
           parseInt(estadoServicioDomicilio.id_estado_servicio_domicilio) !== STATUS_SERVICIO_DOMICILIO.CANCELADO
         )
 
-        .map(estadoServicioDomicilio => (
-          <NavDropdown.Item 
-            as={Link}
-            to={estadoServicioDomicilio.url}
-            key={estadoServicioDomicilio.id_estado_servicio_domicilio}
-            onClick={() => onSelect(estadoServicioDomicilio.id_estado_servicio_domicilio)}
-          >
-            {estadoServicioDomicilio.nombre}
-          </NavDropdown.Item>
-        ))
+        .map(estadoServicioDomicilio => {
+          if (
+            parseInt(estadoServicioDomicilio.id_estado_servicio_domicilio) === STATUS_SERVICIO_DOMICILIO.SERVICIOS_DOMICILIO_ACTIVOS ||
+            parseInt(estadoServicioDomicilio.id_estado_servicio_domicilio) === STATUS_SERVICIO_DOMICILIO.RECIBIDO_EN_SUCURSAL ||
+            parseInt(estadoServicioDomicilio.id_estado_servicio_domicilio) === STATUS_SERVICIO_DOMICILIO.ENTREGADO_A_CLIENTE
+          ) {
+            return (
+                <>
+                  <NavDropdown.Item 
+                    as={Link}
+                    key={estadoServicioDomicilio.id_estado_servicio_domicilio}
+                    onClick={() => onSelect(estadoServicioDomicilio.id_estado_servicio_domicilio)}
+                    style={{ fontSize: `${FONT_SIZE_DROPDOWN}` }}
+                  >
+                   {estadoServicioDomicilio.nombre}
+                  </NavDropdown.Item>
+                  <NavDropdown.Divider key={`div-${estadoServicioDomicilio.id_estado_servicio_domicilio}`}/>
+                </>
+            )
+          } else {
+            return (
+              <NavDropdown.Item 
+                as={Link}
+                key={estadoServicioDomicilio.id_estado_servicio_domicilio}
+                onClick={() => onSelect(estadoServicioDomicilio.id_estado_servicio_domicilio)}
+                style={{ fontSize: `${FONT_SIZE_DROPDOWN}` }}
+                >
+                {estadoServicioDomicilio.nombre}
+              </NavDropdown.Item>
+            )
+          }
+        })
     }
     </NavDropdown>
   )

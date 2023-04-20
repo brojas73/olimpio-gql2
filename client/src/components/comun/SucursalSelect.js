@@ -3,6 +3,7 @@ import { Form, Spinner } from 'react-bootstrap'
 import { useTareasExternas } from '../../context/TareasExternasContext'
 import { useQuery } from 'react-query'
 import { fetchSucursales, QUERY_SUCURSALES } from '../../queries/Sucursal'
+import { TAMANO_CONTROLES } from './utils'
 
 const SucursalSelect = ({onChange, name, value, label, filtraSucursalActual, isInvalid }) => {
     const { data: sucursales, isLoading } = useQuery(QUERY_SUCURSALES, fetchSucursales, { staleTime: Infinity, cacheTime: Infinity})
@@ -12,8 +13,9 @@ const SucursalSelect = ({onChange, name, value, label, filtraSucursalActual, isI
 
     return (
         <>
-            <Form.Label>{label}</Form.Label>
+            <Form.Label column={TAMANO_CONTROLES}>{label}</Form.Label>
             <Form.Select
+                size={TAMANO_CONTROLES}
                 onChange={onChange}
                 value={value}
                 name={name}

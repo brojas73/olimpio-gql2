@@ -13,7 +13,7 @@ import { useQuery, useMutation } from 'react-query'
 import { actualizaFechaRequerida } from "../../../mutations/ServicioDomicilio"
 import { fetchServicioDomicilio, QUERY_SERVICIO_DOMICILIO } from '../../../queries/ServicioDomicilio'
 
-import { isBlank, pagado, esEntrega, formateaFechaForm } from '../../comun/utils'
+import { isBlank, pagado, esEntrega, formateaFechaForm, TAMANO_CONTROLES } from '../../comun/utils'
 
 const FechaRequeridaForm = () => {
     const navigate = useNavigate()
@@ -96,7 +96,7 @@ const FechaRequeridaForm = () => {
     
     return (
         <>
-            <Button variant="dark" size="md">
+            <Button variant="dark" size={TAMANO_CONTROLES}>
                 Cambio de la Fecha Requerida
             </Button>
             <Form onSubmit={handleSubmit}>
@@ -147,9 +147,10 @@ const FechaRequeridaForm = () => {
                     </Card.Text>
                 </Form.Group>
                 <Row>
-                    <Form.Group as={Col} className="mb-3">
-                        <Form.Label>Fecha Requerida</Form.Label>
+                    <Form.Group as={Col} className="mb-2">
+                        <Form.Label column={TAMANO_CONTROLES}>Fecha Requerida</Form.Label>
                         <Form.Control 
+                            size={TAMANO_CONTROLES}
                             type='date'
                             onChange={handleChange}
                             value={servicioDomicilio.fecha_requerida.substring(0, 10)}
@@ -161,9 +162,10 @@ const FechaRequeridaForm = () => {
                             { errors.fecha_requerida }
                         </Form.Control.Feedback>
                     </Form.Group>
-                    <Form.Group as={Col} className="mb-3">
-                        <Form.Label>Hora Requerida</Form.Label>
+                    <Form.Group as={Col} className="mb-2">
+                        <Form.Label column={TAMANO_CONTROLES}>Hora Requerida</Form.Label>
                         <Form.Control
+                            size={TAMANO_CONTROLES}
                             type='time'
                             onChange={handleChange}
                             value={servicioDomicilio.hora_requerida}
@@ -175,12 +177,12 @@ const FechaRequeridaForm = () => {
                         </Form.Control.Feedback>
                     </Form.Group>
                 </Row>
-                <Button variant="secondary" onClick={handleCancelar}>
+                <Button variant="secondary" onClick={handleCancelar} size={TAMANO_CONTROLES}>
                     {pagado(servicioDomicilio) ? 'Regresar' : 'Cancelar'} 
                 </Button><span> </span>
                 {
                     !pagado(servicioDomicilio) && (
-                        <Button variant="primary" onClick={handleSubmit}>Guardar</Button>
+                        <Button variant="primary" onClick={handleSubmit} size={TAMANO_CONTROLES}>Guardar</Button>
                     )
                 }
             </Form>

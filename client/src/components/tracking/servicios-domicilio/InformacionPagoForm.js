@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 
 import { faHouse, faLocationDot } from '@fortawesome/free-solid-svg-icons'
@@ -13,7 +13,7 @@ import { useAuth } from '../../../hooks/useAuth'
 import { fetchServicioDomicilio, QUERY_SERVICIO_DOMICILIO } from '../../../queries/ServicioDomicilio'
 
 import FormasPagoSelect from '../../comun/FormaPagoSelect'
-import { isBlank, pagado, esEntrega } from '../../comun/utils'
+import { isBlank, pagado, esEntrega, TAMANO_CONTROLES } from '../../comun/utils'
 
 const InformacionPagoForm = () => {
     const navigate = useNavigate()
@@ -103,11 +103,11 @@ const InformacionPagoForm = () => {
     
     return (
         <>
-            <Button variant="dark" size="md">
+            <Button variant="dark" size="sm">
                 Información de Pago
             </Button>
             <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-3">
+                <Form.Group className="mb-2">
                     {
                         esEntrega(servicioDomicilio) && (
                             <Card.Text className="mb-0"><FaTicketAlt /> {servicioDomicilio.ticket.padStart(6, '0')}</Card.Text>
@@ -153,7 +153,7 @@ const InformacionPagoForm = () => {
                         <FaPhoneAlt /> {servicioDomicilio.telefono}
                     </Card.Text>
                 </Form.Group>
-                <Form.Group className="mb-3">
+                <Form.Group className="mb-2">
                     <FormasPagoSelect 
                         disabled={pagado(servicioDomicilio)}
                         label='Forma de Pago'
@@ -166,9 +166,10 @@ const InformacionPagoForm = () => {
                         { errors.id_forma_pago }
                     </Form.Control.Feedback>
                 </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label>Notas</Form.Label>
+                <Form.Group className="mb-2">
+                    <Form.Label column={TAMANO_CONTROLES}>Notas</Form.Label>
                     <Form.Control 
+                        size={TAMANO_CONTROLES}
                         as='textarea'
                         disabled={pagado(servicioDomicilio)}
                         rows={2}
@@ -182,7 +183,7 @@ const InformacionPagoForm = () => {
                         { errors.notas_pago }
                     </Form.Control.Feedback>
                 </Form.Group>
-                <Form.Group className="mb-3">
+                <Form.Group className="mb-2">
                     <Form.Check
                         label="Confirmar Pago" 
                         disabled={pagado(servicioDomicilio)}
@@ -195,9 +196,10 @@ const InformacionPagoForm = () => {
                 {
                     formaPagoInfo.confirmar_pago && (
                         <>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Referencia del Pago</Form.Label>
+                            <Form.Group className="mb-2">
+                                <Form.Label column={TAMANO_CONTROLES}>Referencia del Pago</Form.Label>
                                 <Form.Control 
+                                    size={TAMANO_CONTROLES}
                                     as='textarea'
                                     disabled={pagado(servicioDomicilio)}
                                     rows={2}
@@ -216,17 +218,17 @@ const InformacionPagoForm = () => {
                 }
                 {
                     pagado(servicioDomicilio) && (
-                        <Form.Group className="mb-3">
-                            <Form.Label>Confirmó el Pago: { servicioDomicilio.confirmo_pago } </Form.Label>
+                        <Form.Group className="mb-2">
+                            <Form.Label column={TAMANO_CONTROLES}>Confirmó el Pago: { servicioDomicilio.confirmo_pago } </Form.Label>
                         </Form.Group>
                     )
                 }
-                <Button variant="secondary" onClick={handleCancelar}>
+                <Button variant="secondary" onClick={handleCancelar} size={TAMANO_CONTROLES}>
                     {pagado(servicioDomicilio) ? 'Regresar' : 'Cancelar'} 
                 </Button><span> </span>
                 {
                     !pagado(servicioDomicilio) && (
-                        <Button variant="primary" onClick={handleSubmit}>Guardar</Button>
+                        <Button variant="primary" onClick={handleSubmit} size={TAMANO_CONTROLES}>Guardar</Button>
                     )
                 }
             </Form>

@@ -7,7 +7,7 @@ import { esRedireccionada, formateaFecha, formateaFechaHora } from '../../comun/
 
 const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, onContinuar, onBorrar, onForward, onLog, onRecolectarForwarded }) => {
     const { estadoActual } = useTareasExternas()
-    const { esMaquila, esEncargado, esChofer, credenciales } = useAuth()
+    const { esMaquila, esEncargado, esChofer } = useAuth()
 
     function handleContinuar() {
         if (esRedireccionada(tareaExterna))
@@ -49,7 +49,7 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
 
         return (
             parseInt(estadoActual) === STATUS_TAREA.PENDIENTE_RECOLECCION && 
-            parseInt(tareaExterna.id_creado_por) === parseInt(credenciales.id_usuario) &&
+            // parseInt(tareaExterna.id_creado_por) === parseInt(credenciales.id_usuario) &&
             esEncargado()
         )
     }

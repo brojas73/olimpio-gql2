@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { Form } from "react-bootstrap"
+import { TAMANO_CONTROLES } from "./utils"
 
 const PhoneNumberInput = ({placeholder, required, name, onChange, isInvalid, initialValue}) => {
   const[inputValue, setIputValue] = useState(initialValue ? initialValue : '')
@@ -23,6 +24,7 @@ const PhoneNumberInput = ({placeholder, required, name, onChange, isInvalid, ini
 
   return (
     <Form.Control 
+        size={TAMANO_CONTROLES}
         name={name}
         required={required}
         placeholder={placeholder} 

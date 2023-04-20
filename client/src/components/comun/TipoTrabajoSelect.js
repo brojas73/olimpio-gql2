@@ -2,6 +2,7 @@ import { Form, Spinner } from 'react-bootstrap'
 
 import { useQuery } from 'react-query'
 import { fetchTiposTrabajo, QUERY_TIPOS_TRABAJO } from '../../queries/TipoTrabajo'
+import { TAMANO_CONTROLES } from './utils'
 
 const TipoTrabajoSelect = ({onChange, name, value, label, isInvalid}) => {
     const { data: tiposTrabajo, isLoading } = useQuery(QUERY_TIPOS_TRABAJO, fetchTiposTrabajo, { staleTime: Infinity, cacheTime: Infinity})
@@ -10,8 +11,9 @@ const TipoTrabajoSelect = ({onChange, name, value, label, isInvalid}) => {
 
     return (
         <>
-            <Form.Label>{label}</Form.Label>
+            <Form.Label column={TAMANO_CONTROLES}>{label}</Form.Label>
             <Form.Select 
+                size={TAMANO_CONTROLES}
                 onChange={onChange}
                 value={value}
                 name={name}

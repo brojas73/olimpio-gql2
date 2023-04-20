@@ -1,36 +1,30 @@
 import { useNavigate } from "react-router-dom"
-import { Navbar, Container, Button, Badge } from 'react-bootstrap'
+import { Navbar, Button, Badge } from 'react-bootstrap'
 import { FaPlus } from 'react-icons/fa'
 
-import { useTareasExternas } from "../../../context/TareasExternasContext"
-import { STATUS_TAREA } from "../../../context/TareasExternasContext"
-
 import { useAuth } from "../../../hooks/useAuth"
+import { TAMANO_CONTROLES } from "../../comun/utils"
 
 const TituloTareas = ({titulo, renglones}) => {
     const navigate = useNavigate()
-    const { estadoActual } = useTareasExternas()
     const { esEncargado } = useAuth()
 
     function nuevaTarea() {
-        navigate('/tracking/nueva-tarea')
+        navigate('/tracking/tareas-externas/nueva-tarea')
     }
 
     return (
-        <Navbar>
-            <Container className="justify-content-start">
-                <Button variant="dark" size="md">
-                    {titulo} { " "}
-                    <Badge bg="primary">{renglones}</Badge>
-                </Button>
-            </Container>
+        <Navbar className="d-flex justify-content-between align-items-center">
+            <Button variant="dark" size={TAMANO_CONTROLES}>
+                {titulo} 
+                &nbsp;
+                <Badge bg="primary" pill>{renglones}</Badge>
+            </Button>
             {
-                (esEncargado() && parseInt(estadoActual) === STATUS_TAREA.PENDIENTE_RECOLECCION) && (
-                    <Container className="justify-content-end">
-                        <Button onClick={nuevaTarea} variant='dark' size="sm">
-                            <FaPlus />
-                        </Button>
-                    </Container>
+                esEncargado() && (
+                    <Button onClick={nuevaTarea} variant='dark' size={TAMANO_CONTROLES}>
+                        <FaPlus />
+                    </Button>
                 )
             }
         </Navbar>

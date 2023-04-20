@@ -1,5 +1,3 @@
-import { useLocation } from "react-router-dom"
-
 import { Link } from 'react-router-dom'
 import { NavDropdown, Spinner } from 'react-bootstrap'
 
@@ -8,33 +6,51 @@ import { STATUS_TAREA } from '../../context/TareasExternasContext'
 import { useQuery } from 'react-query'
 import { fetchEstadosTarea, QUERY_ESTADOS_TAREA } from '../../queries/EstadoTarea'
 
-import { nombreEstadoTarea } from './utils'
+import { FONT_SIZE_DROPDOWN, nombreEstadoTarea } from './utils'
 
 
 const EstadosTareaDropDown = ({onSelect, idSelected }) => {
   const { data: estadosTarea, isLoading } = useQuery(QUERY_ESTADOS_TAREA, fetchEstadosTarea, { staleTime: Infinity, cacheTime: Infinity})
-  const titulo = useLocation().pathname.includes('tareas-activas') ? 'Estado de la Tarea' : nombreEstadoTarea(estadosTarea, idSelected)
+  const titulo = nombreEstadoTarea(estadosTarea, idSelected)
 
   if (isLoading) return <Spinner animation='border' />
 
   return (
-    <NavDropdown title={titulo}>
+    <NavDropdown title={titulo} style={{ fontSize: `${FONT_SIZE_DROPDOWN}` }} >
     {
       estadosTarea 
         .filter(estadoTarea => (
           parseInt(estadoTarea.id_estado_tarea) !== STATUS_TAREA.RECIBIDO_EN_SUCURSAL_ORIGEN &&
           parseInt(estadoTarea.id_estado_tarea) !== STATUS_TAREA.REDIRECCIONADO 
         ))
-        .map(estadoTarea => (
-          <NavDropdown.Item 
-            as={Link}
-            to={estadoTarea.url}
-            key={estadoTarea.id_estado_tarea}
-            onClick={() => onSelect(estadoTarea.id_estado_tarea)}
-          >
-            {estadoTarea.nombre}
-          </NavDropdown.Item>
-        ))
+        .map(estadoTarea => {
+          if (parseInt(estadoTarea.id_estado_tarea) === STATUS_TAREA.TAREAS_ACTIVAS) {
+            return (
+              <>
+                <NavDropdown.Item 
+                  as={Link}
+                  key={estadoTarea.id_estado_tarea}
+                  onClick={() => onSelect(estadoTarea.id_estado_tarea)}
+                  style={{ fontSize: `${FONT_SIZE_DROPDOWN}` }}
+                >
+                  {estadoTarea.nombre}
+                </NavDropdown.Item>
+                <NavDropdown.Divider key={`div-${estadoTarea.id_estado_tarea}`}/>
+              </>
+            )
+          } else {
+            return (
+              <NavDropdown.Item 
+                as={Link}
+                key={estadoTarea.id_estado_tarea}
+                onClick={() => onSelect(estadoTarea.id_estado_tarea)}
+                style={{ fontSize: `${FONT_SIZE_DROPDOWN}` }}
+              >
+                {estadoTarea.nombre}
+              </NavDropdown.Item>
+            )
+          }
+        })
     }
     </NavDropdown>
   )

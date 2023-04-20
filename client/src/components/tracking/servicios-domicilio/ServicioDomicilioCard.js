@@ -12,23 +12,22 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 const ServicioDomicilio = ({
     servicioDomicilio, 
     textoContinuar, 
-    textoBorrar, 
     onContinuar, 
-    onBorrar, 
     onCancelar,
     onEditarInformacionPago, 
     onLog, 
     onCambiarFecha,
     onEditarInformacionGeneral 
 }) => {
-    const { estadoSDActual } = useServiciosDomicilio()
+
+    const { estadoActual } = useServiciosDomicilio()
     const { esEncargado, esChofer } = useAuth()
 
     function mostrarBotonAccionContinuar() {
         if (!textoContinuar)
             return false
 
-        switch (parseInt(estadoSDActual)) {
+        switch (parseInt(estadoActual)) {
             case STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_CLIENTE: 
                 return esChofer()
             case STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_SUCURSAL:
@@ -45,20 +44,6 @@ const ServicioDomicilio = ({
                 break
         }
     }
-
-    // function mostrarBotonAcccionBorrar() {
-    //     if (!textoBorrar)
-    //         return false
-
-    //     return (
-    //         (
-    //             parseInt(estadoSDActual) === STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_CLIENTE || 
-    //             parseInt(estadoSDActual) === STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_SUCURSAL
-    //         ) && 
-    //         parseInt(servicioDomicilio.id_creado_por) === parseInt(credenciales.id_usuario) &&
-    //         esEncargado()
-    //     )
-    // }
 
     function mostrarBotonAcccionCancelar() {
         return (

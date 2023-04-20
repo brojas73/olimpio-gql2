@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 
-import { Button, Col, Form, Spinner } from 'react-bootstrap'
+import { Accordion, Button, Col, Form, Spinner } from 'react-bootstrap'
 
 import { useQuery, useMutation } from 'react-query'
 import { actualizaInformacionGeneral } from "../../../mutations/ServicioDomicilio"
 import { useAuth } from '../../../hooks/useAuth'
 import { fetchServicioDomicilio, QUERY_SERVICIO_DOMICILIO } from '../../../queries/ServicioDomicilio'
 
-import { isBlank, pagado } from '../../comun/utils'
+import { TAMANO_CONTROLES, isBlank, pagado } from '../../comun/utils'
 import PhoneNumberInput from '../../comun/PhoneNumberInput'
 
 const InformacionGeneralForm = () => {
@@ -115,95 +115,109 @@ const InformacionGeneralForm = () => {
     
     return (
         <>
-            <Button variant="dark" size="md">
+            <Button variant="dark" size={TAMANO_CONTROLES}>
                 Información General
             </Button>
             <Form onSubmit={handleSubmit}>
-            <Form.Group as={Col} className="mb-3">
-                <Form.Label>Nombre</Form.Label>
-                <Form.Control
-                    onChange={handleChange}
-                    value={formaInformacionGeneral.nombre}
-                    type='text'
-                    placeholder="Escribe el nombre del cliente..." 
-                    name='nombre' 
-                    isInvalid={ !!errors.nombre }
-                />
-                <Form.Control.Feedback type='invalid'>
-                    { errors.nombre }
-                </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group as={Col} className="mb-3">
-                <Form.Label>Dirección</Form.Label>
-                <Form.Control 
-                    onChange={handleChange}
-                    value={formaInformacionGeneral.direccion}
-                    type='text'
-                    placeholder="Escribe la dirección del cliente..." 
-                    name='direccion' 
-                    isInvalid={ !!errors.direccion }
-                />
-                <Form.Control.Feedback type='invalid'>
-                    { errors.direccion }
-                </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group as={Col} className="mb-3">
-                <Form.Label>Colonia <small>(opcional)</small></Form.Label>
-                <Form.Control 
-                    onChange={handleChange}
-                    value={formaInformacionGeneral.colonia}
-                    type='text'
-                    placeholder="Escribe la colonia del cliente..." 
-                    name='colonia' 
-                />
-            </Form.Group>
-            <Form.Group as={Col} className="mb-3">
-                <Form.Label>Delegación <small>(opcional)</small></Form.Label>
-                <Form.Control 
-                    onChange={handleChange}
-                    value={formaInformacionGeneral.municipio}
-                    type='text'
-                    placeholder="Escribe la delegación del cliente..." 
-                    name='municipio' 
-                />
-            </Form.Group>
-            <Form.Group as={Col} className="mb-3">
-                <Form.Label>Código Postal <small>(opcional)</small></Form.Label>
-                <Form.Control 
-                    onChange={handleChange}
-                    value={formaInformacionGeneral.cp}
-                    type='number'
-                    placeholder="Escribe el código postal del cliente..." 
-                    name='cp' 
-                />
-            </Form.Group>
-            <Form.Group as={Col} className="mb-3">
-                <Form.Label>Ubicación <small>(opcional)</small></Form.Label>
-                <Form.Control 
-                    onChange={handleChange}
-                    value={formaInformacionGeneral.ubicacion}
-                    type='text'
-                    placeholder="Escribe la ubicación del cliente..." 
-                    name='ubicacion' 
-                />
-            </Form.Group>
-            <Form.Group as={Col} className="mb-3">
-                <Form.Label>Teléfono</Form.Label>
-                <PhoneNumberInput 
-                    name='telefono'
-                    initialValue={servicioDomicilio.telefono}
-                    placeholder="Escribe el teléfono del cliente..."
-                    onChange={handlePhoneChange}
-                    isInvalid={ !!errors.telefono }
-                />
-                <Form.Control.Feedback type='invalid'>
-                    { errors.telefono }
-                </Form.Control.Feedback>
-            </Form.Group>
-                <Button variant="secondary" onClick={handleCancelar}>
+                <Form.Group as={Col} className="mb-2">
+                    <Form.Label column={TAMANO_CONTROLES}>Nombre</Form.Label>
+                    <Form.Control
+                        size={TAMANO_CONTROLES}
+                        onChange={handleChange}
+                        value={formaInformacionGeneral.nombre}
+                        type='text'
+                        placeholder="Escribe el nombre del cliente..." 
+                        name='nombre' 
+                        isInvalid={ !!errors.nombre }
+                    />
+                    <Form.Control.Feedback type='invalid'>
+                        { errors.nombre }
+                    </Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group as={Col} className="mb-2">
+                    <Form.Label column={TAMANO_CONTROLES}>Teléfono</Form.Label>
+                    <PhoneNumberInput 
+                        name='telefono'
+                        initialValue={servicioDomicilio.telefono}
+                        placeholder="Escribe el teléfono del cliente..."
+                        onChange={handlePhoneChange}
+                        isInvalid={ !!errors.telefono }
+                    />
+                    <Form.Control.Feedback type='invalid'>
+                        { errors.telefono }
+                    </Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group as={Col} className="mb-2">
+                    <Form.Label column={TAMANO_CONTROLES}>Dirección</Form.Label>
+                    <Form.Control 
+                        size={TAMANO_CONTROLES}
+                        onChange={handleChange}
+                        value={formaInformacionGeneral.direccion}
+                        type='text'
+                        placeholder="Escribe la dirección del cliente..." 
+                        name='direccion' 
+                        isInvalid={ !!errors.direccion }
+                    />
+                    <Form.Control.Feedback type='invalid'>
+                        { errors.direccion }
+                    </Form.Control.Feedback>
+                </Form.Group>
+
+                <Accordion className='my-3 accordion-small'>
+                    <Accordion.Item eventKey='0'>
+                        <Accordion.Header>Mostrar Más</Accordion.Header>
+                        <Accordion.Body>
+                            <Form.Group as={Col} className="mb-2">
+                                <Form.Label column={TAMANO_CONTROLES}>Colonia <small>(opcional)</small></Form.Label>
+                                <Form.Control 
+                                    size={TAMANO_CONTROLES}
+                                    onChange={handleChange}
+                                    value={formaInformacionGeneral.colonia}
+                                    type='text'
+                                    placeholder="Escribe la colonia del cliente..." 
+                                    name='colonia' 
+                                />
+                            </Form.Group>
+                            <Form.Group as={Col} className="mb-2">
+                                <Form.Label column={TAMANO_CONTROLES}>Delegación <small>(opcional)</small></Form.Label>
+                                <Form.Control 
+                                    size={TAMANO_CONTROLES}
+                                    onChange={handleChange}
+                                    value={formaInformacionGeneral.municipio}
+                                    type='text'
+                                    placeholder="Escribe la delegación del cliente..." 
+                                    name='municipio' 
+                                />
+                            </Form.Group>
+                            <Form.Group as={Col} className="mb-2">
+                                <Form.Label column={TAMANO_CONTROLES}>Código Postal <small>(opcional)</small></Form.Label>
+                                <Form.Control 
+                                    size={TAMANO_CONTROLES}
+                                    onChange={handleChange}
+                                    value={formaInformacionGeneral.cp}
+                                    type='number'
+                                    placeholder="Escribe el código postal del cliente..." 
+                                    name='cp' 
+                                />
+                            </Form.Group>
+                            <Form.Group as={Col} className="mb-2">
+                                <Form.Label column={TAMANO_CONTROLES}>Ubicación <small>(opcional)</small></Form.Label>
+                                <Form.Control 
+                                    size={TAMANO_CONTROLES}
+                                    onChange={handleChange}
+                                    value={formaInformacionGeneral.ubicacion}
+                                    type='text'
+                                    placeholder="Escribe la ubicación del cliente..." 
+                                    name='ubicacion' 
+                                />
+                            </Form.Group>
+                        </Accordion.Body>
+                    </Accordion.Item>
+                </Accordion>
+                <Button variant="secondary" onClick={handleCancelar} size={TAMANO_CONTROLES}>
                     {pagado(servicioDomicilio) ? 'Regresar' : 'Cancelar'} 
                 </Button><span> </span>
-                <Button variant="primary" onClick={handleSubmit}>Guardar</Button>
+                <Button variant="primary" size={TAMANO_CONTROLES} onClick={handleSubmit}>Guardar</Button>
             </Form>
         </>
     )

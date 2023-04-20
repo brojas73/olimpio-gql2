@@ -1,18 +1,28 @@
 import { useState } from "react"
 
-import {Button, Container, Form, Spinner} from 'react-bootstrap'
+// Bootstrap
+import {Alert, Button, Container, Form, Spinner} from 'react-bootstrap'
 
+// Hooks
 import { useAuth } from '../../hooks/useAuth'
+import { useTareasExternas } from "../../context/TareasExternasContext"
 
+// Mutation
 import { useMutation } from "react-query"
 import { login } from "../../mutations/Usuario"
 
+// Components
 import SucursalSelect from '../comun/SucursalSelect'
-import { useTareasExternas } from "../../context/TareasExternasContext"
 
-const Login = ({onLoginOk, onLoginFail}) => {
+const Login = ({onLoginOk}) => {
   const { setCredenciales } = useAuth()
   const { setSucursalActual } = useTareasExternas()
+
+  const [alerta, setAlerta] = useState({
+    mostrar: false,
+    mensaje: '',
+    tipo: 'danger'
+  })
 
   const [formInfo, setFormInfo] = useState({
     usuario: '',
@@ -37,7 +47,7 @@ const Login = ({onLoginOk, onLoginFail}) => {
     setFormInfo(prevValue => ({...prevValue, [e.target.name]: e.target.value}))
   }  
 
-  async function handleSubmit(event) {
+  function handleSubmit(event) {
     event.preventDefault()
     doLogin({
         usuario: formInfo.usuario,
@@ -45,46 +55,66 @@ const Login = ({onLoginOk, onLoginFail}) => {
     })
   }
 
+  function despliegaAlerta(mensaje, tipoAlerta='success') {
+    setAlerta(prevValue => ({...prevValue, mostrar: true, mensaje: mensaje, tipo: tipoAlerta}))
+    window.setTimeout(() => {
+      setAlerta(prevValue => ({...prevValue, mostrar: false}))
+    }, 2000)
+  }  
+
+  function onLoginFail(mensaje) {
+    despliegaAlerta(mensaje, 'danger')
+  }
+
   if (isLoading) return <Spinner animation="border" />
   
   return (
-    <Container>
-        <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3">
-                <SucursalSelect 
-                    label='Sucursal Inicial'
-                    onChange={handleChange} 
-                    value={formInfo.sucursal}
-                    name='sucursal' 
-                />            
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label>Usuario</Form.Label>
-                <Form.Control 
-                    type='text'
-                    placeholder="Escribe tu usuario..." 
-                    onChange={handleChange}
-                    name="usuario"
-                    value={formInfo.usuario}
-                />
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label>Contraseña</Form.Label>
-                <Form.Control 
-                    type='password'
-                    placeholder="Escribe tu contraseña..." 
-                    onChange={handleChange}
-                    name="contrasena"
-                    value={formInfo.contrasena}
-                />
-            </Form.Group>
-            <Button 
-                variant='primary' 
-                type='submit'
-            >
-                Ingresar
-            </Button>
-        </Form>
+    <Container >
+      <Alert
+        show={alerta.mostrar} 
+        variant={alerta.tipo} 
+        onClose={() => setAlerta(prevValue => ({...prevValue, mostrar: false}))} 
+        dismissible
+      >
+        {alerta.mensaje}
+      </Alert>
+
+      <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3">
+              <SucursalSelect 
+                  label='Sucursal Inicial'
+                  onChange={handleChange} 
+                  value={formInfo.sucursal}
+                  name='sucursal' 
+              />            
+          </Form.Group>
+          <Form.Group className="mb-3">
+              <Form.Label>Usuario</Form.Label>
+              <Form.Control 
+                  type='text'
+                  placeholder="Escribe tu usuario..." 
+                  onChange={handleChange}
+                  name="usuario"
+                  value={formInfo.usuario}
+              />
+          </Form.Group>
+          <Form.Group className="mb-3">
+              <Form.Label>Contraseña</Form.Label>
+              <Form.Control 
+                  type='password'
+                  placeholder="Escribe tu contraseña..." 
+                  onChange={handleChange}
+                  name="contrasena"
+                  value={formInfo.contrasena}
+              />
+          </Form.Group>
+          <Button 
+              variant='primary' 
+              type='submit'
+          >
+              Ingresar
+          </Button>
+      </Form>
     </Container>
   )
 }

@@ -6,6 +6,8 @@ import { faUser, faUserPen, faTruck, faStore } from "@fortawesome/free-solid-svg
 
 import { useAuth } from "../../hooks/useAuth"
 
+import { FONT_SIZE_DROPDOWN } from "../comun/utils"
+
 const UsuarioDropDown = ({onLogout, title}) => {
     const { logout } = useAuth()
     const { esAdmin, esEncargado, esChofer } = useAuth()
@@ -16,12 +18,19 @@ const UsuarioDropDown = ({onLogout, title}) => {
     }
 
     return (
-        <NavDropdown title={
+        <NavDropdown style={{ fontSize: `${FONT_SIZE_DROPDOWN}` }} title={
             <span>
                 <FontAwesomeIcon icon={esAdmin() ? faUserPen : esEncargado() ? faUser : esChofer() ? faTruck : faStore} /> { title }
             </span>
         }>
-            <NavDropdown.Item tag={Link} to='/login' onClick={handleLogout}>Salir</NavDropdown.Item>
+            <NavDropdown.Item 
+                tag={Link} 
+                to='/login' 
+                onClick={handleLogout}
+                style={{ fontSize: `${FONT_SIZE_DROPDOWN}` }}
+            >
+                Salir
+            </NavDropdown.Item>
         </NavDropdown>
     )
 }

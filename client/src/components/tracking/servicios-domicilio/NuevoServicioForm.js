@@ -280,7 +280,7 @@ const NuevoServicioForm = ({onExito}) => {
             </Form.Group>
             <Accordion className='my-3'>
                 <Accordion.Item eventKey='0'>
-                    <Accordion.Header>Mostrar Más</Accordion.Header>
+                    <Accordion.Header style={{ fontSize: '200% !important'}}>Mostrar Más</Accordion.Header>
                     <Accordion.Body>
                         <Form.Group as={Col} className="mb-2">
                             <Form.Label column={TAMANO_CONTROLES}>Colonia <small>(opcional)</small></Form.Label>
@@ -329,11 +329,11 @@ const NuevoServicioForm = ({onExito}) => {
                     </Accordion.Body>
                 </Accordion.Item>
             </Accordion>
-            <Button variant='secondary' onClick={handleCancelar} size={TAMANO_CONTROLES}>
+            <Button variant='secondary' onClick={handleCancelar} size={TAMANO_CONTROLES} className='mb-3'>
                 Cancelar
             </Button>
             {" "}
-            <Button variant='primary' type='submit' size={TAMANO_CONTROLES}>
+            <Button variant='primary' type='submit' size={TAMANO_CONTROLES} className='mb-3'>
                 Crear Servicio a Domicilio
             </Button>
         </Form>

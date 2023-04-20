@@ -43,7 +43,7 @@ const EstadosServicioDomicilioDropDown = ({onSelect, idSelected }) => {
                   >
                    {estadoServicioDomicilio.nombre}
                   </NavDropdown.Item>
-                  <NavDropdown.Divider key={`div-${estadoServicioDomicilio.id_estado_servicio_domicilio}`}/>
+                  <NavDropdown.Divider key={`divider-${estadoServicioDomicilio.id_estado_servicio_domicilio}`}/>
                 </>
             )
           } else {

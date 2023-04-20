@@ -13,7 +13,7 @@ import { useAuth } from '../../../hooks/useAuth'
 import { fetchServicioDomicilio, QUERY_SERVICIO_DOMICILIO } from '../../../queries/ServicioDomicilio'
 
 import FormasPagoSelect from '../../comun/FormaPagoSelect'
-import { isBlank, pagado, esEntrega, TAMANO_CONTROLES } from '../../comun/utils'
+import { isBlank, pagado, esEntrega, TAMANO_CONTROLES, FONT_SIZE_DROPDOWN } from '../../comun/utils'
 
 const InformacionPagoForm = () => {
     const navigate = useNavigate()
@@ -107,10 +107,12 @@ const InformacionPagoForm = () => {
                 Información de Pago
             </Button>
             <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-2">
+                <Form.Group className="my-2" style={{ fontSize: `${FONT_SIZE_DROPDOWN}`}}>
                     {
                         esEntrega(servicioDomicilio) && (
-                            <Card.Text className="mb-0"><FaTicketAlt /> {servicioDomicilio.ticket.padStart(6, '0')}</Card.Text>
+                            <Card.Text className="mb-0">
+                                <FaTicketAlt /> {servicioDomicilio.ticket.padStart(6, '0')}
+                            </Card.Text>
                         )
                     }
                     <Card.Text className="mb-0">

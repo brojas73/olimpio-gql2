@@ -3,7 +3,7 @@ import { FaClipboardList, FaArrowAltCircleRight, FaTrashAlt, FaCheck, FaRegCalen
 
 import { useAuth } from "../../../hooks/useAuth"
 import { STATUS_TAREA, TIPOS_SERVICIO, useTareasExternas } from "../../../context/TareasExternasContext"
-import { esRedireccionada, formateaFecha, formateaFechaHora } from '../../comun/utils'
+import { FONT_SIZE_DROPDOWN, esRedireccionada, formateaFecha, formateaFechaHora } from '../../comun/utils'
 
 const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, onContinuar, onBorrar, onForward, onLog, onRecolectarForwarded }) => {
     const { estadoActual } = useTareasExternas()
@@ -68,8 +68,8 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
         <Col>
             <Card border={parseInt(tareaExterna.id_tipo_servicio) === TIPOS_SERVICIO.EXPRESS ? 'danger' : ''} >
                 <Card.Header>
-                    <div className="d-flex justify-content-between align-items-center">
-                        <Card.Subtitle className="text-primary">{tareaExterna.estado_tarea}</Card.Subtitle>
+                    <div className="d-flex justify-content-between align-items-center" style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
+                        <Card.Subtitle className="text-primary" style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>{tareaExterna.estado_tarea}</Card.Subtitle>
                         <NavLink 
                             onClick={() => onLog(tareaExterna.id_tarea_externa)} 
                             className="link-dark"
@@ -83,13 +83,13 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
                         </NavLink>
                     </div>
                     <div className="d-flex justify-content-between align-items-center">
-                        <Card.Subtitle>
+                        <Card.Subtitle style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
                             <FaTicketAlt className="me-1"/> 
                             <span className="align-middle">
                                 {tareaExterna.ticket.padStart(6, '0')}
                             </span>
                         </Card.Subtitle>
-                        <Card.Subtitle>
+                        <Card.Subtitle style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
                             { tareaExterna.sucursal_origen } <FaArrowAltCircleRight className="mx-1"/> { tareaExterna.sucursal_destino }
                             {
                                 esRedireccionada(tareaExterna) && (
@@ -100,13 +100,13 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
                             }
                         </Card.Subtitle>
                     </div>
-                    <div className="d-flex justify-content-between align-items-center">
+                    <div className="d-flex justify-content-between align-items-center" style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
                         <small>{formateaFecha(tareaExterna.fecha_creacion)}</small>
                         <small>{tareaExterna.creado_por}</small>
                     </div>
                 </Card.Header>
-                <Card.Body>
-                    <Card.Subtitle>
+                <Card.Body style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
+                    <Card.Subtitle style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
                         {tareaExterna.tipo_trabajo} { " - "}
                         {tareaExterna.tipo_servicio}
                     </Card.Subtitle>
@@ -114,7 +114,7 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
                         {tareaExterna.descripcion}
                     </Card.Text>
                 </Card.Body>
-                <Card.Footer className="d-flex justify-content-between align-items-center">
+                <Card.Footer className="d-flex justify-content-between align-items-center" style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
                     <div>
                         <small>
                             <FaRegCalendarAlt /> 

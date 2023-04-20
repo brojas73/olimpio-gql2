@@ -5,6 +5,9 @@ import { Tab, Tabs } from 'react-bootstrap'
 import { useAuth } from '../../hooks/useAuth'
 import { useTareasExternas } from '../../context/TareasExternasContext'
 
+// Utils
+import { FONT_SIZE_TABS } from './utils'
+
 // Mutations
 import { useMutation } from 'react-query'
 import { logout } from '../../mutations/Usuario'
@@ -12,7 +15,6 @@ import { logout } from '../../mutations/Usuario'
 // Components
 import IdleTimeoutHandler from './IdleTimeoutHandler'
 import GlobalNavbar from './GlobalNavbar'
-import { FONT_SIZE_TABS, TAMANO_CONTROLES } from './utils'
 
 const TabsOlimpio = () => {
     const navigate = useNavigate()
@@ -27,7 +29,6 @@ const TabsOlimpio = () => {
           navigate('/login')
         }
       })
-
 
     function handleSelect(key) {
         const url = key.includes('consultas') ? `/consultas/tareas-externas` : `/tracking/${key}`
@@ -50,7 +51,7 @@ const TabsOlimpio = () => {
             {
                 conectado && (
                     <Tabs
-                        defaultActiveKey='tareas-externas'
+                        defaultAactiveKey='tareas-externas'
                         id='olimpio-tab'
                         className='mb-3'
                         onSelect={key => handleSelect(key)}

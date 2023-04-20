@@ -268,7 +268,7 @@ const ServiciosDomicilioHome = () => {
                 renglones={serviciosDomicilio.length}
             />
 
-            <Row xs={1} md={1} lg={2} className="g-3">
+            <Row sm={1} xs={1} md={1} lg={2} className="g-3">
             {
                 serviciosDomicilio.map(servicioDomicilio => (
                     <ServicioDomicilio 

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { Navbar, Offcanvas, Nav } from "react-bootstrap"
+import { Navbar, /* Offcanvas, */ Nav } from "react-bootstrap"
 
 import { useTareasExternas } from '../../context/TareasExternasContext'
 import { useAuth } from "../../hooks/useAuth"

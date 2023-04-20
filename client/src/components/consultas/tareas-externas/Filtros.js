@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { Col, Form, Nav, Navbar, Offcanvas, Row } from "react-bootstrap"
+import { Col, Form, Nav, Navbar, /* Offcanvas, */ Row } from "react-bootstrap"
 
 import { useTareasExternas } from "../../../context/TareasExternasContext"
 

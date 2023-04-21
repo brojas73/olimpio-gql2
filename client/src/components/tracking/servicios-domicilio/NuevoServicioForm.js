@@ -7,6 +7,7 @@ import { useTareasExternas } from '../../../context/TareasExternasContext'
 import { useAuth } from '../../../hooks/useAuth'
 import { formateaFechaForm, formateaHoraForm, isBlank, TAMANO_CONTROLES} from '../../comun/utils'
 
+import TicketInput from '../../comun/TicketInput'
 import PhoneNumberInput from '../../comun/PhoneNumberInput'
 import TipoServicioSelect from './TipoServicioSelect'
 import FormasPagoSelect from '../../comun/FormaPagoSelect'
@@ -163,12 +164,12 @@ const NuevoServicioForm = ({onExito}) => {
                     <>
                         <Form.Group as={Col} className="mb-2">
                             <Form.Label column={TAMANO_CONTROLES}>Ticket</Form.Label>
-                            <Form.Control
+                            <TicketInput
                                 size={TAMANO_CONTROLES}
-                                onChange={handleChange}
+                                onChange={ticketCapturado => setServicioDomicilio(prevValue => ({...prevValue, ticket: ticketCapturado}))}
                                 value={servicioDomicilio.ticket}
                                 type='number'
-                                placeholder="Escribe el ticket a entregar..." 
+                                placeholder="Escribe el número de ticket..." 
                                 name='ticket' 
                                 isInvalid={ !!errors.ticket }
                             />
@@ -256,6 +257,7 @@ const NuevoServicioForm = ({onExito}) => {
             <Form.Group as={Col} className="mb-2">
                 <Form.Label column={TAMANO_CONTROLES}>Teléfono</Form.Label>
                 <PhoneNumberInput 
+                    size={TAMANO_CONTROLES}
                     name='telefono'
                     placeholder="Escribe el teléfono del cliente..."
                     onChange={handlePhoneChange}

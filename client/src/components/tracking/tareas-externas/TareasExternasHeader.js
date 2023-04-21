@@ -2,7 +2,6 @@ import Filtros from "./Filtros"
 import TituloTareas from "./TituloTareas"
 
 const TareasExternasHeader = ({titulo, renglones}) => {
-
   return (
     <>
       <Filtros />

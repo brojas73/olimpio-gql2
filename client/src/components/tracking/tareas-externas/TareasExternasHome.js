@@ -47,9 +47,9 @@ const TIPO_CONFIRMACION = {
 function getSiguienteEstado(idEstadoActual) {
     switch (parseInt(idEstadoActual)) {
         case STATUS_TAREA.PENDIENTE_RECOLECCION:
-            return STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE
-        case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE:
         case STATUS_TAREA.REDIRECCIONADO:
+                return STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE
+        case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE:
                 return STATUS_TAREA.RECIBIDO_PARA_ATENDERSE
         case STATUS_TAREA.RECIBIDO_PARA_ATENDERSE:
             return STATUS_TAREA.TERMINADO_PARA_RECOLECTAR
@@ -134,8 +134,8 @@ function getTextoForward(idEstadoActual) {
 const TareasExternasHome = () => {
     const navigate = useNavigate()
     const queryClient = useQueryClient()
-
-    const { ticketFiltro, sucursalFiltro, tipoTrabajoFiltro, tipoServicioFiltro, sucursalActual, estadoActual } = useTareasExternas()
+    
+    const { sucursalActual, estadoActual, ticketFiltro, sucursalFiltro } = useTareasExternas()
     const { credenciales } = useAuth()
 
     // State
@@ -173,22 +173,10 @@ const TareasExternasHome = () => {
         }
     })
     
-
     const { mutate: doRedireccionaTareaExterna } = useMutation ({
         mutationFn: redireccionaTareaExterna,
         onSuccess: ({data}) => {
             queryClient.invalidateQueries({ queryKey: [QUERY_TAREAS_EXTERNAS_ACTIVAS] })
-            // queryClient.setQueriesData(QUERY_TAREAS_EXTERNAS_ACTIVAS, (current) => (
-            //     current.map(tareaExterna => (
-            //         parseInt(tareaExterna.id_tarea_externa) === parseInt(data.id_tarea_externa) ? 
-            //             {
-            //                 ...tareaExterna, 
-            //                 id_estado_tarea: data.id_estado_tarea,
-            //                 id_sucursal_redireccion: data.id_sucursal_redireccion
-            //             } : 
-            //             tareaExterna 
-            //     ))
-            // ))
         }
     })
     
@@ -196,18 +184,6 @@ const TareasExternasHome = () => {
         mutationFn: recolectaTareaExternaForwarded,
         onSuccess: ({data}) => {
             queryClient.invalidateQueries({ queryKey: [QUERY_TAREAS_EXTERNAS_ACTIVAS] })
-            // queryClient.setQueriesData(QUERY_TAREAS_EXTERNAS_ACTIVAS, (current) => (
-            //     current.map(tareaExterna => (
-            //         parseInt(tareaExterna.id_tarea_externa) === parseInt(data.id_tarea_externa) ? 
-            //             {
-            //                 ...tareaExterna, 
-            //                 id_sucursal_destino: data.id_sucursal_destino,
-            //                 id_estado_tarea: data.id_estado_tarea,
-            //                 id_sucursal_redireccion: data.id_sucursal_redireccion
-            //             } : 
-            //             tareaExterna 
-            //     ))
-            // ))
         }
     })
 
@@ -215,9 +191,7 @@ const TareasExternasHome = () => {
     function filtraTareas(tareasExternasActivas) {
         const tareasExternasFiltradas = tareasExternasActivas.filter(tareaExterna => 
             (ticketFiltro.length === 0 || (ticketFiltro.length > 0 && tareaExterna.ticket.includes(ticketFiltro))) &&
-            (sucursalFiltro === 0 || (sucursalFiltro !== 0 && (tareaExterna.id_sucursal_origen === sucursalFiltro || tareaExterna.id_sucursal_destino === sucursalFiltro))) &&
-            (tipoTrabajoFiltro === 0 || (tipoTrabajoFiltro !== 0 && tareaExterna.id_tipo_trabajo === tipoTrabajoFiltro)) &&
-            (tipoServicioFiltro === 0 || (tipoServicioFiltro !== 0 && tareaExterna.id_tipo_servicio === tipoServicioFiltro))
+            (sucursalFiltro === 0 || (sucursalFiltro !== 0 && (tareaExterna.id_sucursal_origen === sucursalFiltro || tareaExterna.id_sucursal_destino === sucursalFiltro)))
         )
 
         switch (parseInt(estadoActual)) {
@@ -278,7 +252,7 @@ const TareasExternasHome = () => {
                 setTipoConfirmacion(null)
                 return doRecolectaTareaExternaForwarded({
                     id_tarea_externa: idTareaExterna, 
-                    id_estado_tarea: STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE,
+                    id_estado_tarea: getSiguienteEstado(estadoActual),
                     id_sucursal_redireccion: parseInt(idSucursalRedireccion), 
                     id_usuario: credenciales.id_usuario
                 })

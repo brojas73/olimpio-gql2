@@ -167,8 +167,9 @@ const InformacionGeneralForm = () => {
                 <Form.Group as={Col} className="mb-2">
                     <Form.Label column={TAMANO_CONTROLES}>Teléfono</Form.Label>
                     <PhoneNumberInput 
+                        size={TAMANO_CONTROLES}
                         name='telefono'
-                        initialValue={servicioDomicilio.telefono}
+                        initialvalue={formaInformacionGeneral.telefono}
                         placeholder="Escribe el teléfono del cliente..."
                         onChange={handlePhoneChange}
                         isInvalid={ !!errors.telefono }

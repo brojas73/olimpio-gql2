@@ -107,6 +107,7 @@ function getTextoContinuar(idEstadoActual) {
 
 const ServiciosDomicilioHome = () => {
     const navigate = useNavigate()
+    const queryClient = useQueryClient()
 
     const { sucursalActual } = useTareasExternas()
     const { ticketFiltro, sucursalFiltro, estadoActual } = useServiciosDomicilio()
@@ -122,7 +123,6 @@ const ServiciosDomicilioHome = () => {
     const { data: serviciosDomicilioActivos, isLoading } = useQuery(QUERY_SERVICIOS_DOMICILIO_ACTIVOS, fetchServiciosDomicilioActivos)
 
     // Mutations
-    const queryClient = useQueryClient()
     const { mutate: doActualizaEstadoServicioDomicilio } = useMutation ({
         mutationFn: actualizaEstado,
         onSuccess: ({data}) => {

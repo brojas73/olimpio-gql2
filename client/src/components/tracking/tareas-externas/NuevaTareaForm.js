@@ -7,6 +7,7 @@ import { STATUS_TAREA, useTareasExternas } from '../../../context/TareasExternas
 import { useAuth } from '../../../hooks/useAuth'
 import { TAMANO_CONTROLES, formateaFechaForm, formateaHoraForm, isBlank } from '../../comun/utils'
 
+import TicketInput from '../../comun/TicketInput'
 import SucursalSelect from '../../comun/SucursalSelect'
 import TipoServicioSelect from '../../comun/TipoServicioSelect'
 import TipoTrabajolSelect from '../../comun/TipoTrabajoSelect'
@@ -114,9 +115,9 @@ const NuevaTareaForm = ({onExito}) => {
             <Row>
                 <Form.Group as={Col} className="mb-2">
                     <Form.Label column={TAMANO_CONTROLES}># de Ticket</Form.Label>
-                    <Form.Control
+                    <TicketInput
                         size={TAMANO_CONTROLES}
-                        onChange={handleChange}
+                        onChange={ticketCapturado => setTareaExterna(prevValue => ({...prevValue, ticket: ticketCapturado}))}
                         value={tareaExterna.ticket}
                         type='number'
                         placeholder="Escribe el número de ticket..." 

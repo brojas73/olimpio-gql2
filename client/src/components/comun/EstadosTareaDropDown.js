@@ -16,7 +16,7 @@ const EstadosTareaDropDown = ({onSelect, idSelected }) => {
   if (isLoading) return <Spinner animation='border' />
 
   return (
-    <NavDropdown title={titulo} style={{ fontSize: `${FONT_SIZE_DROPDOWN}` }} >
+    <NavDropdown title={titulo} style={{ fontSize: `${FONT_SIZE_DROPDOWN}` }}>
     {
       estadosTarea 
         .filter(estadoTarea => (

@@ -3,7 +3,13 @@ import { FaClipboardList, FaArrowAltCircleRight, FaTrashAlt, FaCheck, FaRegCalen
 
 import { useAuth } from "../../../hooks/useAuth"
 import { STATUS_TAREA, TIPOS_SERVICIO, useTareasExternas } from "../../../context/TareasExternasContext"
-import { FONT_SIZE_DROPDOWN, esRedireccionada, formateaFecha, formateaFechaHora } from '../../comun/utils'
+import { 
+    FONT_SIZE_DROPDOWN, 
+    esRedireccionada, 
+    formateaFecha, 
+    formateaFechaHora,
+    getEstadoTarea
+} from '../../comun/utils'
 
 const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, onContinuar, onBorrar, onForward, onLog, onRecolectarForwarded }) => {
     const { estadoActual } = useTareasExternas()
@@ -69,7 +75,7 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
             <Card border={parseInt(tareaExterna.id_tipo_servicio) === TIPOS_SERVICIO.EXPRESS ? 'danger' : ''} >
                 <Card.Header>
                     <div className="d-flex justify-content-between align-items-center" style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
-                        <Card.Subtitle className="text-primary" style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>{tareaExterna.estado_tarea}</Card.Subtitle>
+                        <Card.Subtitle className="text-primary" style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>{getEstadoTarea(tareaExterna)}</Card.Subtitle>
                         <NavLink 
                             onClick={() => onLog(tareaExterna.id_tarea_externa)} 
                             className="link-dark"

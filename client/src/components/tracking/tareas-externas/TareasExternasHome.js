@@ -8,7 +8,12 @@ import { useAuth } from "../../../hooks/useAuth"
 import { useTareasExternas, STATUS_TAREA } from "../../../context/TareasExternasContext"
 
 // Utils
-import { esPendienteDeRecoleccion, esRedireccionada, origenEnSucursalActual, destinoEnSucursalActual } from "../../comun/utils"
+import { 
+    esPendienteDeRecoleccion, 
+    esRedireccionada, 
+    origenEnSucursalActual, 
+    destinoEnSucursalActual
+} from "../../comun/utils"
 
 // Queries 
 import { useQuery } from "react-query"
@@ -44,7 +49,8 @@ function getSiguienteEstado(idEstadoActual) {
         case STATUS_TAREA.PENDIENTE_RECOLECCION:
             return STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE
         case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE:
-            return STATUS_TAREA.RECIBIDO_PARA_ATENDERSE
+        case STATUS_TAREA.REDIRECCIONADO:
+                return STATUS_TAREA.RECIBIDO_PARA_ATENDERSE
         case STATUS_TAREA.RECIBIDO_PARA_ATENDERSE:
             return STATUS_TAREA.TERMINADO_PARA_RECOLECTAR
         case STATUS_TAREA.TERMINADO_PARA_RECOLECTAR:
@@ -53,10 +59,29 @@ function getSiguienteEstado(idEstadoActual) {
             return STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN
         case STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN:
             return STATUS_TAREA.RECIBIDO_EN_SUCURSAL_ORIGEN
-        case STATUS_TAREA.REDIRECCIONADO:
-            return STATUS_TAREA.PENDIENTE_RECOLECCION
         default:
             return null
+    }
+}
+
+export function getTitulo(idEstadoActual) {
+    switch (parseInt(idEstadoActual)) {
+        case STATUS_TAREA.TAREAS_ACTIVAS:
+            return 'Tareas Activas'
+        case STATUS_TAREA.PENDIENTE_RECOLECCION:
+            return 'Pendiente de Recolección'
+        case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE:
+            return 'Recolectadas para Atenderse'
+        case STATUS_TAREA.RECIBIDO_PARA_ATENDERSE:
+            return 'Recibidas para Atenderse'
+        case STATUS_TAREA.TERMINADO_PARA_RECOLECTAR:
+            return 'Terminadas para Recolectar'
+        case STATUS_TAREA.RECOLECTADO_PARA_ENTREGA:
+            return 'Recolectadas para Entrega'
+        case STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN:
+            return 'Entregadas a Sucursal Origen'
+        default:
+            return 'Desconocido'
     }
 }
 
@@ -74,27 +99,6 @@ function getTextoConfirmacion(idEstadoActual) {
             return '¿Seguro que quieres entregar la tarea?'
         case STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN:
             return '¿Seguro que quieres recibir la tarea?'
-        default:
-            return 'Desconocido'
-    }
-}
-
-function getTitulo(idEstadoActual) {
-    switch (parseInt(idEstadoActual)) {
-        case STATUS_TAREA.TAREAS_ACTIVAS:
-            return 'Tareas Activas'
-        case STATUS_TAREA.PENDIENTE_RECOLECCION:
-            return 'Pendiente de Recolección'
-        case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE:
-            return 'Recolectadas para Atenderse'
-        case STATUS_TAREA.RECIBIDO_PARA_ATENDERSE:
-            return 'Recibidas para Atenderse'
-        case STATUS_TAREA.TERMINADO_PARA_RECOLECTAR:
-            return 'Terminadas para Recolectar'
-        case STATUS_TAREA.RECOLECTADO_PARA_ENTREGA:
-            return 'Recolectadas para Entrega'
-        case STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN:
-            return 'Entregadas a Sucursal Origen'
         default:
             return 'Desconocido'
     }
@@ -129,6 +133,7 @@ function getTextoForward(idEstadoActual) {
 
 const TareasExternasHome = () => {
     const navigate = useNavigate()
+    const queryClient = useQueryClient()
 
     const { ticketFiltro, sucursalFiltro, tipoTrabajoFiltro, tipoServicioFiltro, sucursalActual, estadoActual } = useTareasExternas()
     const { credenciales } = useAuth()
@@ -146,7 +151,6 @@ const TareasExternasHome = () => {
     const { data: tareasExternasActivas, isLoading } = useQuery(QUERY_TAREAS_EXTERNAS_ACTIVAS, fetchTareasExternasActivas)
 
     // Mutations
-    const queryClient = useQueryClient()
     const { mutate: doBorraTareaExterna } = useMutation ({
         mutationFn: borraTareaExterna,
         onSuccess: ({id_tarea_externa}) => {
@@ -169,29 +173,41 @@ const TareasExternasHome = () => {
         }
     })
     
+
     const { mutate: doRedireccionaTareaExterna } = useMutation ({
         mutationFn: redireccionaTareaExterna,
         onSuccess: ({data}) => {
-            queryClient.setQueriesData(QUERY_TAREAS_EXTERNAS_ACTIVAS, (current) => (
-                current.map(tareaExterna => (
-                    parseInt(tareaExterna.id_tarea_externa) === parseInt(data.id_tarea_externa) ? 
-                        {...tareaExterna, id_estado_tarea: data.id_estado_tarea} : 
-                        tareaExterna 
-                ))
-            ))
+            queryClient.invalidateQueries({ queryKey: [QUERY_TAREAS_EXTERNAS_ACTIVAS] })
+            // queryClient.setQueriesData(QUERY_TAREAS_EXTERNAS_ACTIVAS, (current) => (
+            //     current.map(tareaExterna => (
+            //         parseInt(tareaExterna.id_tarea_externa) === parseInt(data.id_tarea_externa) ? 
+            //             {
+            //                 ...tareaExterna, 
+            //                 id_estado_tarea: data.id_estado_tarea,
+            //                 id_sucursal_redireccion: data.id_sucursal_redireccion
+            //             } : 
+            //             tareaExterna 
+            //     ))
+            // ))
         }
     })
     
     const { mutate: doRecolectaTareaExternaForwarded } = useMutation ({
         mutationFn: recolectaTareaExternaForwarded,
         onSuccess: ({data}) => {
-            queryClient.setQueriesData(QUERY_TAREAS_EXTERNAS_ACTIVAS, (current) => (
-                current.map(tareaExterna => (
-                    parseInt(tareaExterna.id_tarea_externa) === parseInt(data.id_tarea_externa) ? 
-                        {...tareaExterna, id_estado_tarea: data.id_estado_tarea} : 
-                        tareaExterna 
-                ))
-            ))
+            queryClient.invalidateQueries({ queryKey: [QUERY_TAREAS_EXTERNAS_ACTIVAS] })
+            // queryClient.setQueriesData(QUERY_TAREAS_EXTERNAS_ACTIVAS, (current) => (
+            //     current.map(tareaExterna => (
+            //         parseInt(tareaExterna.id_tarea_externa) === parseInt(data.id_tarea_externa) ? 
+            //             {
+            //                 ...tareaExterna, 
+            //                 id_sucursal_destino: data.id_sucursal_destino,
+            //                 id_estado_tarea: data.id_estado_tarea,
+            //                 id_sucursal_redireccion: data.id_sucursal_redireccion
+            //             } : 
+            //             tareaExterna 
+            //     ))
+            // ))
         }
     })
 
@@ -262,7 +278,7 @@ const TareasExternasHome = () => {
                 setTipoConfirmacion(null)
                 return doRecolectaTareaExternaForwarded({
                     id_tarea_externa: idTareaExterna, 
-                    id_estado_tarea: STATUS_TAREA.PENDIENTE_RECOLECCION,
+                    id_estado_tarea: STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE,
                     id_sucursal_redireccion: parseInt(idSucursalRedireccion), 
                     id_usuario: credenciales.id_usuario
                 })

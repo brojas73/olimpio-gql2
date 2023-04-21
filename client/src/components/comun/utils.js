@@ -156,4 +156,30 @@ export function redireccionEnSucursalActual(tareaExterna, sucursalActual) {
   return parseInt(sucursalActual) === parseInt(tareaExterna.id_sucursal_redireccion)
 }
 
+export function getEstadoTarea(tareaExterna) {
+  switch (parseInt(tareaExterna.id_estado_tarea)) {
+      case STATUS_TAREA.TAREAS_ACTIVAS:
+          return 'Tareas Activas'
+      case STATUS_TAREA.PENDIENTE_RECOLECCION:
+          return 'Pendiente de Recolección'
+      case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE:
+          return 'Recolectadas para Atenderse'
+      case STATUS_TAREA.RECIBIDO_PARA_ATENDERSE:
+          return 'Recibidas para Atenderse'
+      case STATUS_TAREA.TERMINADO_PARA_RECOLECTAR:
+          return 'Terminadas para Recolectar'
+      case STATUS_TAREA.RECOLECTADO_PARA_ENTREGA:
+          return 'Recolectadas para Entrega'
+      case STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN:
+          return 'Entregadas a Sucursal Origen'
+      case STATUS_TAREA.REDIRECCIONADO:
+        return 'Desviada'
+      default:
+          return 'Desconocido'
+  }
+}
+
+
+
+
 

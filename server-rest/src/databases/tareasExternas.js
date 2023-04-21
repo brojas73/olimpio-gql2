@@ -271,7 +271,8 @@ const redireccionaTareaExterna = (idTareaExterna, idUsuario, idEstadoTarea, idSu
                 status: 200,
                 mensaje: 'La tarea externa se redireccionó exitosamente',
                 id_tarea_externa: idTareaExterna,
-                id_estado_tarea: idEstadoTarea
+                id_estado_tarea: idEstadoTarea,
+                id_sucursal_redireccion: idSucursalRedireccion
             })
         })
     })
@@ -302,7 +303,9 @@ const recolectaRedireccionTareaExterna = (idTareaExterna, idUsuario, idEstadoTar
                 status: 200,
                 mensaje: 'La tarea redireccionada se recolectó exitosamente',
                 id_tarea_externa: idTareaExterna,
-                id_estado_tarea: idEstadoTarea
+                id_sucursal_destino: idSucursalRedireccion,
+                id_estado_tarea: idEstadoTarea,
+                id_sucursal_redireccion: null
             })
         })
     })

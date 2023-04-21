@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 
 import { Accordion, Button, Col, Form, Spinner } from 'react-bootstrap'
 
-import { useQuery, useMutation } from 'react-query'
+import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { actualizaInformacionGeneral } from "../../../mutations/ServicioDomicilio"
 import { useAuth } from '../../../hooks/useAuth'
 import { fetchServicioDomicilio, QUERY_SERVICIO_DOMICILIO } from '../../../queries/ServicioDomicilio'
@@ -14,24 +14,23 @@ import PhoneNumberInput from '../../comun/PhoneNumberInput'
 const InformacionGeneralForm = () => {
     const navigate = useNavigate()
     const location = useLocation()
+    const queryClient = useQueryClient()
+
     const idServicioDomicilio = location.state.id_servicio_domicilio
+    const [headerAcordeon, setHeaderAcordeon] = useState('Mostrar más...')
     const { credenciales } = useAuth()
     const [formaInformacionGeneral, setFormaInformacionGeneral] = useState({
         nombre: '',
+        telefono: '',
         direccion: '',
         colonia: '',
         municipio: '',
         cp: '',
         ubicacion: '',
-        telefono: '',
         ticket: '',
     })
     const [errors, setErrors] = useState({})
 
-    const { mutate: doActualizaInformacionGeneral } = useMutation ({
-        mutationFn: actualizaInformacionGeneral,
-    })
-    
     const { data, isLoading } = useQuery(
         [QUERY_SERVICIO_DOMICILIO, idServicioDomicilio], 
         fetchServicioDomicilio, 
@@ -39,19 +38,28 @@ const InformacionGeneralForm = () => {
             onSuccess: (data) => {
                 const servicioDomicilio = data[0]
                 setFormaInformacionGeneral(prevValue => ({...prevValue, 
-                    ticket: servicioDomicilio?.ticket,
-                    nombre: servicioDomicilio?.nombre,
-                    direccion: servicioDomicilio?.direccion,
-                    colonia: servicioDomicilio?.colonia,
-                    municipio: servicioDomicilio?.municipio,
-                    cp: servicioDomicilio?.cp,
-                    ubicacion: servicioDomicilio?.ubicacion,
-                    telefono: servicioDomicilio?.telefono
+                    ticket: servicioDomicilio.ticket,
+                    nombre: servicioDomicilio.nombre,
+                    direccion: servicioDomicilio.direccion,
+                    colonia: servicioDomicilio.colonia,
+                    municipio: servicioDomicilio.municipio,
+                    cp: servicioDomicilio.cp,
+                    ubicacion: servicioDomicilio.ubicacion,
+                    telefono: servicioDomicilio.telefono
                 }))
+
+                setHeaderAcordeon(getHeaderInicialAcordeon(servicioDomicilio))
             }
         }
     )
 
+    const { mutate: doActualizaInformacionGeneral } = useMutation ({
+        mutationFn: actualizaInformacionGeneral,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: [QUERY_SERVICIO_DOMICILIO] })
+        }
+    })
+    
     function handleSubmit(event) {
         event.preventDefault()
         if (isValid()) {
@@ -108,7 +116,29 @@ const InformacionGeneralForm = () => {
     
         return true
     }
+
+    function handleOnSelect(event) {
+        event ? setHeaderAcordeon('Mostrar menos') : 
+                setHeaderAcordeon('Mostrar más...')    
+    }
+
+    function hayInformacionAdicional(servicioDomicilio) {
+        if (servicioDomicilio.colonia) return true
+        if (servicioDomicilio.municipio) return true
+        if (servicioDomicilio.cp) return true 
+        if (servicioDomicilio.ubicacion) return true
+
+        return false
+    }
+
+    function getDefaultActiveKeyAcordeon(servicioDomicilio) {
+        return hayInformacionAdicional(servicioDomicilio) ? '0' : 'NONE'
+    }
     
+    function getHeaderInicialAcordeon(servicioDomicilio) {
+        return hayInformacionAdicional(servicioDomicilio) ? 'Mostrar menos' : 'Mostrar más...'
+    }
+
     if (isLoading) return <Spinner animation="border" />
 
     const servicioDomicilio = data[0]
@@ -163,9 +193,13 @@ const InformacionGeneralForm = () => {
                     </Form.Control.Feedback>
                 </Form.Group>
 
-                <Accordion className='my-3 accordion-small'>
+                <Accordion 
+                    className='my-3' 
+                    defaultActiveKey={() => getDefaultActiveKeyAcordeon(servicioDomicilio)}
+                    onSelect={handleOnSelect}  
+                >
                     <Accordion.Item eventKey='0'>
-                        <Accordion.Header>Mostrar Más</Accordion.Header>
+                        <Accordion.Header>{headerAcordeon}</Accordion.Header>
                         <Accordion.Body>
                             <Form.Group as={Col} className="mb-2">
                                 <Form.Label column={TAMANO_CONTROLES}>Colonia <small>(opcional)</small></Form.Label>

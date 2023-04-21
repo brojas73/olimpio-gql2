@@ -122,7 +122,7 @@ const NuevaTareaForm = ({onExito}) => {
                         placeholder="Escribe el número de ticket..." 
                         name='ticket' 
                         isInvalid={ !!errors.ticket }
-                        />
+                    />
                     <Form.Control.Feedback type='invalid'>
                         { errors.ticket }
                     </Form.Control.Feedback>
@@ -135,7 +135,7 @@ const NuevaTareaForm = ({onExito}) => {
                         name='id_sucursal_destino' 
                         filtraSucursalActual={true}
                         isInvalid={ !!errors.id_sucursal_destino }
-                        />
+                    />
                     <Form.Control.Feedback type='invalid'>
                         { errors.id_sucursal_destino }
                     </Form.Control.Feedback>
@@ -151,10 +151,10 @@ const NuevaTareaForm = ({onExito}) => {
                     placeholder="Escribe la descripción de la mercancía..." 
                     name='descripcion' 
                     isInvalid={ !!errors.descripcion }
-                    />
-                    <Form.Control.Feedback type='invalid'>
-                        { errors.descripcion }
-                    </Form.Control.Feedback>
+                />
+                <Form.Control.Feedback type='invalid'>
+                    { errors.descripcion }
+                </Form.Control.Feedback>
             </Form.Group>
             <Row>
                 <Form.Group as={Col} className="mb-2">

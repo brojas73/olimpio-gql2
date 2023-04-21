@@ -12,7 +12,7 @@ export const TIPO_CONSULTA_TE = {
 
 export const TAMANO_CONTROLES = "sm"
 export const FONT_SIZE_DROPDOWN = "90%"
-export const FONT_SIZE_TABS = "90%"
+export const FONT_SIZE_TABS = "88%"
 
 export function formateaFechaHora(fecha, hora, mostrarDia = true, mostrarAt = true) {
     const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']

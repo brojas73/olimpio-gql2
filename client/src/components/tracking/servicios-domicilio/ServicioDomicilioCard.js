@@ -186,7 +186,7 @@ const ServicioDomicilio = ({
                         <FaPhoneAlt /> {servicioDomicilio.telefono}
                     </Card.Text>
                     {
-                        esEntrega(servicioDomicilio) && servicioDomicilio.forma_pago && (
+                        servicioDomicilio?.forma_pago && (
                             <Card.Text className="mb-0 mt-4 text-success">
                                 <FaDollarSign /> 
                                 {servicioDomicilio.forma_pago?.toUpperCase()} 
@@ -194,7 +194,7 @@ const ServicioDomicilio = ({
                         )
                     }
                     {
-                        esEntrega(servicioDomicilio) && servicioDomicilio.notas_pago && (
+                        servicioDomicilio?.notas_pago && (
                             <Card.Text className="mb-0 text-success">
                                 <FaStickyNote /> 
                                 {servicioDomicilio.notas_pago} 

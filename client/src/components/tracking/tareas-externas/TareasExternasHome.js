@@ -53,6 +53,8 @@ function getSiguienteEstado(idEstadoActual) {
             return STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN
         case STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN:
             return STATUS_TAREA.RECIBIDO_EN_SUCURSAL_ORIGEN
+        case STATUS_TAREA.REDIRECCIONADO:
+            return STATUS_TAREA.PENDIENTE_RECOLECCION
         default:
             return null
     }

@@ -12,6 +12,7 @@ import TipoServicioSelect from './TipoServicioSelect'
 import FormasPagoSelect from '../../comun/FormaPagoSelect'
 
 import { useMutation, useQueryClient } from 'react-query'
+import { QUERY_SERVICIOS_DOMICILIO_ACTIVOS } from '../../../queries/ServicioDomicilio'
 import { creaServicioDomicilio } from '../../../mutations/ServicioDomicilio'
 import { STATUS_SERVICIO_DOMICILIO } from '../../../context/ServiciosDomicilioContext'
 
@@ -19,6 +20,7 @@ const NuevoServicioForm = ({onExito}) => {
   const navigate = useNavigate()
   const { sucursalActual } = useTareasExternas()
   const { credenciales } = useAuth()
+  const [tituloAcordeon, setTituloAcordeon] = useState('Mostrar más...')
 
   const [servicioDomicilio, setServicioDomicilio] = useState({
     tipo_servicio: '',
@@ -41,9 +43,9 @@ const NuevoServicioForm = ({onExito}) => {
   const { mutate: doCreaServicioDomicilio } = useMutation ({
     mutationFn: creaServicioDomicilio,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [''] })
-    }
-  })
+        queryClient.invalidateQueries({ queryKey: [QUERY_SERVICIOS_DOMICILIO_ACTIVOS] })
+      }
+    })
 
   function handleChange(e) {
     setServicioDomicilio(prevValue => ({...prevValue, [e.target.name]: e.target.value.toUpperCase()}))
@@ -278,9 +280,9 @@ const NuevoServicioForm = ({onExito}) => {
                     { errors.direccion }
                 </Form.Control.Feedback>
             </Form.Group>
-            <Accordion className='my-3'>
+            <Accordion className='my-3' onSelect={(e) => e ? setTituloAcordeon('Mostrar menos') : setTituloAcordeon('Mostrar más...')} >
                 <Accordion.Item eventKey='0'>
-                    <Accordion.Header style={{ fontSize: '200% !important'}}>Mostrar Más</Accordion.Header>
+                    <Accordion.Header>{tituloAcordeon}</Accordion.Header>
                     <Accordion.Body>
                         <Form.Group as={Col} className="mb-2">
                             <Form.Label column={TAMANO_CONTROLES}>Colonia <small>(opcional)</small></Form.Label>

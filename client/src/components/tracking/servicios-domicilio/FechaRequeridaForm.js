@@ -153,7 +153,7 @@ const FechaRequeridaForm = () => {
                             size={TAMANO_CONTROLES}
                             type='date'
                             onChange={handleChange}
-                            value={servicioDomicilio.fecha_requerida.substring(0, 10)}
+                            value={formaFechaRequerida.fecha_requerida.substring(0, 10)}
                             name='fecha_requerida' 
                             min={formateaFechaForm(Date())}
                             isInvalid={ !!errors.fecha_rquerida }
@@ -168,7 +168,7 @@ const FechaRequeridaForm = () => {
                             size={TAMANO_CONTROLES}
                             type='time'
                             onChange={handleChange}
-                            value={servicioDomicilio.hora_requerida}
+                            value={formaFechaRequerida.hora_requerida}
                             name='hora_requerida' 
                             isInvalid={ !!errors.hora_rquerida }
                         />

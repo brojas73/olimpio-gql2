@@ -36,3 +36,17 @@ export async function logout() {
         console.log(err)
     }
 }
+
+export async function me() {
+    try {
+        await fetch(`${getUrlApis()}/usuarios/me`, {
+            credentials: 'include',
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+    } catch (err) {
+        console.log(err)
+    }
+}

@@ -21,14 +21,6 @@ const Filtros = () => {
         <Navbar className="mb-1">
             <Nav className="flex-grow-1 pe-3 align-items-center">
                 <Form>
-                    {/* <Form.Control
-                        size={TAMANO_CONTROLES}
-                        type='search'
-                        placeholder="Ticket..."
-                        aria-label="Search"
-                        value={ticketFiltro}
-                        onChange={e => setTicketFiltro(e.target.value.toUpperCase())}
-                    /> */}
                     <TicketInput 
                         size={TAMANO_CONTROLES}
                         type='search'

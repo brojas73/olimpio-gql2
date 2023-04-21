@@ -23,11 +23,11 @@ const Filtros = () => {
             <Nav className="flex-grow-1 pe-3 align-items-center">
                 <Form onSubmit={onSubmit}>
                     <TicketInput
-                            size={TAMANO_CONTROLES}
-                            onChange={ticketCapturado => setTicketFiltro(ticketCapturado)}
-                            value={ticketFiltro}
-                            type='search'
-                            placeholder="Ticket..." 
+                        size={TAMANO_CONTROLES}
+                        value={ticketFiltro}
+                        type='search'
+                        placeholder="Ticket..." 
+                        onChange={ticketCapturado => setTicketFiltro(ticketCapturado)}
                     />
                 </Form>
                 <EstadosServicioDomicilioDropDown

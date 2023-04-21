@@ -1,13 +1,8 @@
-import { useState } from "react"
 import { Form } from "react-bootstrap"
 
 const TicketInput = (props) => {
-    const[inputValue, setIputValue] = useState(props.initialValue ? props.initialValue : '')
-
     function handleChange(e) {
-        const formattedTicket = formatTicket(e.target.value)
-        setIputValue(formattedTicket)
-        props.onChange(formattedTicket)
+        props.onChange(formatTicket(e.target.value))
     }
 
     function formatTicket(value) {
@@ -24,7 +19,6 @@ const TicketInput = (props) => {
         <Form.Control 
             {...props}
             onChange={e => handleChange(e)} 
-            value={inputValue} 
         />
     )
 }

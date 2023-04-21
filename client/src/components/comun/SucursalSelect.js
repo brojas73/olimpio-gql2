@@ -1,13 +1,13 @@
 import { Form, Spinner } from 'react-bootstrap'
 
-import { useTareasExternas } from '../../context/TareasExternasContext'
+import { useOlimpio } from '../../context/OlimpioContext'
 import { useQuery } from 'react-query'
 import { fetchSucursales, QUERY_SUCURSALES } from '../../queries/Sucursal'
 import { TAMANO_CONTROLES } from './utils'
 
 const SucursalSelect = ({onChange, name, value, label, filtraSucursalActual, isInvalid }) => {
+    const { sucursalActual } = useOlimpio()
     const { data: sucursales, isLoading } = useQuery(QUERY_SUCURSALES, fetchSucursales, { staleTime: Infinity, cacheTime: Infinity})
-    const { sucursalActual } = useTareasExternas()
 
     if (isLoading) return <Spinner animation="border" />
 

@@ -23,39 +23,24 @@ export const TIPO_ACCION = {
     UPDATE: 3
 }
 
-export const SUCURSAL_DEFAULT = 1
-
 const TareasExternasContext = React.createContext()
-const TareasExternasUpdateContext = React.createContext()
 
 export function useTareasExternas() {
     return useContext(TareasExternasContext)
 }
 
-export function useTareasExternasUpdate() {
-    return useContext(TareasExternasUpdateContext)
-}
-
 export function TareasExternasProvider({children}) {
-    const [conectado, setConectado] = useState(true)
-    const [sucursalActual, setSucursalActual] = useState(SUCURSAL_DEFAULT)
     const [estadoActual, setEstadoActual] = useState(STATUS_TAREA.TAREAS_ACTIVAS)
-    const [tipoConsultaActual, setTipoConsultaActual] = useState(0)
 
     const [ticketFiltro, setTicketFiltro] = useState('')
     const [sucursalFiltro, setSucursalFiltro] = useState(0)
 
     return (
         <TareasExternasContext.Provider value={{
-            conectado, sucursalActual, estadoActual, tipoConsultaActual,
-            ticketFiltro, sucursalFiltro, 
-            setConectado, setSucursalActual, setEstadoActual, setTipoConsultaActual,
-            setTicketFiltro, setSucursalFiltro,
+            estadoActual, ticketFiltro, sucursalFiltro, 
+            setEstadoActual, setTicketFiltro, setSucursalFiltro,
         }}>
-            <TareasExternasUpdateContext.Provider value={{}}>
-                {children}
-            </TareasExternasUpdateContext.Provider>
+            {children}
         </TareasExternasContext.Provider>
     )
 }
-

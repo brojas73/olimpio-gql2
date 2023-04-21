@@ -3,7 +3,7 @@ import { Tab, Tabs } from 'react-bootstrap'
 
 // Hooks
 import { useAuth } from '../../hooks/useAuth'
-import { useTareasExternas } from '../../context/TareasExternasContext'
+import { useOlimpio } from '../../context/OlimpioContext'
 
 // Utils
 import { FONT_SIZE_TABS } from './utils'
@@ -18,7 +18,7 @@ import GlobalNavbar from './GlobalNavbar'
 
 const TabsOlimpio = () => {
     const navigate = useNavigate()
-    const { conectado, setConectado } = useTareasExternas()
+    const { conectado, setConectado } = useOlimpio()
     const { setCredenciales } = useAuth()
 
     const { mutate: doLogout } = useMutation({

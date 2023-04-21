@@ -5,6 +5,7 @@ import { Row, Spinner } from 'react-bootstrap'
 
 // Hooks
 import { useAuth } from "../../../hooks/useAuth"
+import { useOlimpio } from '../../../context/OlimpioContext'
 import { useTareasExternas, STATUS_TAREA } from "../../../context/TareasExternasContext"
 
 // Utils
@@ -135,7 +136,8 @@ const TareasExternasHome = () => {
     const navigate = useNavigate()
     const queryClient = useQueryClient()
     
-    const { sucursalActual, estadoActual, ticketFiltro, sucursalFiltro } = useTareasExternas()
+    const { sucursalActual } = useOlimpio()
+    const { estadoActual, ticketFiltro, sucursalFiltro } = useTareasExternas()
     const { credenciales } = useAuth()
 
     // State
@@ -148,7 +150,7 @@ const TareasExternasHome = () => {
     const [modalSucursalRedireccion, setModalSucursalRedireccion] = useState({mostrar: false})
 
     // Queries
-    const { data: tareasExternasActivas, isLoading } = useQuery(QUERY_TAREAS_EXTERNAS_ACTIVAS, fetchTareasExternasActivas)
+    const { data: tareasExternasActivas, isLoading, refetch } = useQuery(QUERY_TAREAS_EXTERNAS_ACTIVAS, fetchTareasExternasActivas)
 
     // Mutations
     const { mutate: doBorraTareaExterna } = useMutation ({
@@ -306,6 +308,10 @@ const TareasExternasHome = () => {
         })
     }
 
+    function handleRefresh() {
+        refetch()
+    }
+
     // Cuerpo principal del componente
 
     if (isLoading) return <Spinner animation="border" />
@@ -332,6 +338,7 @@ const TareasExternasHome = () => {
             <TareasExternasHeader 
                 titulo={getTitulo(estadoActual)} 
                 renglones={tareasExternas.length}
+                onRefresh={handleRefresh}
             />
 
             <Row xs={1} md={1} lg={2} className="g-3">

@@ -3,7 +3,7 @@ import { Spinner } from "react-bootstrap"
 import BootstrapTable from "react-bootstrap-table-next"
 import paginationFactory from 'react-bootstrap-table2-paginator'
 
-import { useTareasExternas } from '../../../context/TareasExternasContext'
+import { useOlimpio } from '../../../context/OlimpioContext'
 import { fechaFormatter, ticketFormatter} from '../../comun/utils'
 
 import TareaExternaModal from "./TareaExternaModal"
@@ -14,7 +14,7 @@ import { useQuery } from 'react-query'
 import { fetchTareasPorAtenderseHoy, QUERY_TAREAS_POR_ATENDERSE_HOY } from '../../../queries/TareaExterna'
 
 export default function TareasPorAtenderseHoy() {
-    const { sucursalActual } = useTareasExternas()
+    const { sucursalActual } = useOlimpio()
 
     const { isLoading, data: tareasExternas } = useQuery(
         [QUERY_TAREAS_POR_ATENDERSE_HOY, sucursalActual], 

@@ -8,8 +8,11 @@ import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 import { AuthProvider } from './hooks/useAuth';
+
+import { OlimpioProvider } from './context/OlimpioContext';
 import { TareasExternasProvider } from './context/TareasExternasContext';
 import { ServiciosDomicilioProvider } from './context/ServiciosDomicilioContext';
+import { ConsultasProvider } from './context/ConsultasContext';
 
 const queryClient = new QueryClient()
 
@@ -18,11 +21,15 @@ root.render(
   <BrowserRouter>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <ServiciosDomicilioProvider>
-          <TareasExternasProvider>
-            <App />
-          </TareasExternasProvider>
-        </ServiciosDomicilioProvider>
+        <OlimpioProvider>
+          <ServiciosDomicilioProvider>
+            <TareasExternasProvider>
+              <ConsultasProvider>
+                <App />
+              </ConsultasProvider>
+            </TareasExternasProvider>
+          </ServiciosDomicilioProvider>
+        </OlimpioProvider>
       </AuthProvider>
     </QueryClientProvider>
   </BrowserRouter>

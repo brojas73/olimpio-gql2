@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { Col, Form, Nav, Navbar, /* Offcanvas, */ Row } from "react-bootstrap"
 
-import { useTareasExternas } from "../../../context/TareasExternasContext"
+import { useConsultas } from "../../../context/ConsultasContext"
 
 import TicketInput from '../../comun/TicketInput'
 import TipoConsultaSelect from "./TipoConsultaSelect"
@@ -16,7 +16,7 @@ const Filtros = ({onChange}) => {
     setTicketFiltro,
     descripcionFiltro,
     setDescripcionFiltro
-  } = useTareasExternas() 
+  } = useConsultas() 
 
   function handleSelectTipoConsulta(seleccion) {
     setTipoConsultaActual(seleccion)

@@ -1,40 +1,35 @@
 import { Link } from "react-router-dom"
-import { Navbar, /* Offcanvas, */ Nav } from "react-bootstrap"
+import { Navbar, Nav } from "react-bootstrap"
 
-import { useTareasExternas } from '../../context/TareasExternasContext'
+import { FONT_SIZE_DROPDOWN } from "./utils"
+import { useOlimpio } from "../../context/OlimpioContext"
 import { useAuth } from "../../hooks/useAuth"
 
 import SucursalesDropDown from "./SucursalesDropDown"
 import UsuarioDropDown from "./UsuarioDropDown"
 
 const GlobalNavbar = ({onLogout}) => {
-    const { conectado, sucursalActual, setSucursalActual  } = useTareasExternas()
+    const { conectado, sucursalActual, setSucursalActual  } = useOlimpio()
     const { getUsuario } = useAuth()
 
     return (
         <Navbar bg="dark" variant="dark" className="mb-3 sticky-top"> 
             <Navbar.Brand as={Link} to="/" className="mx-2">Olimpio</Navbar.Brand>
-            {/* <Navbar.Toggle aria-controls="offcanvasNavbar-expand-sm"/> */}
-            {/* <Navbar.Offcanvas aria-labelledby="offcanvasNavbarLabel-expand-sm"> */}
-                {/* <Offcanvas.Header closeButton>Olimpio</Offcanvas.Header> */}
-                {
-                    conectado && ( 
-                        // <Offcanvas.Body>
-                            <Nav className="justify-content-end flex-grow-1 me-2">
-                                <SucursalesDropDown idSelected={sucursalActual} onSelect={setSucursalActual} showIcon={true} />
-                                <UsuarioDropDown title={getUsuario()} onLogout={onLogout}/>
-                            </Nav>
-                        // </Offcanvas.Body>
-                    )
-                }
-                {
-                    !conectado && (
-                        <Nav className="justify-content-end flex-grow-1 me-2">
-                            <Nav.Link href="/login">Login</Nav.Link>
-                        </Nav>
-                    )
-                }
-            {/* </Navbar.Offcanvas> */}
+            {
+                conectado && ( 
+                    <Nav className="justify-content-end flex-grow-1 me-2">
+                        <SucursalesDropDown idSelected={sucursalActual} onSelect={setSucursalActual} showIcon={true} />
+                        <UsuarioDropDown title={getUsuario()} onLogout={onLogout}/>
+                    </Nav>
+                )
+            }
+            {
+                !conectado && (
+                    <Nav className="justify-content-end flex-grow-1 me-2">
+                        <Nav.Link href="/login" style={{ fontSize: `${FONT_SIZE_DROPDOWN}` }}>Login</Nav.Link>
+                    </Nav>
+                )
+            }
         </Navbar>
     )
 }

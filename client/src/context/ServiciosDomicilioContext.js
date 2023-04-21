@@ -14,14 +14,9 @@ export const STATUS_SERVICIO_DOMICILIO = {
 } 
 
 const ServiciosDomicilioContext = React.createContext()
-const ServiciosDomicilioUpdateContext = React.createContext()
 
 export function useServiciosDomicilio() {
     return useContext(ServiciosDomicilioContext)
-}
-
-export function useServiciosDomicilioUpdate() {
-    return useContext(ServiciosDomicilioUpdateContext)
 }
 
 export function ServiciosDomicilioProvider({children}) {
@@ -31,14 +26,10 @@ export function ServiciosDomicilioProvider({children}) {
 
     return (
         <ServiciosDomicilioContext.Provider value={{
-            estadoActual,
-            ticketFiltro, sucursalFiltro,
-            setEstadoActual,
-            setTicketFiltro, setSucursalFiltro
+            estadoActual, ticketFiltro, sucursalFiltro,
+            setEstadoActual, setTicketFiltro, setSucursalFiltro
         }}>
-            <ServiciosDomicilioUpdateContext.Provider value={{}}>
-                {children}
-            </ServiciosDomicilioUpdateContext.Provider>
+            {children}
         </ServiciosDomicilioContext.Provider>
     )
 }

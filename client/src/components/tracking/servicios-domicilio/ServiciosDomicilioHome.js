@@ -5,14 +5,16 @@ import { Row, Spinner } from "react-bootstrap"
 
 // Hooks
 import { useAuth } from "../../../hooks/useAuth"
-import { useTareasExternas } from "../../../context/TareasExternasContext"
+import { useOlimpio } from "../../../context/OlimpioContext"
 import { useServiciosDomicilio, STATUS_SERVICIO_DOMICILIO } from "../../../context/ServiciosDomicilioContext"
 
 // Queries
 import { useQuery } from "react-query"
 import { 
     QUERY_SERVICIOS_DOMICILIO_ACTIVOS,
-    fetchServiciosDomicilioActivos
+    QUERY_SERVICIOS_DOMICILIO_POR_PAGAR,
+    fetchServiciosDomicilioActivos,
+    fetchServiciosDomicilioPorPagar
 } from "../../../queries/ServicioDomicilio"
 
 // Mutations
@@ -109,18 +111,20 @@ const ServiciosDomicilioHome = () => {
     const navigate = useNavigate()
     const queryClient = useQueryClient()
 
-    const { sucursalActual } = useTareasExternas()
+    const { sucursalActual } = useOlimpio()
     const { ticketFiltro, sucursalFiltro, estadoActual } = useServiciosDomicilio()
     const { credenciales } = useAuth()
 
     // State
+    let   serviciosDomicilio = []
     const [idServicioDomicilio, setIdServicioDomicilio] = useState(0)
 
     // Modals
     const [confirmacion, setConfirmacion] = useState({ mensaje: '', mostrar: false })
 
     // Queries
-    const { data: serviciosDomicilioActivos, isLoading } = useQuery(QUERY_SERVICIOS_DOMICILIO_ACTIVOS, fetchServiciosDomicilioActivos)
+    const { data: serviciosDomicilioActivos, isLoadingActivos, refetch: refetchActivos } = useQuery(QUERY_SERVICIOS_DOMICILIO_ACTIVOS, fetchServiciosDomicilioActivos)
+    const { data: serviciosDomicilioPorPagar, isLoadingPorPagar, refetch: refetchPorPagar } = useQuery(QUERY_SERVICIOS_DOMICILIO_POR_PAGAR, fetchServiciosDomicilioPorPagar)
 
     // Mutations
     const { mutate: doActualizaEstadoServicioDomicilio } = useMutation ({
@@ -173,12 +177,11 @@ const ServiciosDomicilioHome = () => {
                 return serviciosDomicilioFiltrados.filter(servicioDomicilio => (
                     parseInt(servicioDomicilio.id_estado_servicio_domicilio) === STATUS_SERVICIO_DOMICILIO.ENTREGADO_A_CLIENTE &&
                     parseInt(servicioDomicilio.id_sucursal) === parseInt(sucursalActual) 
-            ))
+                ))
             case STATUS_SERVICIO_DOMICILIO.PENDIENTE_DE_PAGO:
                 return serviciosDomicilioFiltrados.filter(servicioDomicilio => (
-                    servicioDomicilio.pagado === 'N' &&
                     parseInt(servicioDomicilio.id_sucursal) === parseInt(sucursalActual) 
-            ))
+                ))
             default:
                 return serviciosDomicilioFiltrados
             }
@@ -245,13 +248,24 @@ const ServiciosDomicilioHome = () => {
         })
     }
 
+    function handleRefresh() {
+        refetchActivos()
+        refetchPorPagar()
+    }
+
     // Cuerpo principal del componente
 
-    if (isLoading) return <Spinner animation="border" />
+    if (isLoadingActivos || isLoadingPorPagar) return <Spinner animation="border" />
 
-    if (serviciosDomicilioActivos) {
-      // Obtengo las tareas que voy a desplegar
-      var serviciosDomicilio = filtraServiciosDomicilio(serviciosDomicilioActivos)
+    if (serviciosDomicilioActivos && serviciosDomicilioPorPagar) {
+        // Obtengo las tareas que voy a desplegar
+
+        // Si estamos mostrando los servicios por pagar
+        if (parseInt(estadoActual) === STATUS_SERVICIO_DOMICILIO.PENDIENTE_DE_PAGO)
+            serviciosDomicilio = filtraServiciosDomicilio(serviciosDomicilioPorPagar)
+        // Estamos mostrando todos los servicios activos (ni terminados ni cancelados)
+        else
+            serviciosDomicilio = filtraServiciosDomicilio(serviciosDomicilioActivos)
     }
   
     return (
@@ -266,6 +280,7 @@ const ServiciosDomicilioHome = () => {
             <ServiciosDomicilioHeader 
                 titulo={getTitulo(estadoActual)} 
                 renglones={serviciosDomicilio.length}
+                onRefresh={handleRefresh}
             />
 
             <Row sm={1} xs={1} md={1} lg={2} className="g-3">

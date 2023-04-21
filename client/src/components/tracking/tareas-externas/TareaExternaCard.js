@@ -77,7 +77,7 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
                         <Card.Subtitle className="text-primary" style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>{tareaExterna.estado_tarea}</Card.Subtitle>
                         <NavLink 
                             onClick={() => onLog(tareaExterna.id_tarea_externa)} 
-                            className="link-dark"
+                            className="link-secondary"
                         >
                             <small>
                                 <FaClipboardList /> 
@@ -120,7 +120,7 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
                     </Card.Text>
                 </Card.Body>
                 <Card.Footer className="d-flex justify-content-between align-items-center" style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
-                    <div>
+                    <div className="text-danger">
                         <small>
                             <FaRegCalendarAlt /> 
                             <span className="align-middle ms-1">

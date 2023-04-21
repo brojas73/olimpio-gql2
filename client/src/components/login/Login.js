@@ -5,7 +5,7 @@ import {Alert, Button, Container, Form, Spinner} from 'react-bootstrap'
 
 // Hooks
 import { useAuth } from '../../hooks/useAuth'
-import { useTareasExternas } from "../../context/TareasExternasContext"
+import { useOlimpio } from "../../context/OlimpioContext"
 
 // Mutation
 import { useMutation } from "react-query"
@@ -17,7 +17,7 @@ import { TAMANO_CONTROLES } from "../comun/utils"
 
 const Login = ({onLoginOk}) => {
   const { setCredenciales } = useAuth()
-  const { setSucursalActual } = useTareasExternas()
+  const { setSucursalActual } = useOlimpio()
 
   const [alerta, setAlerta] = useState({
     mostrar: false,

@@ -4,7 +4,7 @@ import { Spinner } from "react-bootstrap"
 import BootstrapTable from "react-bootstrap-table-next"
 import paginationFactory from 'react-bootstrap-table2-paginator'
 
-import { useTareasExternas } from '../../../context/TareasExternasContext'
+import { useOlimpio } from '../../../context/OlimpioContext'
 import { fechaFormatter } from '../../comun/utils'
 
 import { useQuery } from 'react-query'
@@ -15,7 +15,7 @@ import TareaExternaModal from "./TareaExternaModal"
 import TituloConsultas from './TituloConsultas'
 
 export default function Bitacora() {
-  const { sucursalActual } = useTareasExternas()
+  const { sucursalActual } = useOlimpio()
 
   const {isLoading, data: tareasExternasLog} = useQuery(QUERY_TAREAS_EXTERNAS_LOG, fetchTareasExternasLog)
 

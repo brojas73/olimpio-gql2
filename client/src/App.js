@@ -3,7 +3,7 @@ import { Route, Routes, useNavigate } from "react-router-dom"
 import { Container } from "react-bootstrap"
 
 // Hooks
-import { useTareasExternas } from "./context/TareasExternasContext"
+import { useOlimpio } from "./context/OlimpioContext"
 
 // Components
 import Home from './components/comun/Home'
@@ -32,7 +32,7 @@ import ConsultasServiciosDomicilioHome from "./components/consultas/servicios-do
 
 function App() {
   const navigate = useNavigate()
-  const { setConectado } = useTareasExternas()
+  const { setConectado } = useOlimpio()
 
   function handleLoginOk() {
     setConectado(true)

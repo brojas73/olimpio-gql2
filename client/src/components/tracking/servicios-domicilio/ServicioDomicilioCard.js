@@ -67,7 +67,7 @@ const ServicioDomicilio = ({
                         <div className="d-flex justify-content-between">
                             <NavLink 
                                 onClick={() => onLog(servicioDomicilio.id_servicio_domicilio)}
-                                className="link-dark"
+                                className="link-secondary"
                             >
                                 <small>
                                     <FaClipboardList className="me-1"/> 
@@ -77,7 +77,7 @@ const ServicioDomicilio = ({
                                 </small>
                             </NavLink>
                             {
-                                esEncargado() && (
+                                esEncargado() && esEntrega(servicioDomicilio) && (
                                     <NavLink
                                         onClick={() => onEditarInformacionPago(servicioDomicilio.id_servicio_domicilio)}
                                         className="link-success ms-2"
@@ -186,7 +186,7 @@ const ServicioDomicilio = ({
                         <FaPhoneAlt /> {servicioDomicilio.telefono}
                     </Card.Text>
                     {
-                        servicioDomicilio?.forma_pago && (
+                        servicioDomicilio?.forma_pago && esEntrega(servicioDomicilio) && (
                             <Card.Text className="mb-0 mt-4 text-success">
                                 <FaDollarSign /> 
                                 {servicioDomicilio.forma_pago?.toUpperCase()} 
@@ -194,7 +194,7 @@ const ServicioDomicilio = ({
                         )
                     }
                     {
-                        servicioDomicilio?.notas_pago && (
+                        servicioDomicilio?.notas_pago && esEntrega(servicioDomicilio) && (
                             <Card.Text className="mb-0 text-success">
                                 <FaStickyNote /> 
                                 {servicioDomicilio.notas_pago} 
@@ -220,7 +220,7 @@ const ServicioDomicilio = ({
                                 </small>
                             </NavLink>
                         ) : (
-                            <small className="align-middle">
+                            <small className="align-middle text-danger">
                                 <FaRegCalendarAlt className="me-1"/> 
                                 {formateaFechaHora(servicioDomicilio.fecha_requerida, servicioDomicilio.hora_requerida)}
                             </small>

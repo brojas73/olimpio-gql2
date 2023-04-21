@@ -96,6 +96,7 @@ const serviciosDomicilioPorPagar = () => {
     const q = `
         ${mainQuery}
            where sd.pagado = 'N'
+           and   sd.tipo_servicio = 'E'
            and   sd.estado = 1
         order by sd.fecha_creacion
     `

@@ -15,9 +15,11 @@ import v1CatalogosRouter from './v1/routes/catalogosRoutes.js'
 import v1UsuariosRouter from './v1/routes/usuariosRoutes.js'
 
 dotenv.config()
-const PORT = process.env.PORT || 3040;
+
 // const origin = process.env.ORIGIN || 'http://5.183.8.10'
+const port = process.env.PORT || 3040;
 const origin = process.env.ORIGIN || 'http://5.183.8.10:8080'
+const api_route = process.env.API_ROUTE || 'api-v1'
 
 const main = () => {
   const redisClient = createClient()
@@ -50,15 +52,15 @@ const main = () => {
       })
   )
 
-  app.use("/api-v1/tareas-externas", v1TareasExternasRouter);
-  app.use("/api-v1/tareas-externas-log", v1TareasExternasLogRouter);
-  app.use("/api-v1/servicios-domicilio", v1ServiciosDomicilioRouter);
-  app.use("/api-v1/servicios-domicilio-log", v1ServiciosDomicilioLogRouter);
-  app.use("/api-v1/catalogos", v1CatalogosRouter);
-  app.use("/api-v1/usuarios", v1UsuariosRouter);
+  app.use(`/${api_route}/tareas-externas`, v1TareasExternasRouter);
+  app.use(`/${api_route}/tareas-externas-log`, v1TareasExternasLogRouter);
+  app.use(`/${api_route}/servicios-domicilio`, v1ServiciosDomicilioRouter);
+  app.use(`/${api_route}/servicios-domicilio-log`, v1ServiciosDomicilioLogRouter);
+  app.use(`/${api_route}/catalogos`, v1CatalogosRouter);
+  app.use(`/${api_route}/usuarios`, v1UsuariosRouter);
   
-  app.listen(PORT, () => {
-    console.log(`API is listening on port ${PORT}`);
+  app.listen(port, () => {
+    console.log(`API is listening on port ${port}`);
   });
 }
 

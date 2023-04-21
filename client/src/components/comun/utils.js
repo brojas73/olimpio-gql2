@@ -1,8 +1,9 @@
 import { STATUS_TAREA } from '../../context/TareasExternasContext'
 import { STATUS_SERVICIO_DOMICILIO } from '../../context/ServiciosDomicilioContext'
 
-const URL_APIS_DEV = 'http://localhost:3040/api-v1'
-const URL_APIS_PROD = 'http://5.183.8.10/api-v1'
+const URL_APIS_DEV = 'http://localhost:3040/api-test'
+const URL_APIS_PROD = 'http://5.183.8.10:3020/api-test'
+// const URL_APIS_PROD = 'http://5.183.8.10/api-v1'
 
 export const TIPO_CONSULTA_TE = {
   TIPO_CONSULTA: 0,

@@ -10,9 +10,9 @@ const Filtros = () => {
     const { 
         ticketFiltro, 
         setTicketFiltro,
+        estadoActual,
+        setEstadoActual
     } = useServiciosDomicilio()
-
-    const { estadoActual, setEstadoActual } = useServiciosDomicilio()
 
     function onSubmit(event) {
         event.preventDefault()

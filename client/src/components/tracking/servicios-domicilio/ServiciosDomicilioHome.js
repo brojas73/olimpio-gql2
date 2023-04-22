@@ -112,7 +112,7 @@ const ServiciosDomicilioHome = () => {
     const queryClient = useQueryClient()
 
     const { sucursalActual } = useOlimpio()
-    const { ticketFiltro, sucursalFiltro, estadoActual } = useServiciosDomicilio()
+    const { ticketFiltro, estadoActual } = useServiciosDomicilio()
     const { credenciales } = useAuth()
 
     // State
@@ -141,10 +141,9 @@ const ServiciosDomicilioHome = () => {
     })
 
     // Funciones
-    function filtraServiciosDomicilio(seviciosDomicilioActivos) {
-        const serviciosDomicilioFiltrados = serviciosDomicilioActivos.filter(servicioDomicilio => 
-            (ticketFiltro.length === 0 || (ticketFiltro.length > 0 && servicioDomicilio.ticket.includes(ticketFiltro))) &&
-            (sucursalFiltro === 0 || (sucursalFiltro !== 0 && servicioDomicilio.id_sucursal === sucursalFiltro)) 
+    function filtraServiciosDomicilio(serviciosDomicilio) {
+        const serviciosDomicilioFiltrados = serviciosDomicilio.filter(servicioDomicilio => 
+            (ticketFiltro.length === 0 || (ticketFiltro.length > 0 && servicioDomicilio.ticket.includes(ticketFiltro))) 
         )
 
         switch (parseInt(estadoActual)) {
@@ -258,13 +257,13 @@ const ServiciosDomicilioHome = () => {
     if (isLoadingActivos || isLoadingPorPagar) return <Spinner animation="border" />
 
     if (serviciosDomicilioActivos && serviciosDomicilioPorPagar) {
-        // Obtengo las tareas que voy a desplegar
+        // Obtengo los servicios que voy a desplegar
 
         // Si estamos mostrando los servicios por pagar
-        if (parseInt(estadoActual) === STATUS_SERVICIO_DOMICILIO.PENDIENTE_DE_PAGO)
+        if (parseInt(estadoActual) === STATUS_SERVICIO_DOMICILIO.PENDIENTE_DE_PAGO) 
             serviciosDomicilio = filtraServiciosDomicilio(serviciosDomicilioPorPagar)
         // Estamos mostrando todos los servicios activos (ni terminados ni cancelados)
-        else
+        else 
             serviciosDomicilio = filtraServiciosDomicilio(serviciosDomicilioActivos)
     }
   

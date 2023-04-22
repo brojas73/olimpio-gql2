@@ -44,9 +44,7 @@ const IdleTimeoutHandler = ({onLogout, timeOutInterval}) => {
             } else {
                 if (diff.milliseconds < interval) {
                     startTimer()
-                    // onActive()
                 } else {
-                    // onIdle()
                     setShowModal(true)
                 }
             }

@@ -23,12 +23,12 @@ const EstadosServicioDomicilioDropDown = ({onSelect, idSelected }) => {
     {
       estadosServicioDomicilio 
         .filter(estadoServicioDomicilio => 
-          parseInt(estadoServicioDomicilio.id_estado_servicio_domicilio) !== STATUS_SERVICIO_DOMICILIO.TERMINADO &&
-          parseInt(estadoServicioDomicilio.id_estado_servicio_domicilio) !== STATUS_SERVICIO_DOMICILIO.CANCELADO
+          parseInt(estadoServicioDomicilio.id_estado_servicio_domicilio) !== STATUS_SERVICIO_DOMICILIO.TERMINADO &&        // No muestro los servicios terminados
+          parseInt(estadoServicioDomicilio.id_estado_servicio_domicilio) !== STATUS_SERVICIO_DOMICILIO.CANCELADO           // Ni los cancelados
         )
 
         .map(estadoServicioDomicilio => {
-          if (
+          if (                                                                                                             // En estos casos pongo separador después del texto
             parseInt(estadoServicioDomicilio.id_estado_servicio_domicilio) === STATUS_SERVICIO_DOMICILIO.SERVICIOS_DOMICILIO_ACTIVOS ||
             parseInt(estadoServicioDomicilio.id_estado_servicio_domicilio) === STATUS_SERVICIO_DOMICILIO.RECIBIDO_EN_SUCURSAL ||
             parseInt(estadoServicioDomicilio.id_estado_servicio_domicilio) === STATUS_SERVICIO_DOMICILIO.ENTREGADO_A_CLIENTE
@@ -46,7 +46,7 @@ const EstadosServicioDomicilioDropDown = ({onSelect, idSelected }) => {
                   <NavDropdown.Divider key={`divider-${estadoServicioDomicilio.id_estado_servicio_domicilio}`}/>
                 </>
             )
-          } else {
+          } else {                                                                                                          // Aquí no pongo separadores, sólo el texto
             return (
               <NavDropdown.Item 
                 as={Link}

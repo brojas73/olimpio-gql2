@@ -20,11 +20,11 @@ const EstadosTareaDropDown = ({onSelect, idSelected }) => {
     {
       estadosTarea 
         .filter(estadoTarea => (
-          parseInt(estadoTarea.id_estado_tarea) !== STATUS_TAREA.RECIBIDO_EN_SUCURSAL_ORIGEN &&
+          parseInt(estadoTarea.id_estado_tarea) !== STATUS_TAREA.RECIBIDO_EN_SUCURSAL_ORIGEN &&           // No muestro estos estados en la lista
           parseInt(estadoTarea.id_estado_tarea) !== STATUS_TAREA.REDIRECCIONADO 
         ))
         .map(estadoTarea => {
-          if (parseInt(estadoTarea.id_estado_tarea) === STATUS_TAREA.TAREAS_ACTIVAS) {
+          if (parseInt(estadoTarea.id_estado_tarea) === STATUS_TAREA.TAREAS_ACTIVAS) {                    // Pongo un separador después del título de tareas activas
             return (
               <>
                 <NavDropdown.Item 
@@ -38,7 +38,7 @@ const EstadosTareaDropDown = ({onSelect, idSelected }) => {
                 <NavDropdown.Divider key={`div-${estadoTarea.id_estado_tarea}`}/>
               </>
             )
-          } else {
+          } else {                                                                                        // En todos los demás casos, sólo pongo el titulo
             return (
               <NavDropdown.Item 
                 as={Link}

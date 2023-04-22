@@ -1,5 +1,7 @@
 import { Button, Modal } from 'react-bootstrap'
 
+import { TAMANO_CONTROLES } from './utils'
+
 const ConfirmacionModal = ({mostrar, titulo, mensaje, onConfirmar}) => {
   return (
     <Modal show={mostrar} onHide={() => onConfirmar(false)}>
@@ -8,8 +10,8 @@ const ConfirmacionModal = ({mostrar, titulo, mensaje, onConfirmar}) => {
         </Modal.Header>
         <Modal.Body>{mensaje}</Modal.Body>
         <Modal.Footer>
-            <Button variant="secondary" onClick={() => onConfirmar(false)} size="sm">Cancelar</Button>
-            <Button variant="primary" onClick={() => onConfirmar(true)} size="sm">Confirmar</Button>
+            <Button variant="secondary" onClick={() => onConfirmar(false)} size={TAMANO_CONTROLES}>Cancelar</Button>
+            <Button variant="primary" onClick={() => onConfirmar(true)} size={TAMANO_CONTROLES}>Confirmar</Button>
         </Modal.Footer>
     </Modal> 
   )

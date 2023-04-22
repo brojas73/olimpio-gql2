@@ -14,7 +14,6 @@ import PhoneNumberInput from '../../comun/PhoneNumberInput'
 const InformacionGeneralForm = () => {
     const navigate = useNavigate()
     const location = useLocation()
-    const queryClient = useQueryClient()
 
     const idServicioDomicilio = location.state.id_servicio_domicilio
     const [headerAcordeon, setHeaderAcordeon] = useState('Mostrar más...')
@@ -31,7 +30,7 @@ const InformacionGeneralForm = () => {
     })
     const [errors, setErrors] = useState({})
 
-    const { data, isLoading } = useQuery(
+    const { data, isLoading, refetch } = useQuery(
         [QUERY_SERVICIO_DOMICILIO, idServicioDomicilio], 
         fetchServicioDomicilio, 
         {
@@ -56,7 +55,7 @@ const InformacionGeneralForm = () => {
     const { mutate: doActualizaInformacionGeneral } = useMutation ({
         mutationFn: actualizaInformacionGeneral,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [QUERY_SERVICIO_DOMICILIO] })
+            refetch()
         }
     })
     

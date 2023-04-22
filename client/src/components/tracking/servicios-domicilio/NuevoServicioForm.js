@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { Button, Form, Row, Col, Navbar, Accordion } from 'react-bootstrap'
 
-import { useTareasExternas } from '../../../context/TareasExternasContext'
+import { useOlimpio } from '../../../context/OlimpioContext'
 import { useAuth } from '../../../hooks/useAuth'
 import { formateaFechaForm, formateaHoraForm, isBlank, TAMANO_CONTROLES} from '../../comun/utils'
 
@@ -19,7 +19,7 @@ import { STATUS_SERVICIO_DOMICILIO } from '../../../context/ServiciosDomicilioCo
 
 const NuevoServicioForm = ({onExito}) => {    
   const navigate = useNavigate()
-  const { sucursalActual } = useTareasExternas()
+  const { sucursalActual } = useOlimpio()
   const { credenciales } = useAuth()
   const [tituloAcordeon, setTituloAcordeon] = useState('Mostrar más...')
 

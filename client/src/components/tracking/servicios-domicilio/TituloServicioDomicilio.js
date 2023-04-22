@@ -22,26 +22,23 @@ const TituloServicioDomicilio = ({titulo, renglones, onRefresh}) => {
 
     return (
         <Navbar className="d-flex justify-content-between align-items-center">
-            <Button variant="dark" size={TAMANO_CONTROLES}>
+            <Button variant="dark" size={TAMANO_CONTROLES} onClick={handleRefresh}>
+                <FontAwesomeIcon icon={faRefresh} />
+                &nbsp;
                 {titulo}
                 &nbsp;
                 <Badge bg="primary" pill>{renglones}</Badge>
             </Button>
-            <div className="justify-content-end me-2">
-                <Button variant="dark" size={TAMANO_CONTROLES} onClick={handleRefresh}>
-                    <FontAwesomeIcon icon={faRefresh} />
-                </Button>
-                {
-                    esEncargado() && (
-                        <>
-                            &nbsp;
-                            <Button onClick={nuevoServicioDomicilio} variant='dark' size={TAMANO_CONTROLES}>
-                                <FaPlus />
-                            </Button>
-                        </>
-                    )
-                }
-            </div>
+            {
+                esEncargado() && (
+                    <>
+                        &nbsp;
+                        <Button onClick={nuevoServicioDomicilio} variant='dark' size={TAMANO_CONTROLES}>
+                            <FaPlus />
+                        </Button>
+                    </>
+                )
+            }
         </Navbar>
     )
 }

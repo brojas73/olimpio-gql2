@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom'
 
 import { Button, Form, Row, Col, Navbar } from 'react-bootstrap'
 
-import { STATUS_TAREA, useTareasExternas } from '../../../context/TareasExternasContext'
+import { STATUS_TAREA } from '../../../context/TareasExternasContext'
+import { useOlimpio } from '../../../context/OlimpioContext'
 import { useAuth } from '../../../hooks/useAuth'
 import { TAMANO_CONTROLES, formateaFechaForm, formateaHoraForm, isBlank } from '../../comun/utils'
 
@@ -18,7 +19,7 @@ import { creaTareaExterna } from '../../../mutations/TareaExterna'
 
 const NuevaTareaForm = ({onExito}) => {    
   const navigate = useNavigate()
-  const { sucursalActual } = useTareasExternas()
+  const { sucursalActual } = useOlimpio()
   const { credenciales } = useAuth()
 
   const [tareaExterna, setTareaExterna] = useState({

@@ -20,14 +20,11 @@ export function useServiciosDomicilio() {
 }
 
 export function ServiciosDomicilioProvider({children}) {
-    const [estadoActual, setEstadoActual] = useState(STATUS_SERVICIO_DOMICILIO.SERVICIOS_DOMICILIO_ACTIVOS)
-    const [ticketFiltro, setTicketFiltro] = useState('')
-    const [sucursalFiltro, setSucursalFiltro] = useState(0)
+    const [filtros, setFiltros] = useState({ticket: '', sucursal: 0, estado: STATUS_SERVICIO_DOMICILIO.SERVICIOS_DOMICILIO_ACTIVOS})
 
     return (
         <ServiciosDomicilioContext.Provider value={{
-            estadoActual, ticketFiltro, sucursalFiltro,
-            setEstadoActual, setTicketFiltro, setSucursalFiltro
+            filtros, setFiltros
         }}>
             {children}
         </ServiciosDomicilioContext.Provider>

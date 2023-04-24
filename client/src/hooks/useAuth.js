@@ -15,7 +15,6 @@ export const useAuth = () => {
 
 export const AuthProvider = ({children}) => {
     const [credenciales, setCredenciales] = useState(null)
-    const [conectado, setConectado] = useState(false)
 
     function logout() {
         setCredenciales(null)

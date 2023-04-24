@@ -59,7 +59,7 @@ function App() {
           <Route path='servicios-domicilio/actualiza-informacion-pago' element={<InformacionPagoForm />} />
           <Route path='servicios-domicilio/bitacora-servicio-domicilio' element={<BitacoraServicioDomicilio />} />
         </Route>
-        <Route path='/consultas' >
+        <Route path='/consultas' element={<ProtectedLayout />}>
           <Route path='tareas-externas' element={<ConsultasTareasExternasHome />} />
           <Route path='tareas-externas/por-atenderse-hoy' element={<TareasPorAtenderseHoy />} />
           <Route path='tareas-externas/bitacora' element={<Bitacora />} />

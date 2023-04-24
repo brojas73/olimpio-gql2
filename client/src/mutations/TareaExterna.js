@@ -10,15 +10,16 @@ export async function creaTareaExterna(tareaExterna) {
             body: JSON.stringify(tareaExterna)
         })
 
+
         if (!response.ok) {
-            const mensaje = `Ocurrió un error: ${response.status}`
-            throw new Error(mensaje)
+            const { data } = await response.json()
+            throw new Error(data.error)
         }
 
         const data = await response.json()
         return data
     } catch (err) {
-        console.log(err)
+        console.log(`${err}`)
     }
 }
 

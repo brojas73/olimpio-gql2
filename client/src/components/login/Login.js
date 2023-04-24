@@ -6,6 +6,7 @@ import {Alert, Button, Container, Form, Spinner} from 'react-bootstrap'
 // Hooks
 import { useAuth } from '../../hooks/useAuth'
 import { useOlimpio } from "../../context/OlimpioContext"
+import { TAMANO_CONTROLES } from "../comun/utils"
 
 // Mutation
 import { useMutation } from "react-query"
@@ -13,37 +14,42 @@ import { login } from "../../mutations/Usuario"
 
 // Components
 import SucursalSelect from '../comun/SucursalSelect'
-import { TAMANO_CONTROLES } from "../comun/utils"
 
 const Login = ({onLoginOk}) => {
   const { setCredenciales } = useAuth()
   const { setSucursalActual } = useOlimpio()
 
+  // Modals
   const [alerta, setAlerta] = useState({
     mostrar: false,
     mensaje: '',
     tipo: 'danger'
   })
 
+  // Form
   const [formInfo, setFormInfo] = useState({
     usuario: '',
     contrasena: '',
     sucursal: 0
   })
 
+  // Mutations
   const { isLoading, mutate: doLogin } = useMutation({
     mutationFn: login, 
-    onSuccess: (userInfo => {
-      if (!userInfo || userInfo === 'undefined') {
-        onLoginFail('La combinación usuario/contraseña es inválida')
-      } else {
+    onSuccess: (response=> {
+      const { status, data } = response
+      if (status === 'OK') {
+        const { userInfo } = data
         setCredenciales(userInfo)
         setSucursalActual(parseInt(formInfo.sucursal))
         onLoginOk()
+      } else {
+        onLoginFail(data.error.mensaje)
       }
     })
   })
 
+  // Handlers
   function handleChange(e) {
     setFormInfo(prevValue => ({...prevValue, [e.target.name]: e.target.value}))
   }  
@@ -51,11 +57,12 @@ const Login = ({onLoginOk}) => {
   function handleSubmit(event) {
     event.preventDefault()
     doLogin({
-        usuario: formInfo.usuario,
-        contrasena: formInfo.contrasena
+      usuario: formInfo.usuario,
+      contrasena: formInfo.contrasena
     })
   }
 
+  // Funciones
   function despliegaAlerta(mensaje, tipoAlerta='success') {
     setAlerta(prevValue => ({...prevValue, mostrar: true, mensaje: mensaje, tipo: tipoAlerta}))
     window.setTimeout(() => {
@@ -68,7 +75,7 @@ const Login = ({onLoginOk}) => {
   }
 
   if (isLoading) return <Spinner animation="border" />
-  
+
   return (
     <Container >
       <Alert

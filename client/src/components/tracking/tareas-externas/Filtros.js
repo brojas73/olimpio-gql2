@@ -1,21 +1,14 @@
-import { Form, Nav, Navbar /* , Offcanvas */ } from "react-bootstrap"
+import { Form, Nav, Navbar } from "react-bootstrap"
 
+import { TAMANO_CONTROLES } from "../../comun/utils"
 import { useTareasExternas } from "../../../context/TareasExternasContext"
 
 import SucursalesDropDown from "../../comun/SucursalesDropDown"
 import EstadosTareaDropDown from "../../comun/EstadosTareaDropDown"
-import { TAMANO_CONTROLES } from "../../comun/utils"
 import TicketInput from "../../comun/TicketInput"
 
 const Filtros = () => {
-    const { 
-        estadoActual, 
-        setEstadoActual,
-        ticketFiltro,
-        setTicketFiltro,
-        sucursalFiltro,
-        setSucursalFiltro
-    } = useTareasExternas()
+    const { filtros, setFiltros } = useTareasExternas()
 
     return (
         <Navbar className="mb-1">
@@ -26,18 +19,18 @@ const Filtros = () => {
                         type='search'
                         placeholder="Ticket..."
                         aria-label="Search"
-                        value={ticketFiltro}
-                        onChange={ticketCapturado => setTicketFiltro(ticketCapturado)}
+                        value={filtros.ticket}
+                        onChange={ticketCapturado => setFiltros(prevValue => ({...prevValue, ticket: ticketCapturado}))}
                     />
                 </Form>
                 <SucursalesDropDown 
-                    idSelected={sucursalFiltro} 
+                    idSelected={filtros.sucursal} 
                     titleOption={true}
-                    onSelect={sucursalSelected => setSucursalFiltro(sucursalSelected)} 
+                    onSelect={sucursalSeleccionada => setFiltros(prevValue => ({...prevValue, sucursal: sucursalSeleccionada}))}
                 />
                 <EstadosTareaDropDown
-                    idSelected={estadoActual} 
-                    onSelect={estadoTareaSelected => setEstadoActual(estadoTareaSelected)}
+                    idSelected={filtros.estado} 
+                    onSelect={estadoTareaSeleccionado => setFiltros(prevValue => ({...prevValue, estado: estadoTareaSeleccionado}))}
                 />
             </Nav>
         </Navbar>

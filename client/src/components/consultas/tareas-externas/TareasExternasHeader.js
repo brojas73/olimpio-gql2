@@ -1,16 +1,15 @@
 import Filtros from "./Filtros"
 import TituloConsultas from "./TituloConsultas"
 
-const TareasExternasHeader = ({titulo, renglones, onChange}) => {
-  function handleOnChange(values) {
-    if (onChange)
-      onChange(values)
+const TareasExternasHeader = ({titulo, renglones, onRefresh}) => {
+  function handleRefresh() {
+    onRefresh()
   }
 
   return (
     <>
-      <Filtros onChange={handleOnChange}/>
-      <TituloConsultas titulo={titulo} renglones={renglones}/>
+      <Filtros />
+      <TituloConsultas titulo={titulo} renglones={renglones} onRefresh={handleRefresh} />
     </>
   )
 }

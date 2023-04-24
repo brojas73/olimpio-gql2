@@ -7,16 +7,13 @@ export function useConsultas() {
 }
 
 export function ConsultasProvider({children}) {
-    const [tipoConsultaActual, setTipoConsultaActual] = useState(0)
-    const [ticketFiltro, setTicketFiltro] = useState('')
-    const [sucursalFiltro, setSucursalFiltro] = useState(0)
+    const [filtros, setFiltros] = useState({ticket: '', descripcion: '', tipoConsutla: 0})
 
     return (
         <ConsultasContext.Provider value={{
-            tipoConsultaActual, ticketFiltro, sucursalFiltro, 
-            setTipoConsultaActual, setTicketFiltro, setSucursalFiltro,
+            filtros, setFiltros
         }}>
-                {children}
+            {children}
         </ConsultasContext.Provider>
     )
 }

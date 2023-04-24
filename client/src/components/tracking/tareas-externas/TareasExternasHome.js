@@ -6,14 +6,17 @@ import { Row, Spinner } from 'react-bootstrap'
 // Hooks
 import { useAuth } from "../../../hooks/useAuth"
 import { useOlimpio } from '../../../context/OlimpioContext'
-import { useTareasExternas, STATUS_TAREA } from "../../../context/TareasExternasContext"
+import { useTareasExternas } from "../../../context/TareasExternasContext"
 
 // Utils
 import { 
-    esPendienteDeRecoleccion, 
-    esRedireccionada, 
-    origenEnSucursalActual, 
-    destinoEnSucursalActual
+    getSiguienteEstadoTareaExterna,
+    getTituloTareaExterna,
+    getTextoConfirmacionTareaExterna,
+    getTextoBorrarTareaExterna,
+    getTextoForwardTareaExterna,
+    getTextoContinuarTareaExterna,
+    filtraTareasExternas
 } from "../../comun/utils"
 
 // Queries 
@@ -44,100 +47,12 @@ const TIPO_CONFIRMACION = {
     RECOLECTANDO_FORWARD: 1
 } 
 
-// Funciones helpers
-function getSiguienteEstado(idEstadoActual) {
-    switch (parseInt(idEstadoActual)) {
-        case STATUS_TAREA.PENDIENTE_RECOLECCION:
-        case STATUS_TAREA.REDIRECCIONADO:
-                return STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE
-        case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE:
-                return STATUS_TAREA.RECIBIDO_PARA_ATENDERSE
-        case STATUS_TAREA.RECIBIDO_PARA_ATENDERSE:
-            return STATUS_TAREA.TERMINADO_PARA_RECOLECTAR
-        case STATUS_TAREA.TERMINADO_PARA_RECOLECTAR:
-            return STATUS_TAREA.RECOLECTADO_PARA_ENTREGA
-        case STATUS_TAREA.RECOLECTADO_PARA_ENTREGA:
-            return STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN
-        case STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN:
-            return STATUS_TAREA.RECIBIDO_EN_SUCURSAL_ORIGEN
-        default:
-            return null
-    }
-}
-
-export function getTitulo(idEstadoActual) {
-    switch (parseInt(idEstadoActual)) {
-        case STATUS_TAREA.TAREAS_ACTIVAS:
-            return 'Tareas Activas'
-        case STATUS_TAREA.PENDIENTE_RECOLECCION:
-            return 'Pendiente de Recolección'
-        case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE:
-            return 'Recolectadas para Atenderse'
-        case STATUS_TAREA.RECIBIDO_PARA_ATENDERSE:
-            return 'Recibidas para Atenderse'
-        case STATUS_TAREA.TERMINADO_PARA_RECOLECTAR:
-            return 'Terminadas para Recolectar'
-        case STATUS_TAREA.RECOLECTADO_PARA_ENTREGA:
-            return 'Recolectadas para Entrega'
-        case STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN:
-            return 'Entregadas a Sucursal Origen'
-        default:
-            return 'Desconocido'
-    }
-}
-
-function getTextoConfirmacion(idEstadoActual) {
-    switch (parseInt(idEstadoActual)) {
-        case STATUS_TAREA.PENDIENTE_RECOLECCION:
-            return '¿Seguro que quieres recolectar la tarea?'
-        case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE:
-            return '¿Seguro que quieres recibir la tarea?'
-        case STATUS_TAREA.RECIBIDO_PARA_ATENDERSE:
-            return '¿Seguro que quieres terminar la tarea?'
-        case STATUS_TAREA.TERMINADO_PARA_RECOLECTAR:
-            return '¿Seguro que quieres recolectar la tarea?'
-        case STATUS_TAREA.RECOLECTADO_PARA_ENTREGA:
-            return '¿Seguro que quieres entregar la tarea?'
-        case STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN:
-            return '¿Seguro que quieres recibir la tarea?'
-        default:
-            return 'Desconocido'
-    }
-}
-
-function getTextoContinuar(idEstadoActual) {
-    switch (parseInt(idEstadoActual)) {
-        case STATUS_TAREA.PENDIENTE_RECOLECCION:
-            return 'Recolectar'
-        case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE:
-            return 'Recibir'
-        case STATUS_TAREA.RECIBIDO_PARA_ATENDERSE:
-            return 'Terminar'
-        case STATUS_TAREA.TERMINADO_PARA_RECOLECTAR:
-            return 'Recolectar'
-        case STATUS_TAREA.RECOLECTADO_PARA_ENTREGA:
-            return 'Entregar'
-        case STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN:
-            return 'Recibir'
-        default:
-            return 'Desconocido'
-    }
-}
-
-function getTextoBorrar(idEstadoActual) {
-    return (parseInt(idEstadoActual) === STATUS_TAREA.PENDIENTE_RECOLECCION) ? 'Borrar' : null 
-}
-
-function getTextoForward(idEstadoActual) {
-    return (parseInt(idEstadoActual) === STATUS_TAREA.RECIBIDO_PARA_ATENDERSE) ? 'Desviar' : null 
-}
-
 const TareasExternasHome = () => {
     const navigate = useNavigate()
     const queryClient = useQueryClient()
     
     const { sucursalActual } = useOlimpio()
-    const { estadoActual, ticketFiltro, sucursalFiltro } = useTareasExternas()
+    const { filtros } = useTareasExternas()
     const { credenciales } = useAuth()
 
     // State
@@ -189,54 +104,10 @@ const TareasExternasHome = () => {
         }
     })
 
-    // Funciones
-    function filtraTareas(tareasExternasActivas) {
-        const tareasExternasFiltradas = tareasExternasActivas.filter(tareaExterna => 
-            (ticketFiltro.length === 0 || (ticketFiltro.length > 0 && tareaExterna.ticket.includes(ticketFiltro))) &&
-            (sucursalFiltro === 0 || (sucursalFiltro !== 0 && (tareaExterna.id_sucursal_origen === sucursalFiltro || tareaExterna.id_sucursal_destino === sucursalFiltro)))
-        )
-
-        switch (parseInt(estadoActual)) {
-            case STATUS_TAREA.PENDIENTE_RECOLECCION:
-            case STATUS_TAREA.REDIRECCIONADO:
-                return tareasExternasFiltradas.filter(tareaExterna => (
-                    (esPendienteDeRecoleccion(tareaExterna) && origenEnSucursalActual(tareaExterna, sucursalActual)) || 
-                    (esRedireccionada(tareaExterna) && destinoEnSucursalActual(tareaExterna, sucursalActual)) 
-                ))
-            case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE:
-                return tareasExternasFiltradas.filter(tareaExterna => (
-                    parseInt(tareaExterna.id_estado_tarea) === STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE &&
-                    parseInt(tareaExterna.id_sucursal_destino) === parseInt(sucursalActual)  
-                ))
-            case STATUS_TAREA.RECIBIDO_PARA_ATENDERSE:
-                return tareasExternasFiltradas.filter(tareaExterna => (
-                    parseInt(tareaExterna.id_estado_tarea) === STATUS_TAREA.RECIBIDO_PARA_ATENDERSE && 
-                    parseInt(tareaExterna.id_sucursal_destino) === parseInt(sucursalActual)
-                ))
-            case STATUS_TAREA.TERMINADO_PARA_RECOLECTAR:
-                return tareasExternasFiltradas.filter(tareaExterna => (
-                    parseInt(tareaExterna.id_estado_tarea) === STATUS_TAREA.TERMINADO_PARA_RECOLECTAR &&
-                    parseInt(tareaExterna.id_sucursal_destino) === parseInt(sucursalActual) 
-                ))
-            case STATUS_TAREA.RECOLECTADO_PARA_ENTREGA:
-                return tareasExternasFiltradas.filter(tareaExterna => (
-                    parseInt(tareaExterna.id_estado_tarea) === STATUS_TAREA.RECOLECTADO_PARA_ENTREGA &&
-                    parseInt(tareaExterna.id_sucursal_origen) === parseInt(sucursalActual) 
-                ))
-            case STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN:
-                return tareasExternasFiltradas.filter(tareaExterna => (
-                    parseInt(tareaExterna.id_estado_tarea) === STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN &&
-                    parseInt(tareaExterna.id_sucursal_origen) === parseInt(sucursalActual) 
-                ))
-            default:
-                return tareasExternasFiltradas
-        }
-    }
-        
     // Handlers
     function handleContinuar(idTareaExterna) {
         setIdTareaExterna(idTareaExterna)
-        setConfirmacion(prevValue => ({...prevValue, mensaje: getTextoConfirmacion(estadoActual), mostrar: true}))
+        setConfirmacion(prevValue => ({...prevValue, mensaje: getTextoConfirmacionTareaExterna(filtros.estado), mostrar: true}))
     }
 
     function handleConfirmacion(confirmado) {
@@ -254,7 +125,7 @@ const TareasExternasHome = () => {
                 setTipoConfirmacion(null)
                 return doRecolectaTareaExternaForwarded({
                     id_tarea_externa: idTareaExterna, 
-                    id_estado_tarea: getSiguienteEstado(estadoActual),
+                    id_estado_tarea: getSiguienteEstadoTareaExterna(filtros.estado),
                     id_sucursal_redireccion: parseInt(idSucursalRedireccion), 
                     id_usuario: credenciales.id_usuario
                 })
@@ -262,7 +133,7 @@ const TareasExternasHome = () => {
     
             return doActualizaEstadoTareaExterna({
                 id_tarea_externa: idTareaExterna, 
-                id_estado_tarea: getSiguienteEstado(estadoActual),
+                id_estado_tarea: getSiguienteEstadoTareaExterna(filtros.estado),
                 id_usuario: credenciales.id_usuario
             })
         }
@@ -296,7 +167,7 @@ const TareasExternasHome = () => {
     function handleRecolectarForwarded(idTareaExterna, idSucursalRedireccion) {
         setIdTareaExterna(idTareaExterna)
         setIdSucursalRedireccion(idSucursalRedireccion)
-        setConfirmacion(prevValue => ({...prevValue, mensaje: getTextoConfirmacion(estadoActual), mostrar: true}))
+        setConfirmacion(prevValue => ({...prevValue, mensaje: getTextoConfirmacionTareaExterna(filtros.estado), mostrar: true}))
         setTipoConfirmacion(TIPO_CONFIRMACION.RECOLECTANDO_FORWARD)
     }
     
@@ -318,7 +189,7 @@ const TareasExternasHome = () => {
 
     if (tareasExternasActivas) {
       // Obtengo las tareas que voy a desplegar
-      var tareasExternas = filtraTareas(tareasExternasActivas)
+      var tareasExternas = filtraTareasExternas(tareasExternasActivas, filtros, sucursalActual)
     }
   
     return (
@@ -336,7 +207,7 @@ const TareasExternasHome = () => {
             />
     
             <TareasExternasHeader 
-                titulo={getTitulo(estadoActual)} 
+                titulo={getTituloTareaExterna(filtros.estado)} 
                 renglones={tareasExternas.length}
                 onRefresh={handleRefresh}
             />
@@ -346,9 +217,9 @@ const TareasExternasHome = () => {
                 tareasExternas.map(tareaExterna => (
                     <TareaExterna 
                         tareaExterna={tareaExterna} 
-                        textoContinuar={getTextoContinuar(estadoActual)}
-                        textoBorrar={getTextoBorrar(estadoActual)}
-                        textoForward={getTextoForward(estadoActual)}
+                        textoContinuar={getTextoContinuarTareaExterna(filtros.estado)}
+                        textoBorrar={getTextoBorrarTareaExterna(filtros.estado)}
+                        textoForward={getTextoForwardTareaExterna(filtros.estado)}
                         onContinuar={handleContinuar}
                         onBorrar={handleBorrar}
                         onForward={handleForward}

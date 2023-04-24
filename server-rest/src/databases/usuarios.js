@@ -17,16 +17,16 @@ const login = (usuario, contrasena) => {
         pool.query(q, [usuario, contrasena], (err, data) => {
             if (err) {
                 console.log(err)
-                reject({
+                return reject({
                     status: 500,
                     message: err?.message || err
                 })
             }
 
             if (data) {
-                resolve(JSON.parse(JSON.stringify(data)))
+                return resolve(JSON.parse(JSON.stringify(data)))
             } else {
-                resolve({ 
+                return resolve({ 
                     status: 'ERROR',
                     mensaje: 'Combinación de usuario/contraseña no encontrada'
                 })

@@ -15,15 +15,17 @@ const login = async (req, res) => {
         // Guardamos una cookie con la sesión
         req.session.usuario = json[0]
         
-        res.send({status: "OK", data: login})
+        return res.send({status: "OK", data: login})
     // No nos pudimos firmar a la aplicación
     } else {
-        res
+        return res
             .status(401)
             .send({
                 status: "FAILED", 
                 data: {
-                    error: 'Combinación de usuario/contraseña inválida'
+                    error: {
+                        mensaje: 'Combinación de usuario/contraseña inválida'
+                    }
                 }
             })
     }

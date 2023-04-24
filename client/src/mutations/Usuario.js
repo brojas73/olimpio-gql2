@@ -11,13 +11,17 @@ export async function login(credenciales) {
             },
             body: JSON.stringify(credenciales)
         })
-        const { data } = await response.json()
 
-        if (data.length > 0) {
-            const { id_usuario, nombre, id_rol } = data[0]
-            const userInfo = { id_usuario: id_usuario, nombre: nombre, id_rol: id_rol} 
-            return userInfo
-        } 
+        const { status, data } = await response.json()
+        if (response.status === 200) {
+            if (status === 'OK') {
+                const { id_usuario, nombre, id_rol } = data[0]
+                const userInfo = { id_usuario: id_usuario, nombre: nombre, id_rol: id_rol} 
+                return { status, data: { userInfo } }
+            }
+        } else {
+            return { status, data }
+        }
     } catch (err) {
         console.log(err)
     }

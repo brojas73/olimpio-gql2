@@ -1,8 +1,6 @@
-import { useState } from 'react'
 import { NavDropdown } from 'react-bootstrap'
 
 import { FONT_SIZE_DROPDOWN, TIPO_CONSULTA_TE } from "../../comun/utils"
-import { useTareasExternas } from '../../../context/TareasExternasContext'
 
 function getTitulo(id) {
     switch (parseInt(id)) {
@@ -16,11 +14,9 @@ function getTitulo(id) {
 }
 
 const TipoConsultaSelect = ({onSelect, selected}) => {
-    const { tipoConsultaActual } = useTareasExternas()
-    const [titulo, setTitulo] = useState(getTitulo(tipoConsultaActual))
+    const titulo = getTitulo(selected)
 
     function handleSelect(eventKey) {
-        setTitulo(getTitulo(eventKey))
         onSelect(eventKey)
     }
 

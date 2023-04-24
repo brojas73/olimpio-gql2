@@ -19,12 +19,12 @@ import GlobalNavbar from './GlobalNavbar'
 const TabsOlimpio = () => {
     const navigate = useNavigate()
     const { conectado, setConectado } = useOlimpio()
-    const { setCredenciales } = useAuth()
+    const { logout: _logout } = useAuth()
 
     const { mutate: doLogout } = useMutation({
         mutationFn: logout, 
         onSuccess: () => {
-          setCredenciales(null)
+          _logout()
           setConectado(false)
           navigate('/login')
         }
@@ -43,10 +43,10 @@ const TabsOlimpio = () => {
         <>
             {
                 conectado && (
-                    <IdleTimeoutHandler onLogout={() => handleLogout()} />
+                    <IdleTimeoutHandler onLogout={handleLogout} />
                 )
             }
-            <GlobalNavbar onLogout={() => handleLogout()}/>
+            <GlobalNavbar onLogout={handleLogout}/>
 
             {
                 conectado && (

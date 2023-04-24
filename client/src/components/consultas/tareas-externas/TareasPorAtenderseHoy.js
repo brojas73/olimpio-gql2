@@ -4,29 +4,24 @@ import BootstrapTable from "react-bootstrap-table-next"
 import paginationFactory from 'react-bootstrap-table2-paginator'
 
 import { useOlimpio } from '../../../context/OlimpioContext'
+import { useConsultas } from '../../../context/ConsultasContext'
 import { fechaFormatter, ticketFormatter} from '../../comun/utils'
 
 import TareaExternaModal from "./TareaExternaModal"
-import Filtros from "./Filtros"
-import TituloConsultas from "./TituloConsultas"
+import TareasExternasHeader from './TareasExternasHeader'
 
 import { useQuery } from 'react-query'
 import { fetchTareasPorAtenderseHoy, QUERY_TAREAS_POR_ATENDERSE_HOY } from '../../../queries/TareaExterna'
 
 export default function TareasPorAtenderseHoy() {
     const { sucursalActual } = useOlimpio()
+    const { filtros } = useConsultas()
 
-    const { isLoading, data: tareasExternas } = useQuery(
+    const { isLoading, data: tareasExternas, refetch } = useQuery(
         [QUERY_TAREAS_POR_ATENDERSE_HOY, sucursalActual], 
         fetchTareasPorAtenderseHoy
     )
-
     const [modalTarea, setModalTarea] = useState({mostrar: false, idTareaExterna: 0})
-    const [filtro, setFiltro] = useState({ticket: '', descripcion: ''})
-
-    function handleChange(e) {
-        setFiltro(prevValue => ({...prevValue, [e.target.name]: e.target.value.toUpperCase()}))
-    }
 
     const tableRowEvents = {
         onDoubleClick: (e, row, rowIndex) => {
@@ -44,13 +39,17 @@ export default function TareasPorAtenderseHoy() {
         { dataField: "fecha_requerida", text: "Fecha Requerida", sort: true, formatter: fechaFormatter},
     ]
 
+    function handleRefresh() {
+        refetch()
+    }
+
     if (isLoading) return <Spinner animation="border" />
 
     if (tareasExternas) {
         // Obtengo las tareas que voy a desplegar
         var tareasFiltradas = tareasExternas.filter(tareaExterna => (
-            tareaExterna.ticket.includes(filtro.ticket) &&
-            tareaExterna.descripcion.includes(filtro.descripcion)
+            tareaExterna.ticket.includes(filtros.ticket) &&
+            tareaExterna.descripcion.includes(filtros.descripcion)
         ))
     }
 
@@ -65,12 +64,8 @@ export default function TareasPorAtenderseHoy() {
                 />
                 )
             }
-            <Filtros 
-                ticketFiltro={filtro.ticket} 
-                descripcionFiltro={filtro.descripcion} 
-                onChange={handleChange}
-            />
-            <TituloConsultas titulo="Tareas por Atenderse Hoy" renglones={tareasFiltradas.length} />
+
+            <TareasExternasHeader titulo="Tareas por Atenderse Hoy" renglones={tareasFiltradas.length} onRefresh={handleRefresh} />
 
             <BootstrapTable 
                 keyField="id_tarea_externa" 

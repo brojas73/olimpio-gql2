@@ -49,13 +49,13 @@ const tareasExternas = () => {
         pool.query(q, (err, data) => {
             if (err) {
                 console.log(err)
-                reject({
+                return reject({
                     status: 500,
                     message: err?.message || err
                 })
             }
 
-            resolve(JSON.parse(JSON.stringify(data)))
+            return resolve(JSON.parse(JSON.stringify(data)))
         })
     })
 }
@@ -72,13 +72,13 @@ const tareasExternasActivas = () => {
         pool.query(q, (err, data) => {
             if (err) {
                 console.log(err)
-                reject({
+                return reject({
                     status: 500,
                     message: err?.message || err
                 })
             }
 
-            resolve(JSON.parse(JSON.stringify(data)))
+            return resolve(JSON.parse(JSON.stringify(data)))
         })
     })
 }
@@ -102,8 +102,8 @@ const porAtenderseHoy = (idSucursal) => {
                     on    tt.id_tipo_trabajo = te.id_tipo_trabajo
                  inner join sucursal so
                     on    so.id_sucursal = te.id_sucursal_origen
-           where te.id_estado_tarea = 3
-           and   te.estado = 1
+           where te.estado = 1
+           and   te.id_estado_tarea = 3                        -- Recibidos para atenderse
            and   concat(te.fecha_requerida, ' ', te.hora_requerida) < date_add(curdate(), interval 1 day)
            and   te.id_sucursal_destino = ? 
         order by te.fecha_creacion  
@@ -113,13 +113,13 @@ const porAtenderseHoy = (idSucursal) => {
         pool.query(q, [idSucursal], (err, data) => {
             if (err) {
                 console.log(err)
-                reject({
+                return reject({
                     status: 500,
                     message: err?.message || err
                 })
             }
 
-            resolve(JSON.parse(JSON.stringify(data)))
+            return resolve(JSON.parse(JSON.stringify(data)))
         })
     })
 }
@@ -135,13 +135,13 @@ const tareaExterna = (idTareaExterna) => {
         pool.query(q, [idTareaExterna], (err, data) => {
             if (err) {
                 console.log(err)
-                reject({
+                return reject({
                     status: 500,
                     message: err?.message || err
                 })
             }
 
-            resolve(JSON.parse(JSON.stringify(data)))
+            return resolve(JSON.parse(JSON.stringify(data)))
         })
     })
 }
@@ -180,14 +180,13 @@ const creaTareaExterna = (tareaExterna) => {
     return new Promise((resolve, reject) => {
         pool.query(q, [values], (err, data) => {
             if (err) {
-                console.log(err)
-                reject({
+                return reject({
                     status: 500,
-                    message: err?.message || err
+                    message: err?.sqlMessage || err
                 })
             }
 
-            resolve(JSON.parse(JSON.stringify(data)))
+            return resolve(JSON.parse(JSON.stringify(data)))
         })
     })
 }
@@ -202,14 +201,13 @@ const borraTareaExterna = (idTareaExterna) => {
     return new Promise((resolve, reject) => {
         pool.query(q, [idTareaExterna], (err, _) => {
             if (err) {
-                console.log(err)
-                reject({
+                return reject({
                     status: 500,
                     message: err?.message || err
                 })
             }
 
-            resolve({
+            return resolve({
                 status: 200,
                 mensaje: 'La tarea externa se borró exitosamente',
                 id_tarea_externa: idTareaExterna
@@ -231,13 +229,13 @@ const actualizaEstadoTareaExterna = (idTareaExterna, idUsuario, idEstadoTarea) =
         pool.query(q, [idUsuario, idEstadoTarea, idTareaExterna], (err, data) => {
             if (err) {
                 console.log(err)
-                reject({
+                return reject({
                     status: 500,
                     message: err?.message || err
                 })
             }
 
-            resolve({
+            return resolve({
                 status: 200,
                 mensaje: 'El estado de la tarea se actualizó exitosamente',
                 id_tarea_externa: idTareaExterna,
@@ -261,13 +259,13 @@ const redireccionaTareaExterna = (idTareaExterna, idUsuario, idEstadoTarea, idSu
         pool.query(q, [idUsuario, idSucursalRedireccion, idEstadoTarea, idTareaExterna], (err, data) => {
             if (err) {
                 console.log(err)
-                reject({
+                return reject({
                     status: 500,
                     message: err?.message || err
                 })
             }
 
-            resolve({
+            return resolve({
                 status: 200,
                 mensaje: 'La tarea externa se redireccionó exitosamente',
                 id_tarea_externa: idTareaExterna,
@@ -293,13 +291,13 @@ const recolectaRedireccionTareaExterna = (idTareaExterna, idUsuario, idEstadoTar
         pool.query(q, [idUsuario, idSucursalRedireccion, idEstadoTarea, idTareaExterna], (err, data) => {
             if (err) {
                 console.log(err)
-                reject({
+                return reject({
                     status: 500,
                     message: err?.message || err
                 })
             }
 
-            resolve({
+            return resolve({
                 status: 200,
                 mensaje: 'La tarea redireccionada se recolectó exitosamente',
                 id_tarea_externa: idTareaExterna,

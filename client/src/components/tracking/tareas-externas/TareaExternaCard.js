@@ -11,7 +11,7 @@ import {
 } from '../../comun/utils'
 
 const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, onContinuar, onBorrar, onForward, onLog, onRecolectarForwarded }) => {
-    const { estadoActual } = useTareasExternas()
+    const { filtros } = useTareasExternas()
     const { esMaquila, esEncargado, esChofer } = useAuth()
 
     function handleContinuar() {
@@ -25,7 +25,7 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
         if (!textoContinuar)
             return false
         
-        switch (parseInt(estadoActual)) {
+        switch (parseInt(filtros.estado)) {
             case STATUS_TAREA.PENDIENTE_RECOLECCION: 
                 return esChofer()
             case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE: 
@@ -53,8 +53,7 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
             return false
 
         return (
-            parseInt(estadoActual) === STATUS_TAREA.PENDIENTE_RECOLECCION && 
-            // parseInt(tareaExterna.id_creado_por) === parseInt(credenciales.id_usuario) &&
+            parseInt(filtros.estado) === STATUS_TAREA.PENDIENTE_RECOLECCION && 
             esEncargado()
         )
     }
@@ -64,7 +63,7 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
             return false
 
         return (
-            parseInt(estadoActual) === STATUS_TAREA.RECIBIDO_PARA_ATENDERSE && 
+            parseInt(filtros.estado) === STATUS_TAREA.RECIBIDO_PARA_ATENDERSE && 
             esEncargado()
         )
     }

@@ -157,3 +157,271 @@ export function redireccionEnSucursalActual(tareaExterna, sucursalActual) {
   return parseInt(sucursalActual) === parseInt(tareaExterna.id_sucursal_redireccion)
 }
 
+// Funciones helpers
+export function getSiguienteEstadoServicioDomicilio(idEstadoActual) {
+  switch (parseInt(idEstadoActual)) {
+      case STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_CLIENTE:
+          return STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_SUCURSAL
+      case STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_SUCURSAL:
+          return STATUS_SERVICIO_DOMICILIO.RECIBIDO_EN_SUCURSAL
+      case STATUS_SERVICIO_DOMICILIO.RECIBIDO_EN_SUCURSAL:
+          return STATUS_SERVICIO_DOMICILIO.TERMINADO
+      case STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_SUCURSAL:
+          return STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_CLIENTE
+      case STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_CLIENTE:
+          return STATUS_SERVICIO_DOMICILIO.ENTREGADO_A_CLIENTE
+      case STATUS_SERVICIO_DOMICILIO.ENTREGADO_A_CLIENTE:
+          return STATUS_SERVICIO_DOMICILIO.TERMINADO
+      default:
+          return null
+  }
+}
+
+export function getTextoConfirmacionServicioDomicilio(idEstadoActual) {
+  switch (parseInt(idEstadoActual)) {
+      case STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_CLIENTE:
+          return '¿Seguro que quieres recolectar el servicio a domicilio?'
+      case STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_SUCURSAL:
+          return '¿Seguro que quieres entregar el servicio a domicilio?'
+      case STATUS_SERVICIO_DOMICILIO.RECIBIDO_EN_SUCURSAL:
+          return '¿Seguro que quieres terminar el servicio a domicilio?'
+      case STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_SUCURSAL:
+          return '¿Seguro que quieres recolectar el servicio a domicilio?'
+      case STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_CLIENTE:
+          return '¿Seguro que quieres entregar el servicio a domicilio?'
+      case STATUS_SERVICIO_DOMICILIO.ENTREGADO_A_CLIENTE:
+          return '¿Seguro que quieres terminar el servicio a domicilio?'
+      default:
+          return 'Desconocido'
+  }
+}
+
+export function getTituloServicioDomicilio(idEstadoActual) {
+  switch (parseInt(idEstadoActual)) {
+      case STATUS_SERVICIO_DOMICILIO.SERVICIOS_DOMICILIO_ACTIVOS:
+          return 'Servicios a Domicilio Activos'
+      case STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_CLIENTE:
+          return 'Pendiente de Recolección en Cliente'
+      case STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_SUCURSAL:
+          return 'Recolectados para Entrega En Sucursal'
+      case STATUS_SERVICIO_DOMICILIO.RECIBIDO_EN_SUCURSAL:
+          return 'Recibidos en Sucursal'
+      case STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_SUCURSAL:
+          return 'Pendiente de Recolección en Sucursal'
+      case STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_CLIENTE:
+          return 'Recolectados para Entrega a Cliente'
+      case STATUS_SERVICIO_DOMICILIO.ENTREGADO_A_CLIENTE:
+          return 'Entregados al Cliente'
+      case STATUS_SERVICIO_DOMICILIO.PENDIENTE_DE_PAGO:
+          return 'Pendiente de Pago'
+      default:
+          return 'Desconocido'
+  }
+}
+
+export function getTextoContinuarServicioDomicilio(idEstadoActual) {
+  switch (parseInt(idEstadoActual)) {
+      case STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_CLIENTE:
+          return 'Recolectar'
+      case STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_SUCURSAL:
+          return 'Entregar'
+      case STATUS_SERVICIO_DOMICILIO.RECIBIDO_EN_SUCURSAL:
+          return 'Terminar'
+      case STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_SUCURSAL:
+          return 'Recolectar'
+      case STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_CLIENTE:
+          return 'Entregar'
+      case STATUS_SERVICIO_DOMICILIO.ENTREGADO_A_CLIENTE:
+          return 'Terminar'
+      default:
+          return 'Desconocido'
+  }
+}
+
+export function filtraServiciosDomicilio(serviciosDomicilio, filtros, sucursalActual) {
+  const serviciosDomicilioFiltrados = serviciosDomicilio.filter(servicioDomicilio => 
+      (filtros.ticket.length === 0 || (filtros.ticket.length > 0 && servicioDomicilio.ticket.includes(filtros.ticket))) 
+  )
+
+  switch (parseInt(filtros.estado)) {
+      case STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_CLIENTE:
+          return serviciosDomicilioFiltrados.filter(servicioDomicilio => (
+              parseInt(servicioDomicilio.id_estado_servicio_domicilio) === STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_CLIENTE &&
+              parseInt(servicioDomicilio.id_sucursal) === parseInt(sucursalActual)
+          ))
+      case STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_SUCURSAL:
+          return serviciosDomicilioFiltrados.filter(servicioDomicilio => (
+              parseInt(servicioDomicilio.id_estado_servicio_domicilio) === STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_SUCURSAL &&
+              parseInt(servicioDomicilio.id_sucursal) === parseInt(sucursalActual)
+          ))
+      case STATUS_SERVICIO_DOMICILIO.RECIBIDO_EN_SUCURSAL:
+          return serviciosDomicilioFiltrados.filter(servicioDomicilio => (
+              parseInt(servicioDomicilio.id_estado_servicio_domicilio) === STATUS_SERVICIO_DOMICILIO.RECIBIDO_EN_SUCURSAL &&
+              parseInt(servicioDomicilio.id_sucursal) === parseInt(sucursalActual) 
+          ))
+      case STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_SUCURSAL:
+          return serviciosDomicilioFiltrados.filter(servicioDomicilio => (
+              parseInt(servicioDomicilio.id_estado_servicio_domicilio) === STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_SUCURSAL &&
+              parseInt(servicioDomicilio.id_sucursal) === parseInt(sucursalActual) 
+          ))
+      case STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_CLIENTE:
+          return serviciosDomicilioFiltrados.filter(servicioDomicilio => (
+              parseInt(servicioDomicilio.id_estado_servicio_domicilio) === STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_CLIENTE &&
+              parseInt(servicioDomicilio.id_sucursal) === parseInt(sucursalActual) 
+          ))
+      case STATUS_SERVICIO_DOMICILIO.ENTREGADO_A_CLIENTE:
+          return serviciosDomicilioFiltrados.filter(servicioDomicilio => (
+              parseInt(servicioDomicilio.id_estado_servicio_domicilio) === STATUS_SERVICIO_DOMICILIO.ENTREGADO_A_CLIENTE &&
+              parseInt(servicioDomicilio.id_sucursal) === parseInt(sucursalActual) 
+          ))
+      case STATUS_SERVICIO_DOMICILIO.PENDIENTE_DE_PAGO:
+          return serviciosDomicilioFiltrados.filter(servicioDomicilio => (
+              parseInt(servicioDomicilio.id_sucursal) === parseInt(sucursalActual) 
+          ))
+      default:
+          return serviciosDomicilioFiltrados
+      }
+}
+
+/* ----------- Helpers Tareas Externas -----------------*/
+export function getSiguienteEstadoTareaExterna(idEstadoActual) {
+  switch (parseInt(idEstadoActual)) {
+      case STATUS_TAREA.PENDIENTE_RECOLECCION:
+      case STATUS_TAREA.REDIRECCIONADO:
+              return STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE
+      case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE:
+              return STATUS_TAREA.RECIBIDO_PARA_ATENDERSE
+      case STATUS_TAREA.RECIBIDO_PARA_ATENDERSE:
+          return STATUS_TAREA.TERMINADO_PARA_RECOLECTAR
+      case STATUS_TAREA.TERMINADO_PARA_RECOLECTAR:
+          return STATUS_TAREA.RECOLECTADO_PARA_ENTREGA
+      case STATUS_TAREA.RECOLECTADO_PARA_ENTREGA:
+          return STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN
+      case STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN:
+          return STATUS_TAREA.RECIBIDO_EN_SUCURSAL_ORIGEN
+      default:
+          return null
+  }
+}
+
+export function getTituloTareaExterna(idEstadoActual) {
+  switch (parseInt(idEstadoActual)) {
+      case STATUS_TAREA.TAREAS_ACTIVAS:
+          return 'Tareas Activas'
+      case STATUS_TAREA.PENDIENTE_RECOLECCION:
+          return 'Pendiente de Recolección'
+      case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE:
+          return 'Recolectadas para Atenderse'
+      case STATUS_TAREA.RECIBIDO_PARA_ATENDERSE:
+          return 'Recibidas para Atenderse'
+      case STATUS_TAREA.TERMINADO_PARA_RECOLECTAR:
+          return 'Terminadas para Recolectar'
+      case STATUS_TAREA.RECOLECTADO_PARA_ENTREGA:
+          return 'Recolectadas para Entrega'
+      case STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN:
+          return 'Entregadas a Sucursal Origen'
+      default:
+          return 'Desconocido'
+  }
+}
+
+export function getTextoConfirmacionTareaExterna(idEstadoActual) {
+  switch (parseInt(idEstadoActual)) {
+      case STATUS_TAREA.PENDIENTE_RECOLECCION:
+          return '¿Seguro que quieres recolectar la tarea?'
+      case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE:
+          return '¿Seguro que quieres recibir la tarea?'
+      case STATUS_TAREA.RECIBIDO_PARA_ATENDERSE:
+          return '¿Seguro que quieres terminar la tarea?'
+      case STATUS_TAREA.TERMINADO_PARA_RECOLECTAR:
+          return '¿Seguro que quieres recolectar la tarea?'
+      case STATUS_TAREA.RECOLECTADO_PARA_ENTREGA:
+          return '¿Seguro que quieres entregar la tarea?'
+      case STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN:
+          return '¿Seguro que quieres recibir la tarea?'
+      default:
+          return 'Desconocido'
+  }
+}
+
+export function getTextoContinuarTareaExterna(idEstadoActual) {
+  switch (parseInt(idEstadoActual)) {
+      case STATUS_TAREA.PENDIENTE_RECOLECCION:
+          return 'Recolectar'
+      case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE:
+          return 'Recibir'
+      case STATUS_TAREA.RECIBIDO_PARA_ATENDERSE:
+          return 'Terminar'
+      case STATUS_TAREA.TERMINADO_PARA_RECOLECTAR:
+          return 'Recolectar'
+      case STATUS_TAREA.RECOLECTADO_PARA_ENTREGA:
+          return 'Entregar'
+      case STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN:
+          return 'Recibir'
+      default:
+          return 'Desconocido'
+  }
+}
+
+export function getTextoBorrarTareaExterna(idEstadoActual) {
+  return (parseInt(idEstadoActual) === STATUS_TAREA.PENDIENTE_RECOLECCION) ? 'Borrar' : null 
+}
+
+export function getTextoForwardTareaExterna(idEstadoActual) {
+  return (parseInt(idEstadoActual) === STATUS_TAREA.RECIBIDO_PARA_ATENDERSE) ? 'Desviar' : null 
+}
+
+export function filtraTareasExternas(tareasExternasActivas, filtros, sucursalActual) {
+  const tareasExternasFiltradas = tareasExternasActivas.filter(tareaExterna => 
+      (filtros.ticket.length === 0 || (filtros.ticket.length > 0 && tareaExterna.ticket.includes(filtros.ticket))) &&
+      (filtros.sucursal === 0 || (filtros.sucursal !== 0 && (tareaExterna.id_sucursal_origen === filtros.sucursal || tareaExterna.id_sucursal_destino === filtros.sucursal)))
+  )
+
+  switch (parseInt(filtros.estado)) {
+      case STATUS_TAREA.PENDIENTE_RECOLECCION:
+      case STATUS_TAREA.REDIRECCIONADO:
+          return tareasExternasFiltradas.filter(tareaExterna => (
+              (esPendienteDeRecoleccion(tareaExterna) && origenEnSucursalActual(tareaExterna, sucursalActual)) || 
+              (esRedireccionada(tareaExterna) && destinoEnSucursalActual(tareaExterna, sucursalActual)) 
+          ))
+      case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE:
+          return tareasExternasFiltradas.filter(tareaExterna => (
+              parseInt(tareaExterna.id_estado_tarea) === STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE &&
+              parseInt(tareaExterna.id_sucursal_destino) === parseInt(sucursalActual)  
+          ))
+      case STATUS_TAREA.RECIBIDO_PARA_ATENDERSE:
+          return tareasExternasFiltradas.filter(tareaExterna => (
+              parseInt(tareaExterna.id_estado_tarea) === STATUS_TAREA.RECIBIDO_PARA_ATENDERSE && 
+              parseInt(tareaExterna.id_sucursal_destino) === parseInt(sucursalActual)
+          ))
+      case STATUS_TAREA.TERMINADO_PARA_RECOLECTAR:
+          return tareasExternasFiltradas.filter(tareaExterna => (
+              parseInt(tareaExterna.id_estado_tarea) === STATUS_TAREA.TERMINADO_PARA_RECOLECTAR &&
+              parseInt(tareaExterna.id_sucursal_destino) === parseInt(sucursalActual) 
+          ))
+      case STATUS_TAREA.RECOLECTADO_PARA_ENTREGA:
+          return tareasExternasFiltradas.filter(tareaExterna => (
+              parseInt(tareaExterna.id_estado_tarea) === STATUS_TAREA.RECOLECTADO_PARA_ENTREGA &&
+              parseInt(tareaExterna.id_sucursal_origen) === parseInt(sucursalActual) 
+          ))
+      case STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN:
+          return tareasExternasFiltradas.filter(tareaExterna => (
+              parseInt(tareaExterna.id_estado_tarea) === STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN &&
+              parseInt(tareaExterna.id_sucursal_origen) === parseInt(sucursalActual) 
+          ))
+      default:
+          return tareasExternasFiltradas
+  }
+}
+    
+
+
+
+
+
+
+
+
+
+
+

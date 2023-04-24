@@ -12,7 +12,7 @@ const IdleTimeoutHandler = ({onLogout, timeOutInterval}) => {
     const [showModal, setShowModal] = useState(false)
     const events = ['click', 'scroll', 'load', 'keydown']
     
-    function eventHandler(eventType) {
+    function eventHandler(_) {
         localStorage.setItem('lastInteractionTime', dayjs())
         if (timer) {
             startTimer()

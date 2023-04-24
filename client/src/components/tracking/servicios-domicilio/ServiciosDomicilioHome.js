@@ -8,6 +8,15 @@ import { useAuth } from "../../../hooks/useAuth"
 import { useOlimpio } from "../../../context/OlimpioContext"
 import { useServiciosDomicilio, STATUS_SERVICIO_DOMICILIO } from "../../../context/ServiciosDomicilioContext"
 
+// Utils
+import { 
+    getSiguienteEstadoServicioDomicilio, 
+    getTextoConfirmacionServicioDomicilio, 
+    getTextoContinuarServicioDomicilio, 
+    getTituloServicioDomicilio  ,
+    filtraServiciosDomicilio
+} from "../../comun/utils"
+
 // Queries
 import { useQuery } from "react-query"
 import { 
@@ -24,95 +33,14 @@ import { actualizaEstado } from "../../../mutations/ServicioDomicilio"
 // Componentes
 import ServiciosDomicilioHeader from "./ServiciosDomicilioHeader"
 import ServicioDomicilio from "./ServicioDomicilioCard"
-import Confirmacion from '../../comun/Confirmacion'
-
-// Funciones helpers
-function getSiguienteEstado(idEstadoActual) {
-    switch (parseInt(idEstadoActual)) {
-        case STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_CLIENTE:
-            return STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_SUCURSAL
-        case STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_SUCURSAL:
-            return STATUS_SERVICIO_DOMICILIO.RECIBIDO_EN_SUCURSAL
-        case STATUS_SERVICIO_DOMICILIO.RECIBIDO_EN_SUCURSAL:
-            return STATUS_SERVICIO_DOMICILIO.TERMINADO
-        case STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_SUCURSAL:
-            return STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_CLIENTE
-        case STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_CLIENTE:
-            return STATUS_SERVICIO_DOMICILIO.ENTREGADO_A_CLIENTE
-        case STATUS_SERVICIO_DOMICILIO.ENTREGADO_A_CLIENTE:
-            return STATUS_SERVICIO_DOMICILIO.TERMINADO
-        default:
-            return null
-    }
-}
-
-function getTextoConfirmacion(idEstadoActual) {
-    switch (parseInt(idEstadoActual)) {
-        case STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_CLIENTE:
-            return '¿Seguro que quieres recolectar el servicio a domicilio?'
-        case STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_SUCURSAL:
-            return '¿Seguro que quieres entregar el servicio a domicilio?'
-        case STATUS_SERVICIO_DOMICILIO.RECIBIDO_EN_SUCURSAL:
-            return '¿Seguro que quieres terminar el servicio a domicilio?'
-        case STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_SUCURSAL:
-            return '¿Seguro que quieres recolectar el servicio a domicilio?'
-        case STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_CLIENTE:
-            return '¿Seguro que quieres entregar el servicio a domicilio?'
-        case STATUS_SERVICIO_DOMICILIO.ENTREGADO_A_CLIENTE:
-            return '¿Seguro que quieres terminar el servicio a domicilio?'
-        default:
-            return 'Desconocido'
-    }
-}
-
-function getTitulo(idEstadoActual) {
-    switch (parseInt(idEstadoActual)) {
-        case STATUS_SERVICIO_DOMICILIO.SERVICIOS_DOMICILIO_ACTIVOS:
-            return 'Servicios a Domicilio Activos'
-        case STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_CLIENTE:
-            return 'Pendiente de Recolección en Cliente'
-        case STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_SUCURSAL:
-            return 'Recolectados para Entrega En Sucursal'
-        case STATUS_SERVICIO_DOMICILIO.RECIBIDO_EN_SUCURSAL:
-            return 'Recibidos en Sucursal'
-        case STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_SUCURSAL:
-            return 'Pendiente de Recolección en Sucursal'
-        case STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_CLIENTE:
-            return 'Recolectados para Entrega a Cliente'
-        case STATUS_SERVICIO_DOMICILIO.ENTREGADO_A_CLIENTE:
-            return 'Entregados al Cliente'
-        case STATUS_SERVICIO_DOMICILIO.PENDIENTE_DE_PAGO:
-            return 'Pendiente de Pago'
-        default:
-            return 'Desconocido'
-    }
-}
-
-function getTextoContinuar(idEstadoActual) {
-    switch (parseInt(idEstadoActual)) {
-        case STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_CLIENTE:
-            return 'Recolectar'
-        case STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_SUCURSAL:
-            return 'Entregar'
-        case STATUS_SERVICIO_DOMICILIO.RECIBIDO_EN_SUCURSAL:
-            return 'Terminar'
-        case STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_SUCURSAL:
-            return 'Recolectar'
-        case STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_CLIENTE:
-            return 'Entregar'
-        case STATUS_SERVICIO_DOMICILIO.ENTREGADO_A_CLIENTE:
-            return 'Terminar'
-        default:
-            return 'Desconocido'
-    }
-}
+import ConfirmacionModal from '../../comun/ConfirmacionModal'
 
 const ServiciosDomicilioHome = () => {
     const navigate = useNavigate()
     const queryClient = useQueryClient()
 
     const { sucursalActual } = useOlimpio()
-    const { ticketFiltro, estadoActual } = useServiciosDomicilio()
+    const { filtros } = useServiciosDomicilio()
     const { credenciales } = useAuth()
 
     // State
@@ -140,57 +68,11 @@ const ServiciosDomicilioHome = () => {
         }
     })
 
-    // Funciones
-    function filtraServiciosDomicilio(serviciosDomicilio) {
-        const serviciosDomicilioFiltrados = serviciosDomicilio.filter(servicioDomicilio => 
-            (ticketFiltro.length === 0 || (ticketFiltro.length > 0 && servicioDomicilio.ticket.includes(ticketFiltro))) 
-        )
-
-        switch (parseInt(estadoActual)) {
-            case STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_CLIENTE:
-                return serviciosDomicilioFiltrados.filter(servicioDomicilio => (
-                    parseInt(servicioDomicilio.id_estado_servicio_domicilio) === STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_CLIENTE &&
-                    parseInt(servicioDomicilio.id_sucursal) === parseInt(sucursalActual)
-                ))
-            case STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_SUCURSAL:
-                return serviciosDomicilioFiltrados.filter(servicioDomicilio => (
-                    parseInt(servicioDomicilio.id_estado_servicio_domicilio) === STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_SUCURSAL &&
-                    parseInt(servicioDomicilio.id_sucursal) === parseInt(sucursalActual)
-                ))
-            case STATUS_SERVICIO_DOMICILIO.RECIBIDO_EN_SUCURSAL:
-                return serviciosDomicilioFiltrados.filter(servicioDomicilio => (
-                    parseInt(servicioDomicilio.id_estado_servicio_domicilio) === STATUS_SERVICIO_DOMICILIO.RECIBIDO_EN_SUCURSAL &&
-                    parseInt(servicioDomicilio.id_sucursal) === parseInt(sucursalActual) 
-                ))
-            case STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_SUCURSAL:
-                return serviciosDomicilioFiltrados.filter(servicioDomicilio => (
-                    parseInt(servicioDomicilio.id_estado_servicio_domicilio) === STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_SUCURSAL &&
-                    parseInt(servicioDomicilio.id_sucursal) === parseInt(sucursalActual) 
-                ))
-            case STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_CLIENTE:
-                return serviciosDomicilioFiltrados.filter(servicioDomicilio => (
-                    parseInt(servicioDomicilio.id_estado_servicio_domicilio) === STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_CLIENTE &&
-                    parseInt(servicioDomicilio.id_sucursal) === parseInt(sucursalActual) 
-                ))
-            case STATUS_SERVICIO_DOMICILIO.ENTREGADO_A_CLIENTE:
-                return serviciosDomicilioFiltrados.filter(servicioDomicilio => (
-                    parseInt(servicioDomicilio.id_estado_servicio_domicilio) === STATUS_SERVICIO_DOMICILIO.ENTREGADO_A_CLIENTE &&
-                    parseInt(servicioDomicilio.id_sucursal) === parseInt(sucursalActual) 
-                ))
-            case STATUS_SERVICIO_DOMICILIO.PENDIENTE_DE_PAGO:
-                return serviciosDomicilioFiltrados.filter(servicioDomicilio => (
-                    parseInt(servicioDomicilio.id_sucursal) === parseInt(sucursalActual) 
-                ))
-            default:
-                return serviciosDomicilioFiltrados
-            }
-    }
-
     // Handlers
 
     function handleContinuar(idServicioDomicilio) {
         setIdServicioDomicilio(idServicioDomicilio)
-        setConfirmacion(prevValue => ({...prevValue, mensaje: getTextoConfirmacion(estadoActual), mostrar: true}))
+        setConfirmacion(prevValue => ({...prevValue, mensaje: getTextoConfirmacionServicioDomicilio(filtros.estado), mostrar: true}))
     }
 
     function handleConfirmacion(confirmado) {
@@ -201,7 +83,7 @@ const ServiciosDomicilioHome = () => {
         if (confirmado) {
             return doActualizaEstadoServicioDomicilio({
                 id_servicio_domicilio: idServicioDomicilio, 
-                id_estado_servicio_domicilio: getSiguienteEstado(estadoActual), 
+                id_estado_servicio_domicilio: getSiguienteEstadoServicioDomicilio(filtros.estado), 
                 id_usuario: credenciales.id_usuario
             })
         }
@@ -260,16 +142,16 @@ const ServiciosDomicilioHome = () => {
         // Obtengo los servicios que voy a desplegar
 
         // Si estamos mostrando los servicios por pagar
-        if (parseInt(estadoActual) === STATUS_SERVICIO_DOMICILIO.PENDIENTE_DE_PAGO) 
-            serviciosDomicilio = filtraServiciosDomicilio(serviciosDomicilioPorPagar)
+        if (parseInt(filtros.estado) === STATUS_SERVICIO_DOMICILIO.PENDIENTE_DE_PAGO) 
+            serviciosDomicilio = filtraServiciosDomicilio(serviciosDomicilioPorPagar, filtros, sucursalActual)
         // Estamos mostrando todos los servicios activos (ni terminados ni cancelados)
         else 
-            serviciosDomicilio = filtraServiciosDomicilio(serviciosDomicilioActivos)
+            serviciosDomicilio = filtraServiciosDomicilio(serviciosDomicilioActivos, filtros, sucursalActual)
     }
   
     return (
         <>
-            <Confirmacion 
+            <ConfirmacionModal 
                 mostrar={confirmacion.mostrar} 
                 titulo='Confirmación' 
                 mensaje={confirmacion.mensaje}
@@ -277,7 +159,7 @@ const ServiciosDomicilioHome = () => {
             />
 
             <ServiciosDomicilioHeader 
-                titulo={getTitulo(estadoActual)} 
+                titulo={getTituloServicioDomicilio(filtros.estado)} 
                 renglones={serviciosDomicilio.length}
                 onRefresh={handleRefresh}
             />
@@ -287,7 +169,7 @@ const ServiciosDomicilioHome = () => {
                 serviciosDomicilio.map(servicioDomicilio => (
                     <ServicioDomicilio 
                         servicioDomicilio={servicioDomicilio} 
-                        textoContinuar={getTextoContinuar(estadoActual)}
+                        textoContinuar={getTextoContinuarServicioDomicilio(filtros.estado)}
                         onContinuar={handleContinuar}
                         onCancelar={handleCancelar}
                         onLog={handleLog}

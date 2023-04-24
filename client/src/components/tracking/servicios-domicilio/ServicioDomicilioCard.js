@@ -20,14 +20,14 @@ const ServicioDomicilio = ({
     onEditarInformacionGeneral 
 }) => {
 
-    const { estadoActual } = useServiciosDomicilio()
+    const { filtros } = useServiciosDomicilio()
     const { esEncargado, esChofer } = useAuth()
 
     function mostrarBotonAccionContinuar() {
         if (!textoContinuar)
             return false
 
-        switch (parseInt(estadoActual)) {
+        switch (parseInt(filtros.estado)) {
             case STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_CLIENTE: 
                 return esChofer()
             case STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_SUCURSAL:
@@ -54,7 +54,6 @@ const ServicioDomicilio = ({
             esEncargado()
         )
     }
-
 
     return (
         <Col>

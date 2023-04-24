@@ -36,8 +36,8 @@ const NuevaTareaForm = ({onExito}) => {
   const queryClient = useQueryClient()
   const { mutate: doCreaTareaExterna } = useMutation ({
     mutationFn: creaTareaExterna,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_TAREAS_EXTERNAS_ACTIVAS] })
+    onSuccess: (info) => {
+        queryClient.invalidateQueries({ queryKey: [QUERY_TAREAS_EXTERNAS_ACTIVAS] })
     }
   })
 
@@ -99,9 +99,13 @@ const NuevaTareaForm = ({onExito}) => {
             id_creado_por: credenciales.id_usuario,
             estado: 1
         } 
-    
-        doCreaTareaExterna(nuevaTareaExterna)
-        navigate(-1)
+
+        try {
+            doCreaTareaExterna(nuevaTareaExterna)
+            navigate(-1)
+        } catch (error) {
+            console.log('NuevaTareaForm.error', error)
+        }
     }
   }
 

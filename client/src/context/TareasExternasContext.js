@@ -30,15 +30,11 @@ export function useTareasExternas() {
 }
 
 export function TareasExternasProvider({children}) {
-    const [estadoActual, setEstadoActual] = useState(STATUS_TAREA.TAREAS_ACTIVAS)
-
-    const [ticketFiltro, setTicketFiltro] = useState('')
-    const [sucursalFiltro, setSucursalFiltro] = useState(0)
+    const [filtros, setFiltros] = useState({ticket: '', sucursal: 0, estado: STATUS_TAREA.TAREAS_ACTIVAS})
 
     return (
         <TareasExternasContext.Provider value={{
-            estadoActual, ticketFiltro, sucursalFiltro, 
-            setEstadoActual, setTicketFiltro, setSucursalFiltro,
+            filtros, setFiltros
         }}>
             {children}
         </TareasExternasContext.Provider>

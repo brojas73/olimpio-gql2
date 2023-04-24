@@ -7,32 +7,23 @@ import TicketInput from "../../comun/TicketInput"
 import EstadosServicioDomicilioDropDown from "../../comun/EstadosServicioDomicilioDropDown"
 
 const Filtros = () => {
-    const { 
-        ticketFiltro, 
-        setTicketFiltro,
-        estadoActual,
-        setEstadoActual
-    } = useServiciosDomicilio()
-
-    function onSubmit(event) {
-        event.preventDefault()
-    }
+    const { filtros, setFiltros } = useServiciosDomicilio()
 
     return (
         <Navbar className="mb-3">
             <Nav className="flex-grow-1 pe-3 align-items-center">
-                <Form onSubmit={onSubmit}>
+                <Form>
                     <TicketInput
                         size={TAMANO_CONTROLES}
-                        value={ticketFiltro}
+                        value={filtros.ticket}
                         type='search'
                         placeholder="Ticket..." 
-                        onChange={ticketCapturado => setTicketFiltro(ticketCapturado)}
+                        onChange={ticketCapturado => setFiltros(prevValue => ({...prevValue, ticket: ticketCapturado}))}
                     />
                 </Form>
                 <EstadosServicioDomicilioDropDown
-                    idSelected={estadoActual} 
-                    onSelect={setEstadoActual}
+                    idSelected={filtros.estado} 
+                    onSelect={estadoSeleccionado => setFiltros(prevValue => ({...prevValue, estado: estadoSeleccionado}))}
                 />
             </Nav>
         </Navbar>

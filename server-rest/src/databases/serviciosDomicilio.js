@@ -58,13 +58,13 @@ const serviciosDomicilio = () => {
         pool.query(q, (err, data) => {
             if (err) {
                 console.log(err)
-                reject({
+                return reject({
                     status: 500,
                     message: err?.message || err
                 })
             }
 
-            resolve(JSON.parse(JSON.stringify(data)))
+            return resolve(JSON.parse(JSON.stringify(data)))
         })
     })
 }
@@ -81,13 +81,13 @@ const serviciosDomicilioActivos = () => {
         pool.query(q, (err, data) => {
             if (err) {
                 console.log(err)
-                reject({
+                return reject({
                     status: 500,
                     message: err?.message || err
                 })
             }
 
-            resolve(JSON.parse(JSON.stringify(data)))
+            return resolve(JSON.parse(JSON.stringify(data)))
         })
     })
 }
@@ -105,13 +105,13 @@ const serviciosDomicilioPorPagar = () => {
         pool.query(q, (err, data) => {
             if (err) {
                 console.log(err)
-                reject({
+                return reject({
                     status: 500,
                     message: err?.message || err
                 })
             }
 
-            resolve(JSON.parse(JSON.stringify(data)))
+            return resolve(JSON.parse(JSON.stringify(data)))
         })
     })
 }
@@ -126,13 +126,13 @@ const servicioDomicilio = (idServicioDomicilio) => {
         pool.query(q, [idServicioDomicilio], (err, data) => {
             if (err) {
                 console.log(err)
-                reject({
+                return reject({
                     status: 500,
                     message: err?.message || err
                 })
             }
 
-            resolve(JSON.parse(JSON.stringify(data)))
+            return resolve(JSON.parse(JSON.stringify(data)))
         })
     })
 }
@@ -170,13 +170,13 @@ const creaRecoleccion = (servicioDomicilio) => {
         pool.query(q, [values], (err, data) => {
             if (err) {
                 console.log(err)
-                reject({
+                return reject({
                     status: 500,
                     message: err?.message || err
                 })
             }
 
-            resolve(JSON.parse(JSON.stringify(data)))
+            return resolve(JSON.parse(JSON.stringify(data)))
         })
     })
 }
@@ -226,13 +226,13 @@ const creaEntrega = (servicioDomicilio) => {
         pool.query(q, [values], (err, data) => {
             if (err) {
                 console.log(err)
-                reject({
+                return reject({
                     status: 500,
                     message: err?.message || err
                 })
             }
 
-            resolve(JSON.parse(JSON.stringify(data)))
+            return resolve(JSON.parse(JSON.stringify(data)))
         })
     })
 }
@@ -249,13 +249,13 @@ const borraServicioDomicilio = (idServicioDomicilio) => {
         pool.query(q, [idServicioDomicilio], (err, _) => {
             if (err) {
                 console.log(err)
-                reject({
+                return reject({
                     status: 500,
                     message: err?.message || err
                 })
             }
 
-            resolve({
+            return resolve({
                 status: 200,
                 mensaje: 'El servicio a domicilio se borró exitosamente',
                 id_servicio_domicilio: idServicioDomicilio
@@ -277,13 +277,13 @@ const actualizaEstado = (idServicioDomicilio, idUsuario, idEstadoServicioDomicil
         pool.query(q, [idUsuario, idEstadoServicioDomicilio, idServicioDomicilio], (err, data) => {
             if (err) {
                 console.log(err)
-                reject({
+                return reject({
                     status: 500,
                     message: err?.message || err
                 })
             }
 
-            resolve({
+            return resolve({
                 status: 200,
                 mensaje: 'El estado del servicio a domicilio se actualizó exitosamente',
                 id_servicio_domicilio: idServicioDomicilio,
@@ -311,13 +311,13 @@ const actualizaInfoPago = (idServicioDomicilio, idFormaPago, notasPago, pagado, 
         pool.query(q, [idUsuario, idFormaPago, notasPago, pagado, referenciaPago, idUsuario, idServicioDomicilio], (err) => {
             if (err) {
                 console.log(err)
-                reject({
+                return reject({
                     status: 500,
                     message: err?.message || err
                 })
             }
 
-            resolve({
+            return resolve({
                 status: 200,
                 mensaje: 'La información de pago del servicio a domicilio se actualizó exitosamente',
                 id_servicio_domicilio: idServicioDomicilio,
@@ -341,13 +341,13 @@ const actualizaFechaRequerida = (idServicioDomicilio, fechaRequerida, horaRequer
         pool.query(q, [idUsuario, fechaRequerida, horaRequerida, idServicioDomicilio], (err) => {
             if (err) {
                 console.log(err)
-                reject({
+                return reject({
                     status: 500,
                     message: err?.message || err
                 })
             }
 
-            resolve({
+            return resolve({
                 status: 200,
                 mensaje: 'La fecha de entrega del servicio a domicilio se actualizó exitosamente',
                 id_servicio_domicilio: idServicioDomicilio,
@@ -377,13 +377,13 @@ const actualizaInformacionGeneral = (idServicioDomicilio, nombre, direccion, col
         pool.query(q, [idUsuario, nombre, direccion, colonia, municipio, cp, ubicacion, telefono, idServicioDomicilio], (err) => {
             if (err) {
                 console.log(err)
-                reject({
+                return reject({
                     status: 500,
                     message: err?.message || err
                 })
             }
 
-            resolve({
+            return resolve({
                 status: 200,
                 mensaje: 'La informacion general del servicio a domicilio se actualizó exitosamente',
                 id_servicio_domicilio: idServicioDomicilio,
@@ -415,13 +415,13 @@ const cancelaServicioDomicilio = (idServicioDomicilio, notaCancelacion, idEstado
         pool.query(q, [idUsuario, idUsuario, notaCancelacion, idEstadoServicioDomicilio, idServicioDomicilio], (err) => {
             if (err) {
                 console.log(err)
-                reject({
+                return reject({
                     status: 500,
                     message: err?.message || err
                 })
             }
 
-            resolve({
+            return resolve({
                 status: 200,
                 mensaje: 'El servicio a domicilio se canceló exitosamente',
                 id_servicio_domicilio: idServicioDomicilio,

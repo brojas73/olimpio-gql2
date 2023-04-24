@@ -18,7 +18,8 @@ const tareaExterna = async (idTareaExterna) => {
 
 const creaTareaExterna = async (tareaExterna) => {
     try {
-        return await DB.creaTareaExterna(tareaExterna)
+        tareaExterna = await DB.creaTareaExterna(tareaExterna)
+        return tareaExterna
     } catch (error) {
         throw error
     }

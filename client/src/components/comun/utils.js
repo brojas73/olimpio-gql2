@@ -2,8 +2,8 @@ import { STATUS_TAREA } from '../../context/TareasExternasContext'
 import { STATUS_SERVICIO_DOMICILIO } from '../../context/ServiciosDomicilioContext'
 
 const URL_APIS_DEV = 'http://localhost:3040/api-test'
-const URL_APIS_PROD = 'http://5.183.8.10:3020/api-test'
-// const URL_APIS_PROD = 'http://5.183.8.10/api-v1'
+// const URL_APIS_PROD = 'http://5.183.8.10:3020/api-test'
+const URL_APIS_PROD = 'http://5.183.8.10/api-v1'
 
 export const TIPO_CONSULTA_TE = {
   TIPO_CONSULTA: 0,
@@ -157,7 +157,13 @@ export function redireccionEnSucursalActual(tareaExterna, sucursalActual) {
   return parseInt(sucursalActual) === parseInt(tareaExterna.id_sucursal_redireccion)
 }
 
+export function esRedireccionadaAMaquila(tareaExterna) {
+    return parseInt(tareaExterna.id_sucursal_redireccion) >= 99
+}
+
 // Funciones helpers
+
+/* ----------- Helpers Servicios a Domicilio -----------------*/
 export function getSiguienteEstadoServicioDomicilio(idEstadoActual) {
   switch (parseInt(idEstadoActual)) {
       case STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_CLIENTE:
@@ -325,10 +331,14 @@ export function getTituloTareaExterna(idEstadoActual) {
   }
 }
 
-export function getTextoConfirmacionTareaExterna(idEstadoActual) {
+export function getTextoConfirmacionTareaExterna(idEstadoActual, esChofer) {
   switch (parseInt(idEstadoActual)) {
       case STATUS_TAREA.PENDIENTE_RECOLECCION:
-          return '¿Seguro que quieres recolectar la tarea?'
+          // Las tareas pediente de recolección pudieran ser entregadas por el encargado o recolectadas por el chofer
+          // el texto será entregar si es un encargado de tienda pues estará entregando la mercancía a la maquila, si
+          // es un chofer es porque está recolectando la mercancía para llevarla a una franquicia que no es maquila
+          // Sólo para este caso en especial es para lo que estamos utilizando el parámetro esChofer
+          return esChofer ? '¿Seguro que quieres recolectar la tarea?' : '¿Seguro que quieres entregar la tarea?'
       case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE:
           return '¿Seguro que quieres recibir la tarea?'
       case STATUS_TAREA.RECIBIDO_PARA_ATENDERSE:
@@ -344,10 +354,14 @@ export function getTextoConfirmacionTareaExterna(idEstadoActual) {
   }
 }
 
-export function getTextoContinuarTareaExterna(idEstadoActual) {
+export function getTextoContinuarTareaExterna(idEstadoActual, esChofer) {
   switch (parseInt(idEstadoActual)) {
       case STATUS_TAREA.PENDIENTE_RECOLECCION:
-          return 'Recolectar'
+          // Las tareas pediente de recolección pudieran ser entregadas por el encargado o recolectadas por el chofer
+          // el texto será entregar si es un encargado de tienda pues estará entregando la mercancía a la maquila, si
+          // es un chofer es porque está recolectando la mercancía para llevarla a una franquicia que no es maquila
+          // Sólo para este caso en especial es para lo que estamos utilizando el parámetro esChofer
+          return esChofer ? 'Recolectar' : 'Entregar'
       case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE:
           return 'Recibir'
       case STATUS_TAREA.RECIBIDO_PARA_ATENDERSE:
@@ -379,7 +393,6 @@ export function filtraTareasExternas(tareasExternasActivas, filtros, sucursalAct
 
   switch (parseInt(filtros.estado)) {
       case STATUS_TAREA.PENDIENTE_RECOLECCION:
-      case STATUS_TAREA.REDIRECCIONADO:
           return tareasExternasFiltradas.filter(tareaExterna => (
               (esPendienteDeRecoleccion(tareaExterna) && origenEnSucursalActual(tareaExterna, sucursalActual)) || 
               (esRedireccionada(tareaExterna) && destinoEnSucursalActual(tareaExterna, sucursalActual)) 
@@ -413,15 +426,4 @@ export function filtraTareasExternas(tareasExternasActivas, filtros, sucursalAct
           return tareasExternasFiltradas
   }
 }
-    
-
-
-
-
-
-
-
-
-
-
 

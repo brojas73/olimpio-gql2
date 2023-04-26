@@ -6,6 +6,7 @@ import { STATUS_TAREA, TIPOS_SERVICIO, useTareasExternas } from "../../../contex
 import { 
     FONT_SIZE_DROPDOWN, 
     esRedireccionada, 
+    esRedireccionadaAMaquila, 
     formateaFecha, 
     formateaFechaHora
 } from '../../comun/utils'
@@ -27,7 +28,7 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
         
         switch (parseInt(filtros.estado)) {
             case STATUS_TAREA.PENDIENTE_RECOLECCION: 
-                return esChofer()
+                return (esChofer() && !esRedireccionadaAMaquila(tareaExterna)) || (esEncargado() && esRedireccionadaAMaquila(tareaExterna))
             case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE: 
                 return esEncargado() || esMaquila()
             case STATUS_TAREA.RECIBIDO_PARA_ATENDERSE: 

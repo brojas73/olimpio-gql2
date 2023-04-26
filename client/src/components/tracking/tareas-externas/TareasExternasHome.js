@@ -53,7 +53,7 @@ const TareasExternasHome = () => {
     
     const { sucursalActual } = useOlimpio()
     const { filtros } = useTareasExternas()
-    const { credenciales } = useAuth()
+    const { credenciales, esChofer } = useAuth()
 
     // State
     const [idTareaExterna, setIdTareaExterna] = useState(0)
@@ -107,7 +107,7 @@ const TareasExternasHome = () => {
     // Handlers
     function handleContinuar(idTareaExterna) {
         setIdTareaExterna(idTareaExterna)
-        setConfirmacion(prevValue => ({...prevValue, mensaje: getTextoConfirmacionTareaExterna(filtros.estado), mostrar: true}))
+        setConfirmacion(prevValue => ({...prevValue, mensaje: getTextoConfirmacionTareaExterna(filtros.estado, esChofer()), mostrar: true}))
     }
 
     function handleConfirmacion(confirmado) {
@@ -167,7 +167,7 @@ const TareasExternasHome = () => {
     function handleRecolectarForwarded(idTareaExterna, idSucursalRedireccion) {
         setIdTareaExterna(idTareaExterna)
         setIdSucursalRedireccion(idSucursalRedireccion)
-        setConfirmacion(prevValue => ({...prevValue, mensaje: getTextoConfirmacionTareaExterna(filtros.estado), mostrar: true}))
+        setConfirmacion(prevValue => ({...prevValue, mensaje: getTextoConfirmacionTareaExterna(filtros.estado, esChofer()), mostrar: true}))
         setTipoConfirmacion(TIPO_CONFIRMACION.RECOLECTANDO_FORWARD)
     }
     
@@ -217,7 +217,7 @@ const TareasExternasHome = () => {
                 tareasExternas.map(tareaExterna => (
                     <TareaExterna 
                         tareaExterna={tareaExterna} 
-                        textoContinuar={getTextoContinuarTareaExterna(filtros.estado)}
+                        textoContinuar={getTextoContinuarTareaExterna(filtros.estado, esChofer())}
                         textoBorrar={getTextoBorrarTareaExterna(filtros.estado)}
                         textoForward={getTextoForwardTareaExterna(filtros.estado)}
                         onContinuar={handleContinuar}

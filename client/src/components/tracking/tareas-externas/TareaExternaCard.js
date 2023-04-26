@@ -17,9 +17,9 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
 
     function handleContinuar() {
         if (esRedireccionada(tareaExterna))
-            onRecolectarForwarded(tareaExterna.id_tarea_externa, tareaExterna.id_sucursal_redireccion)
+            onRecolectarForwarded(tareaExterna, tareaExterna.id_sucursal_redireccion)
         else
-            onContinuar(tareaExterna.id_tarea_externa)
+            onContinuar(tareaExterna)
     }
  
     function mostrarBotonAccionContinuar() {
@@ -76,7 +76,7 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
                     <div className="d-flex justify-content-between align-items-center" style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
                         <Card.Subtitle className="text-primary" style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>{tareaExterna.estado_tarea}</Card.Subtitle>
                         <NavLink 
-                            onClick={() => onLog(tareaExterna.id_tarea_externa)} 
+                            onClick={() => onLog(tareaExterna)} 
                             className="link-secondary"
                         >
                             <small>
@@ -132,7 +132,7 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
                         {
                             mostrarBotonAcccionBorrar() && (
                                 <NavLink
-                                    onClick={() => onBorrar(tareaExterna.id_tarea_externa)} 
+                                    onClick={() => onBorrar(tareaExterna)} 
                                     className="link-danger"
                                 >
                                     <small>
@@ -147,7 +147,7 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
                         {
                             mostrarBotonAccionForward() && (
                                 <NavLink
-                                    onClick={() => onForward(tareaExterna.id_tarea_externa)} 
+                                    onClick={() => onForward(tareaExterna)} 
                                     className="link-secondary"
                                 >
                                     <small>

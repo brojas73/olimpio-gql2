@@ -16,7 +16,8 @@ import {
     getTextoBorrarTareaExterna,
     getTextoForwardTareaExterna,
     getTextoContinuarTareaExterna,
-    filtraTareasExternas
+    filtraTareasExternas,
+    esRedireccionadaAMaquila
 } from "../../comun/utils"
 
 // Queries 
@@ -53,7 +54,7 @@ const TareasExternasHome = () => {
     
     const { sucursalActual } = useOlimpio()
     const { filtros } = useTareasExternas()
-    const { credenciales, esChofer } = useAuth()
+    const { credenciales } = useAuth()
 
     // State
     const [idTareaExterna, setIdTareaExterna] = useState(0)
@@ -105,11 +106,6 @@ const TareasExternasHome = () => {
     })
 
     // Handlers
-    function handleContinuar(idTareaExterna) {
-        setIdTareaExterna(idTareaExterna)
-        setConfirmacion(prevValue => ({...prevValue, mensaje: getTextoConfirmacionTareaExterna(filtros.estado, esChofer()), mostrar: true}))
-    }
-
     function handleConfirmacion(confirmado) {
         // Cierro la modal
         setConfirmacion(prevValue => ({...prevValue, mostrar: false}))
@@ -139,15 +135,35 @@ const TareasExternasHome = () => {
         }
     }
 
-    function handleBorrar(idTareaExterna) {
-        setIdTareaExterna(idTareaExterna)
+    function handleContinuar(tareaExterna) {
+        setIdTareaExterna(tareaExterna.id_tarea_externa)
+        setConfirmacion(prevValue => ({...prevValue, mensaje: getTextoConfirmacionTareaExterna(filtros.estado, esRedireccionadaAMaquila(tareaExterna)), mostrar: true}))
+    }
+
+    function handleBorrar(tareaExterna) {
+        setIdTareaExterna(tareaExterna.id_tarea_externa)
         setConfirmacion(prevValue => ({...prevValue, mensaje: '¿Seguro que quieres borrar la tarea?', mostrar: true}))
         setTipoConfirmacion(TIPO_CONFIRMACION.BORRANDO)
     }
     
-    function handleForward(idTareaExterna) {
-        setIdTareaExterna(idTareaExterna)
+    function handleForward(tareaExterna) {
+        setIdTareaExterna(tareaExterna.id_tarea_externa)
         setModalSucursalRedireccion(prevValue => ({...prevValue, mostrar: true}))
+    }
+    
+    function handleLog(tareaExterna) {
+        navigate('/tracking/tareas-externas/bitacora-tarea-externa', {
+            state: {
+                id_tarea_externa: tareaExterna.id_tarea_externa
+            }
+        })
+    }
+
+    function handleRecolectarForwarded(tareaExterna, idSucursalRedireccion) {
+        setIdTareaExterna(tareaExterna.id_tarea_externa)
+        setIdSucursalRedireccion(idSucursalRedireccion)
+        setConfirmacion(prevValue => ({...prevValue, mensaje: getTextoConfirmacionTareaExterna(filtros.estado, esRedireccionadaAMaquila(tareaExterna)), mostrar: true}))
+        setTipoConfirmacion(TIPO_CONFIRMACION.RECOLECTANDO_FORWARD)
     }
     
     function handleConfirmarForward(confirmado, idSucursalRedireccion) {
@@ -164,21 +180,6 @@ const TareasExternasHome = () => {
         }
     }
     
-    function handleRecolectarForwarded(idTareaExterna, idSucursalRedireccion) {
-        setIdTareaExterna(idTareaExterna)
-        setIdSucursalRedireccion(idSucursalRedireccion)
-        setConfirmacion(prevValue => ({...prevValue, mensaje: getTextoConfirmacionTareaExterna(filtros.estado, esChofer()), mostrar: true}))
-        setTipoConfirmacion(TIPO_CONFIRMACION.RECOLECTANDO_FORWARD)
-    }
-    
-    function handleLog(idTareaExterna) {
-        navigate('/tracking/tareas-externas/bitacora-tarea-externa', {
-            state: {
-                id_tarea_externa: idTareaExterna
-            }
-        })
-    }
-
     function handleRefresh() {
         refetch()
     }
@@ -217,7 +218,7 @@ const TareasExternasHome = () => {
                 tareasExternas.map(tareaExterna => (
                     <TareaExterna 
                         tareaExterna={tareaExterna} 
-                        textoContinuar={getTextoContinuarTareaExterna(filtros.estado, esChofer())}
+                        textoContinuar={getTextoContinuarTareaExterna(filtros.estado, esRedireccionadaAMaquila(tareaExterna))}
                         textoBorrar={getTextoBorrarTareaExterna(filtros.estado)}
                         textoForward={getTextoForwardTareaExterna(filtros.estado)}
                         onContinuar={handleContinuar}

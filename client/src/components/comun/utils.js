@@ -331,14 +331,14 @@ export function getTituloTareaExterna(idEstadoActual) {
   }
 }
 
-export function getTextoConfirmacionTareaExterna(idEstadoActual, esChofer) {
+export function getTextoConfirmacionTareaExterna(idEstadoActual, esRedireccionadaAMaquila) {
   switch (parseInt(idEstadoActual)) {
       case STATUS_TAREA.PENDIENTE_RECOLECCION:
           // Las tareas pediente de recolección pudieran ser entregadas por el encargado o recolectadas por el chofer
           // el texto será entregar si es un encargado de tienda pues estará entregando la mercancía a la maquila, si
           // es un chofer es porque está recolectando la mercancía para llevarla a una franquicia que no es maquila
-          // Sólo para este caso en especial es para lo que estamos utilizando el parámetro esChofer
-          return esChofer ? '¿Seguro que quieres recolectar la tarea?' : '¿Seguro que quieres entregar la tarea?'
+          // Sólo para este caso en especial es para lo que estamos utilizando el parámetro esRedireccionadaAMaquila
+          return esRedireccionadaAMaquila ? '¿Seguro que quieres recolectar la tarea?' : '¿Seguro que quieres entregar la tarea?'
       case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE:
           return '¿Seguro que quieres recibir la tarea?'
       case STATUS_TAREA.RECIBIDO_PARA_ATENDERSE:
@@ -354,14 +354,14 @@ export function getTextoConfirmacionTareaExterna(idEstadoActual, esChofer) {
   }
 }
 
-export function getTextoContinuarTareaExterna(idEstadoActual, esChofer) {
+export function getTextoContinuarTareaExterna(idEstadoActual, esRedireccionadaAMaquila) {
   switch (parseInt(idEstadoActual)) {
       case STATUS_TAREA.PENDIENTE_RECOLECCION:
           // Las tareas pediente de recolección pudieran ser entregadas por el encargado o recolectadas por el chofer
           // el texto será entregar si es un encargado de tienda pues estará entregando la mercancía a la maquila, si
           // es un chofer es porque está recolectando la mercancía para llevarla a una franquicia que no es maquila
-          // Sólo para este caso en especial es para lo que estamos utilizando el parámetro esChofer
-          return esChofer ? 'Recolectar' : 'Entregar'
+          // Sólo para este caso en especial es para lo que estamos utilizando el parámetro esRedireccionadaAMaquila
+          return esRedireccionadaAMaquila ? 'Recolectar' : 'Entregar'
       case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE:
           return 'Recibir'
       case STATUS_TAREA.RECIBIDO_PARA_ATENDERSE:

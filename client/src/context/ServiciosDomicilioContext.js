@@ -22,9 +22,13 @@ export function useServiciosDomicilio() {
 export function ServiciosDomicilioProvider({children}) {
     const [filtros, setFiltros] = useState({ticket: '', sucursal: 0, estado: STATUS_SERVICIO_DOMICILIO.SERVICIOS_DOMICILIO_ACTIVOS})
 
+    function initFiltros() {
+        setFiltros(prevValue => ({...prevValue, ticket: '', sucursal: 0, estado: STATUS_SERVICIO_DOMICILIO.SERVICIOS_DOMICILIO_ACTIVOS}))
+    }
+
     return (
         <ServiciosDomicilioContext.Provider value={{
-            filtros, setFiltros
+            filtros, setFiltros, initFiltros
         }}>
             {children}
         </ServiciosDomicilioContext.Provider>

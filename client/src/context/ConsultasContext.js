@@ -9,9 +9,13 @@ export function useConsultas() {
 export function ConsultasProvider({children}) {
     const [filtros, setFiltros] = useState({ticket: '', descripcion: '', tipoConsutla: 0})
 
+    function initFiltros() {
+        setFiltros(prevValue => ({...prevValue, ticket: '', descripcion: '', tipoConsutla: 0}))
+    }
+
     return (
         <ConsultasContext.Provider value={{
-            filtros, setFiltros
+            filtros, setFiltros, initFiltros
         }}>
             {children}
         </ConsultasContext.Provider>

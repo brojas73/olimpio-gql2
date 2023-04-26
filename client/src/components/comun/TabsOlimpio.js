@@ -15,17 +15,26 @@ import { logout } from '../../mutations/Usuario'
 // Components
 import IdleTimeoutHandler from './IdleTimeoutHandler'
 import GlobalNavbar from './GlobalNavbar'
+import { useTareasExternas } from '../../context/TareasExternasContext'
+import { useServiciosDomicilio } from '../../context/ServiciosDomicilioContext'
+import { useConsultas } from '../../context/ConsultasContext'
 
 const TabsOlimpio = () => {
     const navigate = useNavigate()
     const { conectado, setConectado } = useOlimpio()
     const { logout: _logout } = useAuth()
+    const { initFiltros: initFiltrosTareasExternas } = useTareasExternas()
+    const { initFiltros: initFiltrosServiciosDomicilio } = useServiciosDomicilio()
+    const { initFiltros: initFiltrosConsultas } = useConsultas()
 
     const { mutate: doLogout } = useMutation({
         mutationFn: logout, 
         onSuccess: () => {
           _logout()
           setConectado(false)
+          initFiltrosTareasExternas()
+          initFiltrosServiciosDomicilio()
+          initFiltrosConsultas()
           navigate('/login')
         }
       })

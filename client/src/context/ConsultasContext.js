@@ -10,7 +10,7 @@ export function ConsultasProvider({children}) {
     const [filtros, setFiltros] = useState({ticket: '', descripcion: '', tipoConsutla: 0})
 
     function initFiltros() {
-        setFiltros(prevValue => ({...prevValue, ticket: '', descripcion: '', tipoConsutla: 0}))
+        setFiltros(prevValue => ({...prevValue, ticket: '', descripcion: '', tipoConsulta: 0}))
     }
 
     return (

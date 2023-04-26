@@ -32,9 +32,7 @@ const TabsOlimpio = () => {
         onSuccess: () => {
           _logout()
           setConectado(false)
-          initFiltrosTareasExternas()
-          initFiltrosServiciosDomicilio()
-          initFiltrosConsultas()
+          initFiltros()
           navigate('/login')
         }
       })
@@ -47,6 +45,12 @@ const TabsOlimpio = () => {
     function handleLogout() {
         doLogout()
     }  
+
+    function initFiltros() {
+        initFiltrosTareasExternas()
+        initFiltrosServiciosDomicilio()
+        initFiltrosConsultas()
+    }
         
     return (
         <>

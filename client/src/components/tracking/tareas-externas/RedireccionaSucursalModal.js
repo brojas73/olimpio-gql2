@@ -53,7 +53,7 @@ const RedireccionaSucursalModal = ({mostrar, onConfirmar}) => {
     }
     
     return (
-        <Modal show={mostrar} onHide={handlerCancelar}>
+        <Modal show={mostrar} onHide={handlerCancelar} backdrop="static"> 
             <Modal.Header>
                 <Modal.Title>Desvío de Tarea Externa</Modal.Title>
             </Modal.Header>

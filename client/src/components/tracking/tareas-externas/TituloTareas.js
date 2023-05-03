@@ -31,7 +31,6 @@ const TituloTareas = ({titulo, renglones, onRefresh}) => {
             {
                 esEncargado() && (
                     <>
-                        &nbsp;
                         <Button onClick={handleOnClick} variant='dark' size={TAMANO_CONTROLES}>
                             <FaPlus />
                         </Button>

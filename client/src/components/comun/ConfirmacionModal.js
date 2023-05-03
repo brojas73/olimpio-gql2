@@ -4,7 +4,7 @@ import { TAMANO_CONTROLES } from './utils'
 
 const ConfirmacionModal = ({mostrar, titulo, mensaje, onConfirmar}) => {
   return (
-    <Modal show={mostrar} onHide={() => onConfirmar(false)}>
+    <Modal show={mostrar} onHide={() => onConfirmar(false)} backdrop="static">
         <Modal.Header>
             <Modal.Title>{titulo}</Modal.Title>
         </Modal.Header>

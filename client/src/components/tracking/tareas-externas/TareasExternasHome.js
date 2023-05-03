@@ -57,7 +57,8 @@ const TareasExternasHome = () => {
     const { credenciales } = useAuth()
 
     // State
-    const [idTareaExterna, setIdTareaExterna] = useState(0)
+    // const [idTareaExterna, setIdTareaExterna] = useState(0)
+    const [tareaExterna, setTareaExterna] = useState(0)
     const [idSucursalRedireccion, setIdSucursalRedireccion] = useState(0)
     const [tipoConfirmacion, setTipoConfirmacion] = useState(null)
   
@@ -114,40 +115,40 @@ const TareasExternasHome = () => {
         if (confirmado) {
             if (parseInt(tipoConfirmacion) === TIPO_CONFIRMACION.BORRANDO) {
                 setTipoConfirmacion(null)
-                return doBorraTareaExterna({id_tarea_externa: idTareaExterna})
+                return doBorraTareaExterna({id_tarea_externa: tareaExterna.id_tarea_externa})
             } 
     
             if (parseInt(tipoConfirmacion) === TIPO_CONFIRMACION.RECOLECTANDO_FORWARD) {
                 setTipoConfirmacion(null)
                 return doRecolectaTareaExternaForwarded({
-                    id_tarea_externa: idTareaExterna, 
-                    id_estado_tarea: getSiguienteEstadoTareaExterna(filtros.estado),
+                    id_tarea_externa: tareaExterna.id_tarea_externa, 
+                    id_estado_tarea: getSiguienteEstadoTareaExterna(filtros.estado, esRedireccionadaAMaquila(tareaExterna)),
                     id_sucursal_redireccion: parseInt(idSucursalRedireccion), 
                     id_usuario: credenciales.id_usuario
                 })
             }
     
             return doActualizaEstadoTareaExterna({
-                id_tarea_externa: idTareaExterna, 
-                id_estado_tarea: getSiguienteEstadoTareaExterna(filtros.estado),
+                id_tarea_externa: tareaExterna.id_tarea_externa, 
+                id_estado_tarea: getSiguienteEstadoTareaExterna(filtros.estado, esRedireccionadaAMaquila(tareaExterna)),
                 id_usuario: credenciales.id_usuario
             })
         }
     }
 
     function handleContinuar(tareaExterna) {
-        setIdTareaExterna(tareaExterna.id_tarea_externa)
+        setTareaExterna(tareaExterna)
         setConfirmacion(prevValue => ({...prevValue, mensaje: getTextoConfirmacionTareaExterna(filtros.estado, esRedireccionadaAMaquila(tareaExterna)), mostrar: true}))
     }
 
     function handleBorrar(tareaExterna) {
-        setIdTareaExterna(tareaExterna.id_tarea_externa)
+        setTareaExterna(tareaExterna)
         setConfirmacion(prevValue => ({...prevValue, mensaje: '¿Seguro que quieres borrar la tarea?', mostrar: true}))
         setTipoConfirmacion(TIPO_CONFIRMACION.BORRANDO)
     }
     
     function handleForward(tareaExterna) {
-        setIdTareaExterna(tareaExterna.id_tarea_externa)
+        setTareaExterna(tareaExterna)
         setModalSucursalRedireccion(prevValue => ({...prevValue, mostrar: true}))
     }
     
@@ -160,7 +161,7 @@ const TareasExternasHome = () => {
     }
 
     function handleRecolectarForwarded(tareaExterna, idSucursalRedireccion) {
-        setIdTareaExterna(tareaExterna.id_tarea_externa)
+        setTareaExterna(tareaExterna)
         setIdSucursalRedireccion(idSucursalRedireccion)
         setConfirmacion(prevValue => ({...prevValue, mensaje: getTextoConfirmacionTareaExterna(filtros.estado, esRedireccionadaAMaquila(tareaExterna)), mostrar: true}))
         setTipoConfirmacion(TIPO_CONFIRMACION.RECOLECTANDO_FORWARD)
@@ -173,7 +174,7 @@ const TareasExternasHome = () => {
         // Si dieron confirmar en la modal
         if (confirmado) {
             return doRedireccionaTareaExterna({
-                id_tarea_externa: idTareaExterna, 
+                id_tarea_externa: tareaExterna.id_tarea_externa, 
                 id_sucursal_redireccion: parseInt(idSucursalRedireccion), 
                 id_usuario: credenciales.id_usuario
             })

@@ -290,44 +290,50 @@ export function filtraServiciosDomicilio(serviciosDomicilio, filtros, sucursalAc
 }
 
 /* ----------- Helpers Tareas Externas -----------------*/
-export function getSiguienteEstadoTareaExterna(idEstadoActual) {
-  switch (parseInt(idEstadoActual)) {
-      case STATUS_TAREA.PENDIENTE_RECOLECCION:
-      case STATUS_TAREA.REDIRECCIONADO:
-              return STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE
-      case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE:
-              return STATUS_TAREA.RECIBIDO_PARA_ATENDERSE
-      case STATUS_TAREA.RECIBIDO_PARA_ATENDERSE:
-          return STATUS_TAREA.TERMINADO_PARA_RECOLECTAR
-      case STATUS_TAREA.TERMINADO_PARA_RECOLECTAR:
-          return STATUS_TAREA.RECOLECTADO_PARA_ENTREGA
-      case STATUS_TAREA.RECOLECTADO_PARA_ENTREGA:
-          return STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN
-      case STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN:
-          return STATUS_TAREA.RECIBIDO_EN_SUCURSAL_ORIGEN
-      default:
-          return null
-  }
-}
-
 export function getTituloTareaExterna(idEstadoActual) {
-  switch (parseInt(idEstadoActual)) {
-      case STATUS_TAREA.TAREAS_ACTIVAS:
-          return 'Tareas Activas'
+    switch (parseInt(idEstadoActual)) {
+        case STATUS_TAREA.TAREAS_ACTIVAS:
+            return 'Tareas Activas'
+        case STATUS_TAREA.PENDIENTE_RECOLECCION:
+            return 'Pendiente de Recolección'
+        case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE:
+            return 'Recolectadas para Atenderse'
+        case STATUS_TAREA.RECIBIDO_PARA_ATENDERSE:
+            return 'Recibidas para Atenderse'
+        case STATUS_TAREA.TERMINADO_PARA_RECOLECTAR:
+            return 'Terminadas para Recolectar'
+        case STATUS_TAREA.RECOLECTADO_PARA_ENTREGA:
+            return 'Recolectadas para Entrega'
+        case STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN:
+            return 'Entregadas a Sucursal Origen'
+        default:
+            return 'Desconocido'
+    }
+  }
+  
+  export function getSiguienteEstadoTareaExterna(idEstadoActual, esRedireccionadaAMaquila) {
+    switch (parseInt(idEstadoActual)) {
       case STATUS_TAREA.PENDIENTE_RECOLECCION:
-          return 'Pendiente de Recolección'
+        /***
+         * Cuando una tarea se redireccionó (desvió) y va para la maquila, como la maquila es la
+         * encargada de recolectar la prenda y no tiene acceso al sistem, daremos como estado actual
+         * después de entregar la pieza como que ya se recibió en la maquila. En caso de que se haya
+         * desviado a una sucursal que no es la maquila, el proceso es el normal, el repartidor tiene
+         * que recoger el material y entregarlo a la sucursal destino
+         */
+        return esRedireccionadaAMaquila ? STATUS_TAREA.RECIBIDO_PARA_ATENDERSE : STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE
       case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE:
-          return 'Recolectadas para Atenderse'
+        return STATUS_TAREA.RECIBIDO_PARA_ATENDERSE
       case STATUS_TAREA.RECIBIDO_PARA_ATENDERSE:
-          return 'Recibidas para Atenderse'
-      case STATUS_TAREA.TERMINADO_PARA_RECOLECTAR:
-          return 'Terminadas para Recolectar'
+        return STATUS_TAREA.TERMINADO_PARA_RECOLECTAR
+      case STATUS_TAREA.TERMINADO_PARA_RECOLECTAR:  
+        return STATUS_TAREA.RECOLECTADO_PARA_ENTREGA
       case STATUS_TAREA.RECOLECTADO_PARA_ENTREGA:
-          return 'Recolectadas para Entrega'
+        return STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN
       case STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN:
-          return 'Entregadas a Sucursal Origen'
+        return STATUS_TAREA.RECIBIDO_EN_SUCURSAL_ORIGEN
       default:
-          return 'Desconocido'
+        return null
   }
 }
 
@@ -338,7 +344,7 @@ export function getTextoConfirmacionTareaExterna(idEstadoActual, esRedireccionad
           // el texto será entregar si es un encargado de tienda pues estará entregando la mercancía a la maquila, si
           // es un chofer es porque está recolectando la mercancía para llevarla a una franquicia que no es maquila
           // Sólo para este caso en especial es para lo que estamos utilizando el parámetro esRedireccionadaAMaquila
-          return esRedireccionadaAMaquila ? '¿Seguro que quieres recolectar la tarea?' : '¿Seguro que quieres entregar la tarea?'
+          return esRedireccionadaAMaquila ? '¿Seguro que quieres entregar la tarea?' : '¿Seguro que quieres recolectar la tarea?'
       case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE:
           return '¿Seguro que quieres recibir la tarea?'
       case STATUS_TAREA.RECIBIDO_PARA_ATENDERSE:
@@ -355,13 +361,14 @@ export function getTextoConfirmacionTareaExterna(idEstadoActual, esRedireccionad
 }
 
 export function getTextoContinuarTareaExterna(idEstadoActual, esRedireccionadaAMaquila) {
+
   switch (parseInt(idEstadoActual)) {
       case STATUS_TAREA.PENDIENTE_RECOLECCION:
           // Las tareas pediente de recolección pudieran ser entregadas por el encargado o recolectadas por el chofer
           // el texto será entregar si es un encargado de tienda pues estará entregando la mercancía a la maquila, si
           // es un chofer es porque está recolectando la mercancía para llevarla a una franquicia que no es maquila
           // Sólo para este caso en especial es para lo que estamos utilizando el parámetro esRedireccionadaAMaquila
-          return esRedireccionadaAMaquila ? 'Recolectar' : 'Entregar'
+          return esRedireccionadaAMaquila ? 'Entregar' : 'Recolectar'
       case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE:
           return 'Recibir'
       case STATUS_TAREA.RECIBIDO_PARA_ATENDERSE:

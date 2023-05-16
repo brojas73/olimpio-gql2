@@ -6,7 +6,7 @@ import { useAuth } from "../../../hooks/useAuth"
 
 import { STATUS_SERVICIO_DOMICILIO, useServiciosDomicilio } from "../../../context/ServiciosDomicilioContext"
 
-import { formateaFecha, formateaFechaHora, esEntrega, esRecoleccion, pagado, servicioActivo, FONT_SIZE_DROPDOWN } from '../../comun/utils'
+import { formateaFecha, formateaFechaHora, esEntrega, esRecoleccion, pagado, servicioActivo } from '../../comun/utils'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const ServicioDomicilio = ({
@@ -59,8 +59,8 @@ const ServicioDomicilio = ({
         <Col>
             <Card >
                 <Card.Header>
-                    <div className="d-flex justify-content-between align-items-center" style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
-                        <Card.Subtitle className="text-primary" style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
+                    <div className="d-flex justify-content-between align-items-center olimpio-font-size">
+                        <Card.Subtitle className="text-primary olimpio-font-size">
                             {servicioDomicilio.estado_servicio_domicilio}
                         </Card.Subtitle>
                         <div className="d-flex justify-content-between">
@@ -95,22 +95,22 @@ const ServicioDomicilio = ({
                         </div>
                     </div>
                     <div className="d-flex justify-content-between align-items-center mt-2">
-                        <Card.Subtitle style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
+                        <Card.Subtitle className="olimpio-font-size">
                             {`${servicioDomicilio.tipo_servicio_descripcion} `}
                             {
                                 esEntrega(servicioDomicilio) ? <FaTruck /> : <FaTruck className="fa-flip-horizontal"/>
                             }
                         </Card.Subtitle>
-                        <Card.Subtitle style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
+                        <Card.Subtitle className="olimpio-font-size">
                             <FontAwesomeIcon icon={faLandmark} /> { servicioDomicilio.sucursal }
                         </Card.Subtitle>
                     </div>
-                    <div className="d-flex justify-content-between align-items-center" style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
+                    <div className="d-flex justify-content-between align-items-center olimpio-font-size">
                         <small>{formateaFecha(servicioDomicilio.fecha_creacion)}</small>
                         <small>{servicioDomicilio.creado_por}</small>
                     </div>
                 </Card.Header>
-                <Card.Body style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
+                <Card.Body className="olimpio-font-size">
                     {
                         esEntrega(servicioDomicilio) && esEncargado() ? (
                             <div className="d-flex justify-content-between align-items-center">
@@ -201,7 +201,7 @@ const ServicioDomicilio = ({
                         )
                     }
                 </Card.Body>
-                <Card.Footer className="d-flex justify-content-between" style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
+                <Card.Footer className="d-flex justify-content-between olimpio-font-size">
                     <div>
                     {
                         // Si aún se pude acutalizar la fecha de entrega, pongo un botón para modificarla, en otro

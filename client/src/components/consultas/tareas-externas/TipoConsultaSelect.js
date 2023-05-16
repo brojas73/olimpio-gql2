@@ -1,6 +1,6 @@
 import { NavDropdown } from 'react-bootstrap'
 
-import { FONT_SIZE_DROPDOWN, TIPO_CONSULTA_TE } from "../../comun/utils"
+import { TIPO_CONSULTA_TE } from "../../comun/utils"
 
 function getTitulo(id) {
     switch (parseInt(id)) {
@@ -21,11 +21,11 @@ const TipoConsultaSelect = ({onSelect, selected}) => {
     }
 
     return (
-        <NavDropdown title={titulo} onSelect={handleSelect} style={{ fontSize: `${FONT_SIZE_DROPDOWN}` }}>
+        <NavDropdown title={titulo} onSelect={handleSelect} className="olimpio-font-size">
             <NavDropdown.Item 
                 key={TIPO_CONSULTA_TE.TIPO_CONSULTA} 
                 eventKey={TIPO_CONSULTA_TE.TIPO_CONSULTA}
-                style={{ fontSize: `${FONT_SIZE_DROPDOWN}` }}
+                className="olimpio-font-size"
             >
                 {getTitulo(TIPO_CONSULTA_TE.TIPO_CONSULTA)}
             </NavDropdown.Item>
@@ -33,7 +33,7 @@ const TipoConsultaSelect = ({onSelect, selected}) => {
             <NavDropdown.Item 
                 key={TIPO_CONSULTA_TE.POR_ATENDERSE_HOY} 
                 eventKey={TIPO_CONSULTA_TE.POR_ATENDERSE_HOY}
-                style={{ fontSize: `${FONT_SIZE_DROPDOWN}` }}
+                className="olimpio-font-size"
             >
                 {getTitulo(TIPO_CONSULTA_TE.POR_ATENDERSE_HOY)}
             </NavDropdown.Item>
@@ -41,7 +41,7 @@ const TipoConsultaSelect = ({onSelect, selected}) => {
             <NavDropdown.Item 
                 key={TIPO_CONSULTA_TE.BITACORA} 
                 eventKey={TIPO_CONSULTA_TE.BITACORA}
-                style={{ fontSize: `${FONT_SIZE_DROPDOWN}` }}
+                className="olimpio-font-size"
             >
                 {getTitulo(TIPO_CONSULTA_TE.BITACORA)}
             </NavDropdown.Item>

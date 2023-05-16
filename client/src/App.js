@@ -12,6 +12,10 @@ import ProtectedLayout from './components/comun/ProtectedLayout'
 
 import TabsOlimpio from "./components/comun/TabsOlimpio"
 
+import TareasLocalesHome from "./components/tracking/tareas-locales/TareasLocalesHome"
+import NuevaTareaLocalForm from "./components/tracking/tareas-locales/NuevaTareaForm"
+import BitacoraTareaLocal from "./components/tracking/tareas-locales/BitacoraTareaLocal"
+
 import TareasExternasHome from "./components/tracking/tareas-externas/TareasExternasHome"
 import NuevaTareaForm from "./components/tracking/tareas-externas/NuevaTareaForm"
 import BitacoraTareaExterna from "./components/tracking/tareas-externas/BitacoraTareaExterna"
@@ -36,7 +40,7 @@ function App() {
 
   function handleLoginOk() {
     setConectado(true)
-    navigate('/tracking/tareas-externas')
+    navigate('/tracking/tareas-locales')
   }  
 
   return (
@@ -47,6 +51,10 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login onLoginOk={handleLoginOk} />} />
         <Route path='/tracking' element={<ProtectedLayout />}>
+          <Route path='tareas-locales' element={<TareasLocalesHome />} />
+          <Route path='tareas-locales/nueva-tarea' element={<NuevaTareaLocalForm />} />
+          <Route path='tareas-locales/bitacora-tarea-local' element={<BitacoraTareaLocal />} />
+
           <Route path='tareas-externas' element={<TareasExternasHome />} />
           <Route path='tareas-externas/nueva-tarea' element={<NuevaTareaForm />} />
           <Route path='tareas-externas/bitacora-tarea-externa' element={<BitacoraTareaExterna />} />

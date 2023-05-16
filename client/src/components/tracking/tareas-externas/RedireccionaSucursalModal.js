@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
 
 import SucursalSelect from '../../comun/SucursalSelect'
+import { TAMANO_CONTROLES } from '../../comun/utils'
 
 const RedireccionaSucursalModal = ({mostrar, onConfirmar}) => {
     const [formData, setFormData] = useState({
@@ -73,8 +74,8 @@ const RedireccionaSucursalModal = ({mostrar, onConfirmar}) => {
                         </Form.Control.Feedback>
                     </Form.Group>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={handlerCancelar} size="sm">Cancelar</Button>
-                        <Button variant="primary" onClick={handlerSubmit} size="sm">Desviar</Button>
+                        <Button variant="secondary" onClick={handlerCancelar} size={TAMANO_CONTROLES}>Cancelar</Button>
+                        <Button variant="primary" onClick={handlerSubmit} size={TAMANO_CONTROLES}>Desviar</Button>
                     </Modal.Footer>
                 </Form>
             </Modal.Body>

@@ -1,3 +1,4 @@
+import { STATUS_TAREA_LOCAL } from '../../context/TareasLocalesContext'
 import { STATUS_TAREA } from '../../context/TareasExternasContext'
 import { STATUS_SERVICIO_DOMICILIO } from '../../context/ServiciosDomicilioContext'
 
@@ -12,8 +13,6 @@ export const TIPO_CONSULTA_TE = {
 }
 
 export const TAMANO_CONTROLES = "sm"
-export const FONT_SIZE_DROPDOWN = "90%"
-export const FONT_SIZE_TABS = "88%"
 
 export function formateaFechaHora(fecha, hora, mostrarDia = true, mostrarAt = true) {
     const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
@@ -434,3 +433,70 @@ export function filtraTareasExternas(tareasExternasActivas, filtros, sucursalAct
   }
 }
 
+/* ----------- Helpers Tareas Locales  -----------------*/
+export function getTituloTareaLocal(idEstadoActual) {
+  switch (parseInt(idEstadoActual)) {
+      case STATUS_TAREA_LOCAL.TAREAS_ACTIVAS:
+          return 'Tareas Activas'
+      case STATUS_TAREA_LOCAL.POR_ATENDERSE:
+          return 'Por Atenderse'
+      case STATUS_TAREA_LOCAL.TERMINADO:
+          return 'Terminadas'
+      default:
+          return 'Desconocido'
+  }
+}
+
+export function getSiguienteEstadoTareaLocal(idEstadoActual) {
+  switch (parseInt(idEstadoActual)) {
+    case STATUS_TAREA_LOCAL.POR_ATENDERSE:
+      return STATUS_TAREA_LOCAL.TERMINADO
+    case STATUS_TAREA_LOCAL.TERMINADO:
+      return STATUS_TAREA_LOCAL.TERMINADO
+    default:
+      return null
+  }
+}
+
+export function getTextoConfirmacionTareaLocal(idEstadoActual) {
+  switch (parseInt(idEstadoActual)) {
+      case STATUS_TAREA_LOCAL.POR_ATENDERSE:
+          return '¿Seguro que quieres terminar la tarea?'
+      default:
+          return 'Desconocido'
+  }
+}
+
+export function getTextoContinuarTareaLocal(idEstadoActual) {
+  switch (parseInt(idEstadoActual)) {
+      case STATUS_TAREA_LOCAL.POR_ATENDERSE:
+          return 'Terminar'
+      default:
+          return 'Desconocido'
+  }
+}
+
+export function getTextoBorrarTareaLocal(idEstadoActual) {
+  return (parseInt(idEstadoActual) === STATUS_TAREA_LOCAL.POR_ATENDERSE) ? 'Borrar' : null 
+}
+
+
+export function filtraTareasLocales(tareasActivas, filtros, sucursalActual) {
+  const tareasFiltradas = tareasActivas.filter(tarea => 
+      (filtros.ticket.length === 0 || (filtros.ticket.length > 0 && tarea.ticket.includes(filtros.ticket))) &&
+      (filtros.sucursal === 0 || (filtros.sucursal !== 0 && (tarea.id_sucursal_origen === filtros.sucursal || tarea.id_sucursal_destino === filtros.sucursal)))
+  )
+
+  switch (parseInt(filtros.estado)) {
+      case STATUS_TAREA_LOCAL.POR_ATENDERSE:
+          return tareasFiltradas.filter(tarea => (
+            parseInt(tarea.id_estado_tarea) === STATUS_TAREA_LOCAL.POR_ATENDERSE
+        ))
+      case STATUS_TAREA_LOCAL.TERMINADO:
+          return tareasFiltradas.filter(tarea => (
+            parseInt(tarea.id_estado_tarea) === STATUS_TAREA_LOCAL.TERMINADO
+          ))
+      default:
+          return tareasFiltradas
+  }
+}

@@ -4,7 +4,6 @@ import { FaClipboardList, FaArrowAltCircleRight, FaTrashAlt, FaCheck, FaRegCalen
 import { useAuth } from "../../../hooks/useAuth"
 import { STATUS_TAREA, TIPOS_SERVICIO, useTareasExternas } from "../../../context/TareasExternasContext"
 import { 
-    FONT_SIZE_DROPDOWN, 
     esRedireccionada, 
     esRedireccionadaAMaquila, 
     formateaFecha, 
@@ -73,8 +72,8 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
         <Col>
             <Card border={parseInt(tareaExterna.id_tipo_servicio) === TIPOS_SERVICIO.EXPRESS ? 'danger' : ''} >
                 <Card.Header>
-                    <div className="d-flex justify-content-between align-items-center" style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
-                        <Card.Subtitle className="text-primary" style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>{tareaExterna.estado_tarea}</Card.Subtitle>
+                    <div className="d-flex justify-content-between align-items-center olimpio-font-size">
+                        <Card.Subtitle className="text-primary olimpio-font-size">{tareaExterna.estado_tarea}</Card.Subtitle>
                         <NavLink 
                             onClick={() => onLog(tareaExterna)} 
                             className="link-secondary"
@@ -88,13 +87,13 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
                         </NavLink>
                     </div>
                     <div className="d-flex justify-content-between align-items-center">
-                        <Card.Subtitle style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
+                        <Card.Subtitle className="olimpio-font-size">
                             <FaTicketAlt className="me-1"/> 
                             <span className="align-middle">
                                 {tareaExterna.ticket.padStart(6, '0')}
                             </span>
                         </Card.Subtitle>
-                        <Card.Subtitle style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
+                        <Card.Subtitle className="olimpio-font-size">
                             { tareaExterna.sucursal_origen } <FaArrowAltCircleRight className="mx-1"/> { tareaExterna.sucursal_destino }
                             {
                                 esRedireccionada(tareaExterna) && (
@@ -105,13 +104,13 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
                             }
                         </Card.Subtitle>
                     </div>
-                    <div className="d-flex justify-content-between align-items-center" style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
+                    <div className="d-flex justify-content-between align-items-center olimpio-font-size">
                         <small>{formateaFecha(tareaExterna.fecha_creacion)}</small>
                         <small>{tareaExterna.creado_por}</small>
                     </div>
                 </Card.Header>
-                <Card.Body style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
-                    <Card.Subtitle style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
+                <Card.Body className="olimpio-font-size">
+                    <Card.Subtitle className="olimpio-font-size">
                         {tareaExterna.tipo_trabajo} { " - "}
                         {tareaExterna.tipo_servicio}
                     </Card.Subtitle>
@@ -119,7 +118,7 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
                         {tareaExterna.descripcion}
                     </Card.Text>
                 </Card.Body>
-                <Card.Footer className="d-flex justify-content-between align-items-center" style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
+                <Card.Footer className="d-flex justify-content-between align-items-center olimpio-font-size">
                     <div className="text-danger">
                         <small>
                             <FaRegCalendarAlt /> 

@@ -11,7 +11,7 @@ import { useMutation, useQuery } from 'react-query'
 import { cancelaServicioDomicilio } from "../../../mutations/ServicioDomicilio"
 import { useAuth } from '../../../hooks/useAuth'
 
-import { isBlank, esEntrega, TAMANO_CONTROLES, FONT_SIZE_DROPDOWN } from '../../comun/utils'
+import { isBlank, esEntrega, TAMANO_CONTROLES } from '../../comun/utils'
 import { QUERY_SERVICIO_DOMICILIO, fetchServicioDomicilio } from '../../../queries/ServicioDomicilio'
 
 const InformacionGeneralForm = () => {
@@ -89,7 +89,7 @@ const InformacionGeneralForm = () => {
                 Cancelción de Servicio a Domicilio
             </Button>
             <Form onSubmit={handleSubmit}>
-            <Form.Group className="my-2" style={{ fontSize: `${FONT_SIZE_DROPDOWN}`}}>
+            <Form.Group className="my-2 olimpio-font-size">
                     {
                         esEntrega(servicioDomicilio) && (
                             <Card.Text className="mb-0"><FaTicketAlt /> {servicioDomicilio.ticket.padStart(6, '0')}</Card.Text>

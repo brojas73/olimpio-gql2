@@ -10,6 +10,11 @@ const estadosTareaExterna = async (_, res) => {
     res.send({status: "OK", data: estadosTareaExterna})
 }
 
+const estadosTareaLocal = async (_, res) => {
+    const estadosTareaLocal = await catalogosService.estadosTareaLocal()
+    res.send({status: "OK", data: estadosTareaLocal})
+}
+
 const formasPago = async (_, res) => {
     const formasPago = await catalogosService.formasPago()
     res.send({status: "OK", data: formasPago})
@@ -38,6 +43,7 @@ const tiposTrabajo = async (_, res) => {
 export default {
     estadosServicioDomicilio,
     estadosTareaExterna,
+    estadosTareaLocal,
     formasPago,
     roles,
     sucursales,

@@ -6,6 +6,7 @@ const router = express.Router()
 
 router.get('/estados-servicio-domicilio', isConnected(), catalogosController.estadosServicioDomicilio)
 router.get('/estados-tarea-externa', isConnected(), catalogosController.estadosTareaExterna)
+router.get('/estados-tarea-local', isConnected(), catalogosController.estadosTareaLocal)
 router.get('/formas-pago', isConnected(), catalogosController.formasPago)
 router.get('/roles', isConnected(), catalogosController.roles)
 router.get('/sucursales', catalogosController.sucursales)

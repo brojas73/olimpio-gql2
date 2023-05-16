@@ -36,6 +36,24 @@ const estadosTareaExterna = () => {
     })
 }
 
+const estadosTareaLocal = () => {
+    const q = `select * from estado_tarea_local where estado = 1`
+
+    return new Promise((resolve, reject) => {
+        pool.query(q, (err, data) => {
+            if (err) {
+                console.log(err)
+                return reject({
+                    status: 500,
+                    message: err?.message || err
+                })
+            }
+
+            return resolve(JSON.parse(JSON.stringify(data)))
+        })
+    })
+}
+
 const formasPago = () => {
     const q = `select * from forma_pago where estado = 1`
 
@@ -129,6 +147,7 @@ const tiposTrabajo = () => {
 export default {
     estadosServicioDomicilio,
     estadosTareaExterna,
+    estadosTareaLocal,
     formasPago,
     roles,
     sucursales,

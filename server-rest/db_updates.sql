@@ -342,3 +342,37 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
+CREATE TABLE `olimpio`.`tarea_local` (
+  `id_tarea_local` INT NOT NULL AUTO_INCREMENT , 
+  `id_sucursal` INT NOT NULL , 
+  `ticket` VARCHAR(20) NOT NULL , 
+  `descripcion` VARCHAR(200) NOT NULL , 
+  `id_tipo_trabajo` INT NOT NULL , 
+  `fecha_requerida` DATE NOT NULL , 
+  `hora_requerida` TIME NOT NULL , 
+  `id_tipo_servicio` INT NOT NULL , 
+  `id_estado_tarea` INT NOT NULL , 
+  `fecha_creacion` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , 
+  `id_creado_por` INT NOT NULL , 
+  `fecha_modificacion` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , 
+  `id_modificado_por` INT NOT NULL , 
+  `estado` INT NOT NULL DEFAULT '1' , 
+  PRIMARY KEY (`id_tarea_local`)
+) ENGINE = InnoDB;
+
+CREATE TABLE `olimpio`.`estado_tarea_local` (
+  `id_estado_tarea` INT NOT NULL , 
+  `nombre` VARCHAR(100) NOT NULL , 
+  `url` VARCHAR(100) NULL , 
+  `estado` INT NOT NULL DEFAULT '1'
+) ENGINE = InnoDB;
+
+CREATE TABLE `tarea_local_log` (
+  `id_tarea_local_log` int(11) NOT NULL,
+  `id_tarea_local` int(11) NOT NULL,
+  `id_tipo_accion` int(11) NOT NULL,
+  `fecha` datetime NOT NULL DEFAULT current_timestamp(),
+  `id_usuario` int(11) NOT NULL,
+  `id_estado_servicio_domicilio_ini` int(11) DEFAULT NULL,
+  `id_estado_servicio_domicilio_fin` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

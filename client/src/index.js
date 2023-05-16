@@ -13,6 +13,7 @@ import { OlimpioProvider } from './context/OlimpioContext';
 import { TareasExternasProvider } from './context/TareasExternasContext';
 import { ServiciosDomicilioProvider } from './context/ServiciosDomicilioContext';
 import { ConsultasProvider } from './context/ConsultasContext';
+import { TareasLocalesProvider } from './context/TareasLocalesContext';
 
 const queryClient = new QueryClient()
 
@@ -22,13 +23,15 @@ root.render(
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <OlimpioProvider>
-          <ServiciosDomicilioProvider>
-            <TareasExternasProvider>
-              <ConsultasProvider>
-                <App />
-              </ConsultasProvider>
-            </TareasExternasProvider>
-          </ServiciosDomicilioProvider>
+          <TareasLocalesProvider>
+            <ServiciosDomicilioProvider>
+              <TareasExternasProvider>
+                <ConsultasProvider>
+                  <App />
+                </ConsultasProvider>
+              </TareasExternasProvider>
+            </ServiciosDomicilioProvider>
+          </TareasLocalesProvider>
         </OlimpioProvider>
       </AuthProvider>
     </QueryClientProvider>

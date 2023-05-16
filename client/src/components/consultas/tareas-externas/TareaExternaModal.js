@@ -2,7 +2,7 @@ import { Card, Col, Modal, Spinner} from "react-bootstrap"
 import { FaTicketAlt, FaArrowAltCircleRight, FaRegCalendarAlt } from 'react-icons/fa'
 
 import { TIPOS_SERVICIO } from '../../../context/TareasExternasContext'
-import { esRedireccionada, FONT_SIZE_DROPDOWN, formateaFecha, formateaFechaHora } from "../../comun/utils"
+import { esRedireccionada, formateaFecha, formateaFechaHora } from "../../comun/utils"
 
 import { useQuery } from 'react-query'
 import { fetchTareaExterna, QUERY_TAREA_EXTERNA } from '../../../queries/TareaExterna'
@@ -24,15 +24,15 @@ const TareaExternaModal = ({mostrar, idTareaExterna, onClose}) => {
         <Col>
           <Card border={parseInt(tareaExterna.id_tipo_servicio) === TIPOS_SERVICIO.EXPRESS ? 'danger' : ''} >
               <Card.Header>
-                  <Card.Subtitle className="text-primary" style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>{tareaExterna.estado_tarea}</Card.Subtitle>
+                  <Card.Subtitle className="text-primary olimpio-font-size">{tareaExterna.estado_tarea}</Card.Subtitle>
                   <div className="d-flex justify-content-between align-items-center">
-                        <Card.Subtitle style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
+                        <Card.Subtitle className="olimpio-font-size">
                             <FaTicketAlt className="me-1"/> 
                             <span className="align-middle">
                                 {tareaExterna.ticket.padStart(6, '0')}
                             </span>
                         </Card.Subtitle>
-                        <Card.Subtitle style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
+                        <Card.Subtitle className="olimpio-font-size">
                             { tareaExterna.sucursal_origen } <FaArrowAltCircleRight className="mx-1"/> { tareaExterna.sucursal_destino }
                             {
                                 esRedireccionada(tareaExterna) && (
@@ -43,13 +43,13 @@ const TareaExternaModal = ({mostrar, idTareaExterna, onClose}) => {
                             }
                         </Card.Subtitle>
                     </div>
-                    <div className="d-flex justify-content-between align-items-center" style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
+                    <div className="d-flex justify-content-between align-items-center olimpio-font-size">
                         <small>{formateaFecha(tareaExterna.fecha_creacion)}</small>
                         <small>{tareaExterna.creado_por}</small>
                     </div>
               </Card.Header>
-              <Card.Body style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
-                    <Card.Subtitle style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
+              <Card.Body className="olimpio-font-size">
+                    <Card.Subtitle className="olimpio-font-size">
                         {tareaExterna.tipo_trabajo} { " - "}
                         {tareaExterna.tipo_servicio}
                     </Card.Subtitle>
@@ -57,7 +57,7 @@ const TareaExternaModal = ({mostrar, idTareaExterna, onClose}) => {
                         {tareaExterna.descripcion}
                     </Card.Text>
                 </Card.Body>
-              <Card.Footer className="d-flex justify-content-between align-items-center" style={{fontSize: `${FONT_SIZE_DROPDOWN}`}}>
+              <Card.Footer className="d-flex justify-content-between align-items-center olimpio-font-size">
                 <div>
                   <small><FaRegCalendarAlt /> {formateaFechaHora(tareaExterna.fecha_requerida, tareaExterna.hora_requerida)}</small>
                 </div>

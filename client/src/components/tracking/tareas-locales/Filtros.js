@@ -1,14 +1,14 @@
 import { Form, Nav, Navbar } from "react-bootstrap"
 
 import { TAMANO_CONTROLES } from "../../comun/utils"
-import { useTareasExternas } from "../../../context/TareasExternasContext"
+import { useTareasLocales } from "../../../context/TareasLocalesContext"
 
 import SucursalesDropDown from "../../comun/SucursalesDropDown"
 import EstadosTareaDropDown from "./EstadosTareaDropDown"
 import TicketInput from "../../comun/TicketInput"
 
 const Filtros = () => {
-    const { filtros, setFiltros } = useTareasExternas()
+    const { filtros, setFiltros } = useTareasLocales()
 
     return (
         <Navbar className="mb-1">

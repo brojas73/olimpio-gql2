@@ -6,7 +6,7 @@ import { NavDropdown, Spinner  } from "react-bootstrap"
 import { useQuery } from "react-query"
 import { fetchSucursales, QUERY_SUCURSALES } from "../../queries/Sucursal"
 
-import { FONT_SIZE_DROPDOWN, nombreSucursal } from "./utils"
+import { nombreSucursal } from "./utils"
 
 const SucursalesDropDown = ({onSelect, titleOption, showIcon, idSelected}) => {
   const { data: sucursales, isLoading } = useQuery(QUERY_SUCURSALES, fetchSucursales, { staleTime: Infinity, cacheTime: Infinity})
@@ -14,7 +14,7 @@ const SucursalesDropDown = ({onSelect, titleOption, showIcon, idSelected}) => {
   if (isLoading) return <Spinner animation="border" />
 
   return (
-    <NavDropdown style={{ fontSize: `${FONT_SIZE_DROPDOWN}` }} title={
+    <NavDropdown className="olimpio-font-size" title={
       <span>
         { showIcon && (<FontAwesomeIcon icon={faLandmark} />) } {nombreSucursal(sucursales, idSelected)}
       </span>
@@ -25,7 +25,7 @@ const SucursalesDropDown = ({onSelect, titleOption, showIcon, idSelected}) => {
           <NavDropdown.Item
             key={0}
             onClick={() => onSelect(0)}
-            style={{ fontSize: `${FONT_SIZE_DROPDOWN}` }}
+            className="olimpio-font-size"
           >
             Sucursal
           </NavDropdown.Item>
@@ -38,7 +38,7 @@ const SucursalesDropDown = ({onSelect, titleOption, showIcon, idSelected}) => {
           <NavDropdown.Item 
               key={sucursal.id_sucursal}
               onClick={() => onSelect(sucursal.id_sucursal)}
-              style={{ fontSize: `${FONT_SIZE_DROPDOWN}` }}
+              className="olimpio-font-size"
             >
             {sucursal.nombre}
           </NavDropdown.Item>

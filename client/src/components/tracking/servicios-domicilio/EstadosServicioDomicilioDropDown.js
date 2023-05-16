@@ -2,11 +2,11 @@ import { Link } from 'react-router-dom'
 
 import { NavDropdown, Spinner } from 'react-bootstrap'
 
-import { FONT_SIZE_DROPDOWN, nombreEstadoServicioDomicilio } from './utils'
-import { STATUS_SERVICIO_DOMICILIO } from "../../context/ServiciosDomicilioContext"
+import { nombreEstadoServicioDomicilio } from '../../comun/utils'
+import { STATUS_SERVICIO_DOMICILIO } from "../../../context/ServiciosDomicilioContext"
 
 import { useQuery } from 'react-query'
-import { fetchEstadosServiciosDomicilio, QUERY_ESTADOS_SERVICIO_DOMICILIO } from '../../queries/EstadoServicioDomicilio'
+import { fetchEstadosServiciosDomicilio, QUERY_ESTADOS_SERVICIO_DOMICILIO } from '../../../queries/EstadoServicioDomicilio'
 
 const EstadosServicioDomicilioDropDown = ({onSelect, idSelected }) => {
   const { data: estadosServicioDomicilio, isLoading } = useQuery(
@@ -19,7 +19,7 @@ const EstadosServicioDomicilioDropDown = ({onSelect, idSelected }) => {
   if (isLoading) return <Spinner animation='border' />
 
   return (
-    <NavDropdown title={titulo} style={{ fontSize: `${FONT_SIZE_DROPDOWN}` }}>
+    <NavDropdown title={titulo} className='olimpio-font-size'>
     {
       estadosServicioDomicilio 
         .filter(estadoServicioDomicilio => 
@@ -39,7 +39,7 @@ const EstadosServicioDomicilioDropDown = ({onSelect, idSelected }) => {
                     as={Link}
                     key={estadoServicioDomicilio.id_estado_servicio_domicilio}
                     onClick={() => onSelect(estadoServicioDomicilio.id_estado_servicio_domicilio)}
-                    style={{ fontSize: `${FONT_SIZE_DROPDOWN}` }}
+                    className="olimpio-font-size"
                   >
                    {estadoServicioDomicilio.nombre}
                   </NavDropdown.Item>
@@ -52,7 +52,7 @@ const EstadosServicioDomicilioDropDown = ({onSelect, idSelected }) => {
                 as={Link}
                 key={estadoServicioDomicilio.id_estado_servicio_domicilio}
                 onClick={() => onSelect(estadoServicioDomicilio.id_estado_servicio_domicilio)}
-                style={{ fontSize: `${FONT_SIZE_DROPDOWN}` }}
+                className="olimpio-font-size"
                 >
                 {estadoServicioDomicilio.nombre}
               </NavDropdown.Item>

@@ -13,7 +13,7 @@ import { useQuery, useMutation } from 'react-query'
 import { actualizaFechaRequerida } from "../../../mutations/ServicioDomicilio"
 import { fetchServicioDomicilio, QUERY_SERVICIO_DOMICILIO } from '../../../queries/ServicioDomicilio'
 
-import { isBlank, pagado, esEntrega, formateaFechaForm, TAMANO_CONTROLES, FONT_SIZE_DROPDOWN } from '../../comun/utils'
+import { isBlank, pagado, esEntrega, formateaFechaForm, TAMANO_CONTROLES } from '../../comun/utils'
 
 const FechaRequeridaForm = () => {
     const navigate = useNavigate()
@@ -100,7 +100,7 @@ const FechaRequeridaForm = () => {
                 Cambio de la Fecha Requerida
             </Button>
             <Form onSubmit={handleSubmit}>
-                <Form.Group className="my-2" style={{ fontSize: `${FONT_SIZE_DROPDOWN}`}}>
+                <Form.Group className="my-2 olimpio-container">
                     {
                         esEntrega(servicioDomicilio) && (
                             <Card.Text className="mb-0"><FaTicketAlt /> {servicioDomicilio.ticket.padStart(6, '0')}</Card.Text>

@@ -5,9 +5,6 @@ import { Tab, Tabs } from 'react-bootstrap'
 import { useAuth } from '../../hooks/useAuth'
 import { useOlimpio } from '../../context/OlimpioContext'
 
-// Utils
-import { FONT_SIZE_TABS } from './utils'
-
 // Mutations
 import { useMutation } from 'react-query'
 import { logout } from '../../mutations/Usuario'
@@ -64,13 +61,13 @@ const TabsOlimpio = () => {
             {
                 conectado && (
                     <Tabs
-                        defaultActiveKey='tareas-externas'
+                        defaultActiveKey='tareas-locales'
                         id='olimpio-tab'
-                        className='mb-3'
+                        className='mb-3 olimpio-tab-size'
                         onSelect={key => handleSelect(key)}
-                        style={{fontSize: `${FONT_SIZE_TABS}`}}
                         fill
                     >
+                        <Tab title='Tareas Locales' eventKey='tareas-locales' ></Tab>
                         <Tab title='Tareas Externas' eventKey='tareas-externas' ></Tab>
                         <Tab title='Servicios a Domicilio' eventKey='servicios-domicilio' ></Tab>
                         <Tab title='Consultas' eventKey='consultas'></Tab>

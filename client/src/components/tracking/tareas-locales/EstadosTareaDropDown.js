@@ -1,37 +1,32 @@
 import { Link } from 'react-router-dom'
 import { NavDropdown, Spinner } from 'react-bootstrap'
 
-import { STATUS_TAREA } from '../../context/TareasExternasContext'
-
+import { STATUS_TAREA_LOCAL } from '../../../context/TareasLocalesContext'
 import { useQuery } from 'react-query'
-import { fetchEstadosTarea, QUERY_ESTADOS_TAREA } from '../../queries/EstadoTarea'
+import { fetchEstadosTareaLocal, QUERY_ESTADOS_TAREA_LOCAL } from '../../../queries/EstadosTareaLocal'
 
-import { FONT_SIZE_DROPDOWN, nombreEstadoTarea } from './utils'
+import { nombreEstadoTarea } from '../../comun/utils'
 
 
 const EstadosTareaDropDown = ({onSelect, idSelected }) => {
-  const { data: estadosTarea, isLoading } = useQuery(QUERY_ESTADOS_TAREA, fetchEstadosTarea, { staleTime: Infinity, cacheTime: Infinity})
+  const { data: estadosTarea, isLoading } = useQuery(QUERY_ESTADOS_TAREA_LOCAL, fetchEstadosTareaLocal, { staleTime: Infinity, cacheTime: Infinity})
   const titulo = nombreEstadoTarea(estadosTarea, idSelected)
 
   if (isLoading) return <Spinner animation='border' />
 
   return (
-    <NavDropdown title={titulo} style={{ fontSize: `${FONT_SIZE_DROPDOWN}` }}>
+    <NavDropdown title={titulo} className='olimpio-font-size'>
     {
       estadosTarea 
-        .filter(estadoTarea => (
-          parseInt(estadoTarea.id_estado_tarea) !== STATUS_TAREA.RECIBIDO_EN_SUCURSAL_ORIGEN &&           // No muestro estos estados en la lista
-          parseInt(estadoTarea.id_estado_tarea) !== STATUS_TAREA.REDIRECCIONADO 
-        ))
         .map(estadoTarea => {
-          if (parseInt(estadoTarea.id_estado_tarea) === STATUS_TAREA.TAREAS_ACTIVAS) {                    // Pongo un separador después del título de tareas activas
+          if (parseInt(estadoTarea.id_estado_tarea) === STATUS_TAREA_LOCAL.TAREAS_ACTIVAS) {                    // Pongo un separador después del título de tareas activas
             return (
               <>
                 <NavDropdown.Item 
                   as={Link}
                   key={estadoTarea.id_estado_tarea}
                   onClick={() => onSelect(estadoTarea.id_estado_tarea)}
-                  style={{ fontSize: `${FONT_SIZE_DROPDOWN}` }}
+                  className="olimpio-font-size"
                 >
                   {estadoTarea.nombre}
                 </NavDropdown.Item>
@@ -44,7 +39,7 @@ const EstadosTareaDropDown = ({onSelect, idSelected }) => {
                 as={Link}
                 key={estadoTarea.id_estado_tarea}
                 onClick={() => onSelect(estadoTarea.id_estado_tarea)}
-                style={{ fontSize: `${FONT_SIZE_DROPDOWN}` }}
+                className="olimpio-font-size"
               >
                 {estadoTarea.nombre}
               </NavDropdown.Item>

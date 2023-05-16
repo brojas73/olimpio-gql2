@@ -7,6 +7,8 @@ import { createClient } from 'redis'
 
 import { COOKIE_NAME } from './constants.js'
 
+import v1TareasLocalesRouter from './v1/routes/tareasLocalesRoutes.js'
+import v1TareasLocalesLogRouter from './v1/routes/tareasLocalesLogRoutes.js'
 import v1TareasExternasRouter from './v1/routes/tareasExternasRoutes.js'
 import v1TareasExternasLogRouter from './v1/routes/tareasExternasLogRoutes.js'
 import v1ServiciosDomicilioRouter from './v1/routes/serviciosDomicilioRoutes.js' 
@@ -52,6 +54,8 @@ const main = () => {
       })
   )
 
+  app.use(`/${api_route}/tareas-locales`, v1TareasLocalesRouter);
+  app.use(`/${api_route}/tareas-locales-log`, v1TareasLocalesLogRouter);
   app.use(`/${api_route}/tareas-externas`, v1TareasExternasRouter);
   app.use(`/${api_route}/tareas-externas-log`, v1TareasExternasLogRouter);
   app.use(`/${api_route}/servicios-domicilio`, v1ServiciosDomicilioRouter);

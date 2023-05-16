@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom"
 import { Navbar, Nav } from "react-bootstrap"
 
-import { FONT_SIZE_DROPDOWN } from "./utils"
 import { useOlimpio } from "../../context/OlimpioContext"
 import { useAuth } from "../../hooks/useAuth"
 
@@ -26,7 +25,7 @@ const GlobalNavbar = ({onLogout}) => {
             {
                 !conectado && (
                     <Nav className="justify-content-end flex-grow-1 me-1">
-                        <Nav.Link href="/login" style={{ fontSize: `${FONT_SIZE_DROPDOWN}` }}>Login</Nav.Link>
+                        <Nav.Link href="/login" className="olimpio-font-size">Login</Nav.Link>
                     </Nav>
                 )
             }

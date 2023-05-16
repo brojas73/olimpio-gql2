@@ -4,7 +4,7 @@ import { TAMANO_CONTROLES } from "../../comun/utils"
 import { useServiciosDomicilio } from "../../../context/ServiciosDomicilioContext"
 
 import TicketInput from "../../comun/TicketInput"
-import EstadosServicioDomicilioDropDown from "../../comun/EstadosServicioDomicilioDropDown"
+import EstadosServicioDomicilioDropDown from "./EstadosServicioDomicilioDropDown"
 
 const Filtros = () => {
     const { filtros, setFiltros } = useServiciosDomicilio()

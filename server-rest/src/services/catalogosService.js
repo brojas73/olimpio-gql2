@@ -8,6 +8,10 @@ const estadosTareaExterna = async () => {
     return await DB.estadosTareaExterna()
 }
 
+const estadosTareaLocal = async () => {
+    return await DB.estadosTareaLocal()
+}
+
 const formasPago = async () => {
     return await DB.formasPago()
 }
@@ -32,6 +36,7 @@ const tiposTrabajo = async () => {
 export default {
     estadosServicioDomicilio,
     estadosTareaExterna,
+    estadosTareaLocal,
     formasPago,
     roles,
     sucursales,

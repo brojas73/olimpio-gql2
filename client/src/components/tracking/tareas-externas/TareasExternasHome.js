@@ -17,7 +17,8 @@ import {
     getTextoForwardTareaExterna,
     getTextoContinuarTareaExterna,
     filtraTareasExternas,
-    esRedireccionadaAMaquila
+    esRedireccionadaAMaquila,
+    getTextoConfirmacionBorrarTareaExterna
 } from "../../comun/utils"
 
 // Queries 
@@ -40,7 +41,8 @@ import {
 import TareasExternasHeader from "./TareasExternasHeader"
 import TareaExterna from "./TareaExternaCard"
 import ConfirmacionModal from '../../comun/ConfirmacionModal'
-import RedireccionaSucursalModal from "./RedireccionaSucursalModal"
+import RedireccionaSucursalModal from "../../comun/RedireccionaSucursalModal"
+import { STATUS_TAREA_LOCAL } from '../../../context/TareasLocalesContext'
 
 // Constantes
 const TIPO_CONFIRMACION = {
@@ -72,9 +74,9 @@ const TareasExternasHome = () => {
     // Mutations
     const { mutate: doBorraTareaExterna } = useMutation ({
         mutationFn: borraTareaExterna,
-        onSuccess: ({id_tarea_externa}) => {
+        onSuccess: ({data}) => {
             queryClient.setQueriesData(QUERY_TAREAS_EXTERNAS_ACTIVAS, (current) => (
-                current.filter(tareaExterna => (parseInt(tareaExterna.id_tarea_externa) !== parseInt(id_tarea_externa)))
+                current.filter(tareaExterna => (parseInt(tareaExterna.id_tarea_externa) !== parseInt(data.id_tarea_externa)))
             ))
         }
     })
@@ -115,7 +117,12 @@ const TareasExternasHome = () => {
         if (confirmado) {
             if (parseInt(tipoConfirmacion) === TIPO_CONFIRMACION.BORRANDO) {
                 setTipoConfirmacion(null)
-                return doBorraTareaExterna({id_tarea_externa: tareaExterna.id_tarea_externa})
+                return doBorraTareaExterna({
+                    id_tarea_externa: tareaExterna.id_tarea_externa, 
+                    id_tarea_local: tareaExterna.id_tarea_local,
+                    id_usuario: credenciales.id_usuario,
+                    id_estado_tarea: STATUS_TAREA_LOCAL.POR_ATENDERSE       // Este valor lo utilizamos sólo para las cancelaciones de las redirecciones de tareas locales
+                })
             } 
     
             if (parseInt(tipoConfirmacion) === TIPO_CONFIRMACION.RECOLECTANDO_FORWARD) {
@@ -143,7 +150,7 @@ const TareasExternasHome = () => {
 
     function handleBorrar(tareaExterna) {
         setTareaExterna(tareaExterna)
-        setConfirmacion(prevValue => ({...prevValue, mensaje: '¿Seguro que quieres borrar la tarea?', mostrar: true}))
+        setConfirmacion(prevValue => ({...prevValue, mensaje: getTextoConfirmacionBorrarTareaExterna(tareaExterna, filtros.estado), mostrar: true}))
         setTipoConfirmacion(TIPO_CONFIRMACION.BORRANDO)
     }
     
@@ -206,6 +213,7 @@ const TareasExternasHome = () => {
             <RedireccionaSucursalModal 
                 mostrar={modalSucursalRedireccion.mostrar}
                 onConfirmar={handleConfirmarForward}
+                title="Desvío de Tarea Externa"
             />
     
             <TareasExternasHeader 
@@ -220,7 +228,7 @@ const TareasExternasHome = () => {
                     <TareaExterna 
                         tareaExterna={tareaExterna} 
                         textoContinuar={getTextoContinuarTareaExterna(filtros.estado, esRedireccionadaAMaquila(tareaExterna))}
-                        textoBorrar={getTextoBorrarTareaExterna(filtros.estado)}
+                        textoBorrar={getTextoBorrarTareaExterna(tareaExterna, filtros.estado)}
                         textoForward={getTextoForwardTareaExterna(filtros.estado)}
                         onContinuar={handleContinuar}
                         onBorrar={handleBorrar}

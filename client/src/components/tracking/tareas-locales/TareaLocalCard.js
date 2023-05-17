@@ -1,5 +1,5 @@
 import { Card, Col, NavLink } from "react-bootstrap"
-import { FaClipboardList, FaTrashAlt, FaCheck, FaRegCalendarAlt, FaTicketAlt } from 'react-icons/fa'
+import { FaClipboardList, FaTrashAlt, FaCheck, FaRegCalendarAlt, FaTicketAlt, FaShareSquare } from 'react-icons/fa'
 
 import { useAuth } from "../../../hooks/useAuth"
 import { STATUS_TAREA_LOCAL, TIPOS_SERVICIO, useTareasLocales } from "../../../context/TareasLocalesContext"
@@ -8,7 +8,7 @@ import {
     formateaFechaHora
 } from '../../comun/utils'
 
-const TareaLocal = ({tareaLocal, textoContinuar, textoBorrar, onContinuar, onBorrar, onLog }) => {
+const TareaLocal = ({tareaLocal, textoContinuar, textoBorrar, textoForward, onContinuar, onBorrar, onForward, onLog }) => {
     const { filtros } = useTareasLocales()
     const { esEncargado } = useAuth()
 
@@ -19,11 +19,15 @@ const TareaLocal = ({tareaLocal, textoContinuar, textoBorrar, onContinuar, onBor
     function mostrarBotonAccionContinuar() {
         if (!textoContinuar)
             return false
-        
-        return (
-            parseInt(filtros.estado) === STATUS_TAREA_LOCAL.POR_ATENDERSE && 
-            esEncargado()
-        )
+
+        switch (parseInt(filtros.estado)) {
+            case STATUS_TAREA_LOCAL.POR_ATENDERSE: 
+                return esEncargado()
+            case STATUS_TAREA_LOCAL.TERMINADO :
+                return esEncargado()
+            default:
+                return false
+        }
     }
 
     function mostrarBotonAcccionBorrar() {
@@ -36,12 +40,25 @@ const TareaLocal = ({tareaLocal, textoContinuar, textoBorrar, onContinuar, onBor
         )
     }
 
+    function mostrarBotonAccionForward() {
+        if (!textoForward)
+            return false
+
+        return (
+            parseInt(filtros.estado) === STATUS_TAREA_LOCAL.POR_ATENDERSE && 
+            esEncargado()
+        )
+    }
+
+
     return (
         <Col>
             <Card border={parseInt(tareaLocal.id_tipo_servicio) === TIPOS_SERVICIO.EXPRESS ? 'danger' : ''} >
                 <Card.Header>
                     <div className="d-flex justify-content-between align-items-center olimpio-font-size">
-                        <Card.Subtitle className="text-primary olimpio-font-size">{tareaLocal.estado_tarea}</Card.Subtitle>
+                        <Card.Subtitle className="text-primary olimpio-font-size">
+                            {tareaLocal.estado_tarea}
+                        </Card.Subtitle>
                         <NavLink 
                             onClick={() => onLog(tareaLocal)} 
                             className="link-secondary"
@@ -99,6 +116,21 @@ const TareaLocal = ({tareaLocal, textoContinuar, textoBorrar, onContinuar, onBor
                                         <FaTrashAlt />
                                         <span className="align-middle ms-1">
                                             {textoBorrar}
+                                        </span>
+                                    </small>
+                                </NavLink>
+                            )
+                        }
+                        {
+                            mostrarBotonAccionForward() && (
+                                <NavLink
+                                    onClick={() => onForward(tareaLocal)} 
+                                    className="link-secondary ms-2"
+                                >
+                                    <small>
+                                        <FaShareSquare />
+                                        <span className="align-middle ms-1">
+                                            {textoForward}
                                         </span>
                                     </small>
                                 </NavLink>

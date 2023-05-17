@@ -23,23 +23,45 @@ export async function creaTareaExterna(tareaExterna) {
     }
 }
 
-export async function borraTareaExterna({id_tarea_externa}) {
+export async function borraTareaExterna({id_tarea_externa, id_tarea_local, id_usuario, id_estado_tarea}) {
     try {
-        const response = await fetch(`${getUrlApis()}/tareas-externas/${id_tarea_externa}`, {
-            credentials: 'include',
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id_tarea_externa })
-        })
-
-        if (!response.ok) {
-            const mensaje = `Ocurrió un error: ${response.status}`
-            throw new Error(mensaje)
+        // Si estamos borrando una tarea externa
+        if (!id_tarea_local) {
+            const response = await fetch(`${getUrlApis()}/tareas-externas/${id_tarea_externa}`, {
+                credentials: 'include',
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id_tarea_externa })
+            })
+    
+            if (!response.ok) {
+                const mensaje = `Ocurrió un error: ${response.status}`
+                throw new Error(mensaje)
+            }
+    
+            const json = await response.json()
+            const { data } = json
+            return data
+        // Estamos borrando una tarea local, por tanto tenemos que regresar el 
+        // estado de la tarea local a su estado original y borrar la tarea externa,
+        // para esto, vamos a pasar como argumento del tipo de accion en el PATCH (cancelacion)
+        } else {
+            const response = await fetch(`${getUrlApis()}/tareas-externas/${id_tarea_externa}`, {
+                credentials: 'include',
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id_tarea_externa, id_tarea_local, id_usuario, id_estado_tarea, tipo_accion: 'cancelacion' })
+            })
+    
+            if (!response.ok) {
+                const mensaje = `Ocurrió un error: ${response.status}`
+                throw new Error(mensaje)
+            }
+    
+            const data = await response.json()
+            data.mensaje = 'La tarea externa se canceló exitosamente'
+            return data
         }
-
-        const json = await response.json()
-        const { data } = json
-        return data
     } catch (err) {
         console.log(err)
     }

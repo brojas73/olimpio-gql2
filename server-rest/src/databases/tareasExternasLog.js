@@ -29,7 +29,7 @@ const mainQuery = `
                 on    u.id_usuario = tel.id_usuario
              inner join estado_tarea as estado_final
                on    estado_final.id_estado_tarea = tel.id_estado_tarea_fin
-             inner join estado_tarea as estado_inicial
+             left outer join estado_tarea as estado_inicial
                on    estado_inicial.id_estado_tarea = tel.id_estado_tarea_ini
 `
 

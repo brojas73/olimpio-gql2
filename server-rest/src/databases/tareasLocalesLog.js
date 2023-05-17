@@ -26,9 +26,9 @@ const mainQuery = `
                 on    so.id_sucursal = tl.id_sucursal
              left outer join usuario as u
                 on    u.id_usuario = tll.id_usuario
-             inner join estado_tarea as estado_final
+             inner join estado_tarea_local as estado_final
                on    estado_final.id_estado_tarea = tll.id_estado_tarea_fin
-             inner join estado_tarea as estado_inicial
+             left outer join estado_tarea_local as estado_inicial
                on    estado_inicial.id_estado_tarea = tll.id_estado_tarea_ini
 `
 

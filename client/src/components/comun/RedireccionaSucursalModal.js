@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 
 import { Button, Form, Modal } from 'react-bootstrap'
 
-import SucursalSelect from '../../comun/SucursalSelect'
-import { TAMANO_CONTROLES } from '../../comun/utils'
+import SucursalSelect from './SucursalSelect'
+import { TAMANO_CONTROLES } from './utils'
 
-const RedireccionaSucursalModal = ({mostrar, onConfirmar}) => {
+const RedireccionaSucursalModal = ({mostrar, onConfirmar, title}) => {
     const [formData, setFormData] = useState({
         id_sucursal_redireccion: 0
     })
@@ -56,7 +56,7 @@ const RedireccionaSucursalModal = ({mostrar, onConfirmar}) => {
     return (
         <Modal show={mostrar} onHide={handlerCancelar} backdrop="static"> 
             <Modal.Header>
-                <Modal.Title>Desvío de Tarea Externa</Modal.Title>
+                <Modal.Title>{title}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handlerSubmit}>

@@ -232,6 +232,78 @@ const actualizaEstadoTareaLocal = (idTareaLocal, idUsuario, idEstadoTarea) => {
     })
 }
 
+const redireccionaTareaLocal = (idTareaLocal, idUsuario, idEstadoTarea, idSucursalRedireccion) => {
+    const q1 = `
+        insert into tarea_externa (
+            id_sucursal_origen,
+            ticket,
+            descripcion,
+            id_tipo_trabajo,
+            id_sucursal_destino,
+            id_tarea_local,
+            fecha_requerida,
+            hora_requerida,
+            id_tipo_servicio,
+            id_estado_tarea,
+            id_creado_por,
+            id_modificado_por,
+            estado
+        )
+        select      id_sucursal,
+                    ticket,
+                    descripcion,
+                    id_tipo_trabajo,
+                    ?,                      -- id_sucursal_destino
+                    ?,                      -- id_tarea_local
+                    fecha_requerida,
+                    hora_requerida,
+                    id_tipo_servicio,
+                    1,                      -- id_estado_tarea (PENDIENTE DE RECOLECCION)
+                    ?,                      -- id_creado_por
+                    ?,                      -- id_modificado_por
+                    1                       -- estado
+            from    tarea_local 
+            where   id_tarea_local = ? 
+    `
+
+    const q2 = `
+        update      tarea_local
+            set     id_estado_tarea = ?,
+                    id_modificado_por = ?
+            where   id_tarea_local = ?  
+    `
+
+    return new Promise((resolve, reject) => {
+        pool.query(q1, [idSucursalRedireccion, idTareaLocal, idUsuario, idUsuario, idTareaLocal], (err, _) => {
+            if (err) {
+                console.log(err)
+                return reject({
+                    status: 500,
+                    message: err?.message || err
+                })
+            }
+
+            pool.query(q2, [idEstadoTarea, idUsuario, idTareaLocal], (err, _) => {
+                if (err) {
+                    console.log(err)
+                    return reject({
+                        status: 500,
+                        message: err?.message || err
+                    })
+                }
+
+                return resolve({
+                    status: 200,
+                    mensaje: 'La tarea local se redireccionó exitosamente',
+                    id_tarea_local: idTareaLocal,
+                    id_estado_tarea: idEstadoTarea,
+                    id_sucursal_redireccion: idSucursalRedireccion
+                })
+            })
+        })
+    })
+}
+
 export default {
     tareasLocales,
     tareasLocalesActivas,
@@ -240,4 +312,5 @@ export default {
     creaTareaLocal,
     borraTareaLocal,
     actualizaEstadoTareaLocal,
+    redireccionaTareaLocal
 }

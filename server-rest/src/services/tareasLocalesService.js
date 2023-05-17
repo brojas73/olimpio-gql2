@@ -42,6 +42,14 @@ const actualizaEstadoTareaLocal = async (idTareaLocal, idUsuario, idEstadoTareaL
     }
 }
 
+const redireccionaTareaLocal = async (idTareaLocal, idUsuario, idSucursalRedireccion, idEstadoTarea) => {
+    try {
+        return await DB.redireccionaTareaLocal(idTareaLocal, idUsuario, idEstadoTarea, idSucursalRedireccion)
+    } catch (error) {
+        throw error
+    }
+}
+
 export default {
     tareasLocales,
     tareasLocalesActivas,
@@ -50,4 +58,5 @@ export default {
     creaTareaLocal,
     borraTareaLocal,
     actualizaEstadoTareaLocal,
+    redireccionaTareaLocal
 }

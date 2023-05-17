@@ -18,7 +18,11 @@ const EstadosTareaDropDown = ({onSelect, idSelected }) => {
     <NavDropdown title={titulo} className='olimpio-font-size'>
     {
       estadosTarea 
-        .map(estadoTarea => {
+      .filter(estadoTarea => (
+        parseInt(estadoTarea.id_estado_tarea) !== STATUS_TAREA_LOCAL.CERRADO &&           // No muestro estos estados en la lista
+        parseInt(estadoTarea.id_estado_tarea) !== STATUS_TAREA_LOCAL.REDIRECCIONADO 
+      ))
+      .map(estadoTarea => {
           if (parseInt(estadoTarea.id_estado_tarea) === STATUS_TAREA_LOCAL.TAREAS_ACTIVAS) {                    // Pongo un separador después del título de tareas activas
             return (
               <>

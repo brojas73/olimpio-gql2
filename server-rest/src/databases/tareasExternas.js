@@ -8,6 +8,7 @@ const mainQuery = `
              te.id_tipo_trabajo,
              te.id_sucursal_destino,
              te.id_sucursal_redireccion,
+             te.id_tarea_local,
              te.fecha_requerida,
              te.hora_requerida,
              te.id_tipo_servicio,
@@ -106,7 +107,7 @@ const porAtenderseHoy = (idSucursal) => {
            and   te.id_estado_tarea = 3                        -- Recibidos para atenderse
            and   concat(te.fecha_requerida, ' ', te.hora_requerida) < date_add(curdate(), interval 1 day)
            and   te.id_sucursal_destino = ? 
-        order by te.fecha_creacion  
+        order by te.fecha_requerida  
     `
 
     return new Promise((resolve, reject) => {
@@ -309,6 +310,50 @@ const recolectaRedireccionTareaExterna = (idTareaExterna, idUsuario, idEstadoTar
     })
 }
 
+const cancelaRedireccionTareaLocal = (idTareaExterna, idTareaLocal, idUsuario, idEstadoTarea) => {
+    const q1 = `
+        update   tarea_local
+           set   fecha_modificacion = CURRENT_TIMESTAMP,
+                 id_modificado_por = ?,
+                 id_estado_tarea = ?
+           where id_tarea_local = ?   
+    `
+
+    const q2 = `
+        delete   
+           from  tarea_externa
+           where id_tarea_externa = ?   
+    `
+
+    return new Promise((resolve, reject) => {
+        pool.query(q1, [idUsuario, idEstadoTarea, idTareaLocal], (err, _) => {
+            if (err) {
+                console.log(err)
+                return reject({
+                    status: 500,
+                    message: err?.message || err
+                })
+            }
+
+            pool.query(q2, [idTareaExterna], (err, _) => {
+                if (err) {
+                    console.log(err)
+                    return reject({
+                        status: 500,
+                        message: err?.message || err
+                    })
+                }
+
+                return resolve({
+                    status: 200,
+                    mensaje: 'Se canceló el redireccionamiento de la tarea local exitosamente',
+                    id_tarea_externa: idTareaExterna,
+                })
+            })
+        })
+    })
+}
+
 export default {
     tareasExternas,
     tareasExternasActivas,
@@ -318,5 +363,6 @@ export default {
     borraTareaExterna,
     actualizaEstadoTareaExterna,
     redireccionaTareaExterna,
-    recolectaRedireccionTareaExterna
+    recolectaRedireccionTareaExterna,
+    cancelaRedireccionTareaLocal
 }

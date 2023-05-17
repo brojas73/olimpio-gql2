@@ -4,7 +4,8 @@ export const STATUS_TAREA_LOCAL = {
     TAREAS_ACTIVAS: 0,
     POR_ATENDERSE: 1,
     TERMINADO: 2,
-    ENTREGADO: 3
+    CERRADO: 3,
+    REDIRECCIONADO: 4
 } 
 
 export const TIPOS_SERVICIO = {

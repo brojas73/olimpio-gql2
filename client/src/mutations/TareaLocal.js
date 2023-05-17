@@ -79,4 +79,24 @@ export async function actualizaEstadoTareaLocal({id_tarea_local, id_estado_tarea
     }
 }
 
+export async function redireccionaTareaLocal(tareaLocal) {
+    try {
+        const response = await fetch(`${getUrlApis()}/tareas-locales/${tareaLocal.id_tarea_local}`, {
+            credentials: 'include',
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ...tareaLocal, id_estado_tarea: STATUS_TAREA_LOCAL.REDIRECCIONADO, tipo_accion: 'redireccion'})
+        })
+
+        if (!response.ok) {
+            const { data } = await response.json()
+            throw new Error(data.error)
+        }
+
+        const data = await response.json()
+        return data
+    } catch (err) {
+        console.log(`${err}`)
+    }
+}
 

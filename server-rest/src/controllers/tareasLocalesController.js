@@ -122,7 +122,7 @@ const borraTareaLocal = async (req, res) => {
 const actualizaEstadoTareaLocal = async (req, res) => {
     const { 
         params: { idTareaLocal },
-        body:   { id_estado_tarea, id_usuario }
+        body:   { id_estado_tarea, id_sucursal_redireccion, id_usuario, tipo_accion }
     } = req
     let tareaLocal = {}
 
@@ -156,9 +156,30 @@ const actualizaEstadoTareaLocal = async (req, res) => {
         return
     }
 
+    if (
+        tipo_accion && 
+        !id_sucursal_redireccion
+    ) {
+        res
+            .status(402)
+            .send({
+                status: "FAILED",
+                data: {
+                    error: `
+                        Cuando se está redireccionado una tarea, se requiere el campo id_sucursal_redireccion en el cuerpo de la petición
+                    `
+                }
+            })
+        return
+    }
+
+
     try {
-        const tarea = await tareasLocalesService.actualizaEstadoTareaLocal(idTareaLocal, id_usuario, id_estado_tarea)
-        res.send({status: "OK", data: tarea})
+        if (!tipo_accion)
+            tareaLocal = await tareasLocalesService.actualizaEstadoTareaLocal(idTareaLocal, id_usuario, id_estado_tarea)
+        else if (tipo_accion === 'redireccion')
+            tareaLocal = await tareasLocalesService.redireccionaTareaLocal(idTareaLocal, id_usuario, id_sucursal_redireccion, id_estado_tarea)
+        res.send({status: "OK", data: tareaLocal})
     } catch (error) {
         res
             .status(error?.status || 500)

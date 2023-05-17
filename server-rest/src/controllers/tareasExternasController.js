@@ -125,7 +125,7 @@ const borraTareaExterna = async (req, res) => {
 const actualizaEstadoTareaExterna = async (req, res) => {
     const { 
         params: { idTareaExterna },
-        body:   { id_estado_tarea, id_sucursal_redireccion, id_usuario, tipo_accion }
+        body:   { id_estado_tarea, id_sucursal_redireccion, id_tarea_local, id_usuario, tipo_accion }
     } = req
     let tareaExterna = {}
 
@@ -159,8 +159,10 @@ const actualizaEstadoTareaExterna = async (req, res) => {
         return
     }
 
+    // Si estamos con un redireccionamiento
     if (
         tipo_accion && 
+        (tipo_accion === 'redireccion' || tipo_accion === 'recolecta-redireccion') &&
         !id_sucursal_redireccion
     ) {
         res
@@ -176,6 +178,25 @@ const actualizaEstadoTareaExterna = async (req, res) => {
         return
     }
 
+    // Si estamos con la cancelación de un redireccionamiento de tarea local
+    if (
+        tipo_accion &&
+        tipo_accion === 'cancelacion' &&
+        !id_tarea_local
+    ) {
+        res
+            .status(402)
+            .send({
+                status: "FAILED",
+                data: {
+                    error: `
+                        Cuando se está cancelando la redireccion de una una tarea local, se requiere el campo id_tarea_local en el cuerpo de la petición
+                    `
+                }
+            })
+        return
+    }
+
     try {
         if (!tipo_accion)
             tareaExterna = await tareasExternasService.actualizaEstadoTareaExterna(idTareaExterna, id_usuario, id_estado_tarea)
@@ -183,8 +204,12 @@ const actualizaEstadoTareaExterna = async (req, res) => {
             tareaExterna = await tareasExternasService.redireccionaTareaExterna(idTareaExterna, id_usuario, id_sucursal_redireccion, id_estado_tarea)
         else if (tipo_accion === 'recolecta-redireccion')
             tareaExterna = await tareasExternasService.recolectaRedireccionTareaExterna(idTareaExterna, id_usuario, id_sucursal_redireccion, id_estado_tarea)
+        else if (tipo_accion === 'cancelacion') {
+            tareaExterna = await tareasExternasService.cancelaRedireccionTareaLocal(idTareaExterna, id_tarea_local, id_usuario, id_estado_tarea)
+            console.log('controllers.tareasExternasController.acutalizaEstadoTarea', tareaExterna)
+        }
 
-        res.send({status: "OK", data: tareaExterna})
+        res.send({status: "OK", data: { ...tareaExterna }})
     } catch (error) {
         res
             .status(error?.status || 500)

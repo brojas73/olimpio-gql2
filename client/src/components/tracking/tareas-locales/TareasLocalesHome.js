@@ -14,6 +14,7 @@ import {
     getTituloTareaLocal,
     getTextoConfirmacionTareaLocal,
     getTextoBorrarTareaLocal,
+    getTextoForwardTareaLocal,
     getTextoContinuarTareaLocal,
     filtraTareasLocales
 } from "../../comun/utils"
@@ -30,12 +31,14 @@ import { useMutation, useQueryClient } from "react-query"
 import { 
     actualizaEstadoTareaLocal, 
     borraTareaLocal, 
+    redireccionaTareaLocal
 } from "../../../mutations/TareaLocal"
 
 // Components
 import TareasLocalesHeader from "./TareasLocalesHeader"
 import TareaLocal from "./TareaLocalCard"
 import ConfirmacionModal from '../../comun/ConfirmacionModal'
+import RedireccionaSucursalModal from '../../comun/RedireccionaSucursalModal'
 
 // Constantes
 const TIPO_CONFIRMACION = {
@@ -57,6 +60,7 @@ const TareasLocalesHome = () => {
   
     // Modals
     const [confirmacion, setConfirmacion] = useState({ mensaje: '', mostrar: false })
+    const [modalSucursalRedireccion, setModalSucursalRedireccion] = useState({mostrar: false})
 
     // Queries
     const { data: tareasLocalesActivas, isLoading, refetch } = useQuery(QUERY_TAREAS_LOCALES_ACTIVAS, fetchTareasLocalesActivas)
@@ -83,6 +87,14 @@ const TareasLocalesHome = () => {
             ))
         }
     })
+
+    const { mutate: doRedireccionaTareaLocal } = useMutation ({
+        mutationFn: redireccionaTareaLocal,
+        onSuccess: ({data}) => {
+            queryClient.invalidateQueries({ queryKey: [QUERY_TAREAS_LOCALES_ACTIVAS] })
+        }
+    })
+
     
     // Handlers
     function handleConfirmacion(confirmado) {
@@ -114,6 +126,11 @@ const TareasLocalesHome = () => {
         setConfirmacion(prevValue => ({...prevValue, mensaje: '¿Seguro que quieres borrar la tarea?', mostrar: true}))
         setTipoConfirmacion(TIPO_CONFIRMACION.BORRANDO)
     }
+
+    function handleForward(tareaLocal) {
+        setTareaLocal(tareaLocal)
+        setModalSucursalRedireccion(prevValue => ({...prevValue, mostrar: true}))
+    }
     
     function handleLog(tareaLocal) {
         navigate('/tracking/tareas-locales/bitacora-tarea-local', {
@@ -121,6 +138,20 @@ const TareasLocalesHome = () => {
                 id_tarea_local: tareaLocal.id_tarea_local
             }
         })
+    }
+
+    function handleConfirmarForward(confirmado, idSucursalRedireccion) {
+        // Cierro la modal
+        setModalSucursalRedireccion(prevValue => ({...prevValue, mostrar: false}))
+
+        // Si dieron confirmar en la modal
+        if (confirmado) {
+            return doRedireccionaTareaLocal({
+                id_tarea_local: tareaLocal.id_tarea_local, 
+                id_sucursal_redireccion: parseInt(idSucursalRedireccion), 
+                id_usuario: credenciales.id_usuario
+            })
+        }
     }
 
     function handleRefresh() {
@@ -144,6 +175,12 @@ const TareasLocalesHome = () => {
                 mensaje={confirmacion.mensaje}
                 onConfirmar={handleConfirmacion}
             />
+
+            <RedireccionaSucursalModal 
+                mostrar={modalSucursalRedireccion.mostrar}
+                onConfirmar={handleConfirmarForward}
+                title="Desvío de Tarea Local"
+            />
     
             <TareasLocalesHeader 
                 titulo={getTituloTareaLocal(filtros.estado)} 
@@ -158,8 +195,10 @@ const TareasLocalesHome = () => {
                         tareaLocal={tarea} 
                         textoContinuar={getTextoContinuarTareaLocal(filtros.estado)}
                         textoBorrar={getTextoBorrarTareaLocal(filtros.estado)}
+                        textoForward={getTextoForwardTareaLocal(filtros.estado)}
                         onContinuar={handleContinuar}
                         onBorrar={handleBorrar}
+                        onForward={handleForward}
                         onLog={handleLog}
                         key={tarea.id_tarea_local} 
                     />

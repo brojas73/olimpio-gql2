@@ -359,6 +359,18 @@ export function getTextoConfirmacionTareaExterna(idEstadoActual, esRedireccionad
   }
 }
 
+export function getTextoConfirmacionBorrarTareaExterna(tareaExterna, idEstadoActual) {
+  if (parseInt(idEstadoActual) === STATUS_TAREA.PENDIENTE_RECOLECCION) {
+    if (tareaExterna.id_tarea_local) {
+      return '¿Seguro que quieres cancelar el desvío de la tarea?'
+    }
+
+    return '¿Seguro que quieres borrar la tarea?'
+  }
+
+  return 'Confirmación'
+}
+
 export function getTextoContinuarTareaExterna(idEstadoActual, esRedireccionadaAMaquila) {
 
   switch (parseInt(idEstadoActual)) {
@@ -383,8 +395,8 @@ export function getTextoContinuarTareaExterna(idEstadoActual, esRedireccionadaAM
   }
 }
 
-export function getTextoBorrarTareaExterna(idEstadoActual) {
-  return (parseInt(idEstadoActual) === STATUS_TAREA.PENDIENTE_RECOLECCION) ? 'Borrar' : null 
+export function getTextoBorrarTareaExterna(tareaExterna, idEstadoActual) {
+  return (parseInt(idEstadoActual) === STATUS_TAREA.PENDIENTE_RECOLECCION) ? (tareaExterna.id_tarea_local ? 'Cancelar' : 'Borrar') : null 
 }
 
 export function getTextoForwardTareaExterna(idEstadoActual) {
@@ -452,7 +464,7 @@ export function getSiguienteEstadoTareaLocal(idEstadoActual) {
     case STATUS_TAREA_LOCAL.POR_ATENDERSE:
       return STATUS_TAREA_LOCAL.TERMINADO
     case STATUS_TAREA_LOCAL.TERMINADO:
-      return STATUS_TAREA_LOCAL.TERMINADO
+      return STATUS_TAREA_LOCAL.CERRADO
     default:
       return null
   }
@@ -462,8 +474,10 @@ export function getTextoConfirmacionTareaLocal(idEstadoActual) {
   switch (parseInt(idEstadoActual)) {
       case STATUS_TAREA_LOCAL.POR_ATENDERSE:
           return '¿Seguro que quieres terminar la tarea?'
+      case STATUS_TAREA_LOCAL.TERMINADO:
+        return '¿Seguro que quieres cerrar la tarea?'
       default:
-          return 'Desconocido'
+        return 'Desconocido'
   }
 }
 
@@ -471,8 +485,10 @@ export function getTextoContinuarTareaLocal(idEstadoActual) {
   switch (parseInt(idEstadoActual)) {
       case STATUS_TAREA_LOCAL.POR_ATENDERSE:
           return 'Terminar'
+      case STATUS_TAREA_LOCAL.TERMINADO:
+        return 'Cerrar'
       default:
-          return 'Desconocido'
+        return 'Desconocido'
   }
 }
 
@@ -480,6 +496,9 @@ export function getTextoBorrarTareaLocal(idEstadoActual) {
   return (parseInt(idEstadoActual) === STATUS_TAREA_LOCAL.POR_ATENDERSE) ? 'Borrar' : null 
 }
 
+export function getTextoForwardTareaLocal(idEstadoActual) {
+  return (parseInt(idEstadoActual) === STATUS_TAREA_LOCAL.POR_ATENDERSE) ? 'Desviar' : null 
+}
 
 export function filtraTareasLocales(tareasActivas, filtros, sucursalActual) {
   const tareasFiltradas = tareasActivas.filter(tarea => 
@@ -490,11 +509,13 @@ export function filtraTareasLocales(tareasActivas, filtros, sucursalActual) {
   switch (parseInt(filtros.estado)) {
       case STATUS_TAREA_LOCAL.POR_ATENDERSE:
           return tareasFiltradas.filter(tarea => (
-            parseInt(tarea.id_estado_tarea) === STATUS_TAREA_LOCAL.POR_ATENDERSE
-        ))
+            parseInt(tarea.id_estado_tarea) === STATUS_TAREA_LOCAL.POR_ATENDERSE &&
+            parseInt(tarea.id_sucursal) === parseInt(sucursalActual) 
+          ))
       case STATUS_TAREA_LOCAL.TERMINADO:
           return tareasFiltradas.filter(tarea => (
-            parseInt(tarea.id_estado_tarea) === STATUS_TAREA_LOCAL.TERMINADO
+            parseInt(tarea.id_estado_tarea) === STATUS_TAREA_LOCAL.TERMINADO &&
+            parseInt(tarea.id_sucursal) === parseInt(sucursalActual) 
           ))
       default:
           return tareasFiltradas

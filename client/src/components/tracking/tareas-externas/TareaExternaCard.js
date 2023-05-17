@@ -9,6 +9,8 @@ import {
     formateaFecha, 
     formateaFechaHora
 } from '../../comun/utils'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faBan } from "@fortawesome/free-solid-svg-icons"
 
 const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, onContinuar, onBorrar, onForward, onLog, onRecolectarForwarded }) => {
     const { filtros } = useTareasExternas()
@@ -73,7 +75,16 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
             <Card border={parseInt(tareaExterna.id_tipo_servicio) === TIPOS_SERVICIO.EXPRESS ? 'danger' : ''} >
                 <Card.Header>
                     <div className="d-flex justify-content-between align-items-center olimpio-font-size">
-                        <Card.Subtitle className="text-primary olimpio-font-size">{tareaExterna.estado_tarea}</Card.Subtitle>
+                        <Card.Subtitle className="text-primary olimpio-font-size">
+                            {tareaExterna.estado_tarea}
+                            {
+                                tareaExterna.id_tarea_local && (
+                                    <>
+                                        &nbsp; (Desviada)
+                                    </>
+                                )
+                            }
+                        </Card.Subtitle>
                         <NavLink 
                             onClick={() => onLog(tareaExterna)} 
                             className="link-secondary"
@@ -135,7 +146,13 @@ const TareaExterna = ({tareaExterna, textoContinuar, textoBorrar, textoForward, 
                                     className="link-danger"
                                 >
                                     <small>
-                                        <FaTrashAlt />
+                                        {
+                                            tareaExterna.id_tarea_local ? (
+                                                <FontAwesomeIcon icon={faBan}/>
+                                            ) : (
+                                                <FaTrashAlt />
+                                            )
+                                        }
                                         <span className="align-middle ms-1">
                                             {textoBorrar}
                                         </span>

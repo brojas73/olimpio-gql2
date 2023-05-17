@@ -57,6 +57,14 @@ const recolectaRedireccionTareaExterna = async (idTareaExterna, idUsuario, idSuc
     }
 }
 
+const cancelaRedireccionTareaLocal = async (idTareaExterna, idTareaLocal, idUsuario, idEstadoTarea) => {
+    try {
+        return DB.cancelaRedireccionTareaLocal(idTareaExterna, idTareaLocal, idUsuario, idEstadoTarea)
+    } catch (error) {
+        throw error
+    }
+}
+
 export default {
     tareasExternas,
     tareasExternasActivas,
@@ -66,5 +74,6 @@ export default {
     borraTareaExterna,
     actualizaEstadoTareaExterna,
     redireccionaTareaExterna,
-    recolectaRedireccionTareaExterna
+    recolectaRedireccionTareaExterna,
+    cancelaRedireccionTareaLocal
 }

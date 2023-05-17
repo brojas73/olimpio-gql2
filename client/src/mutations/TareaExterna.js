@@ -58,7 +58,8 @@ export async function borraTareaExterna({id_tarea_externa, id_tarea_local, id_us
                 throw new Error(mensaje)
             }
     
-            const data = await response.json()
+            const json = await response.json()
+            const { data } = json
             data.mensaje = 'La tarea externa se canceló exitosamente'
             return data
         }

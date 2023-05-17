@@ -74,7 +74,7 @@ const TareasExternasHome = () => {
     // Mutations
     const { mutate: doBorraTareaExterna } = useMutation ({
         mutationFn: borraTareaExterna,
-        onSuccess: ({data}) => {
+        onSuccess: (data) => {
             queryClient.setQueriesData(QUERY_TAREAS_EXTERNAS_ACTIVAS, (current) => (
                 current.filter(tareaExterna => (parseInt(tareaExterna.id_tarea_externa) !== parseInt(data.id_tarea_externa)))
             ))

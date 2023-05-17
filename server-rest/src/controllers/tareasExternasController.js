@@ -114,7 +114,7 @@ const borraTareaExterna = async (req, res) => {
 
     try {
         const tareaExterna = await tareasExternasService.borraTareaExterna(idTareaExterna)
-        return res.send({status: "OK", data: tareaExterna})
+        res.send({ status: "OK", data: tareaExterna})
     } catch (error) {
         res
             .status(error?.status || 500)
@@ -206,10 +206,9 @@ const actualizaEstadoTareaExterna = async (req, res) => {
             tareaExterna = await tareasExternasService.recolectaRedireccionTareaExterna(idTareaExterna, id_usuario, id_sucursal_redireccion, id_estado_tarea)
         else if (tipo_accion === 'cancelacion') {
             tareaExterna = await tareasExternasService.cancelaRedireccionTareaLocal(idTareaExterna, id_tarea_local, id_usuario, id_estado_tarea)
-            console.log('controllers.tareasExternasController.acutalizaEstadoTarea', tareaExterna)
         }
 
-        res.send({status: "OK", data: { ...tareaExterna }})
+        res.send({status: "OK", data: tareaExterna })
     } catch (error) {
         res
             .status(error?.status || 500)

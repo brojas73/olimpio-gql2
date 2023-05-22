@@ -135,6 +135,7 @@ const TareasExternasHome = () => {
                 })
             }
     
+            // Confirmaron el cambio de estado de la tarea externa
             return doActualizaEstadoTareaExterna({
                 id_tarea_externa: tareaExterna.id_tarea_externa, 
                 id_estado_tarea: getSiguienteEstadoTareaExterna(filtros.estado, esRedireccionadaAMaquila(tareaExterna)),

@@ -105,9 +105,31 @@ const porAtenderseHoy = (idSucursal) => {
                     on    so.id_sucursal = te.id_sucursal_origen
            where te.estado = 1
            and   te.id_estado_tarea = 3                        -- Recibidos para atenderse
-           and   concat(te.fecha_requerida, ' ', te.hora_requerida) < date_add(curdate(), interval 1 day)
+--           and   concat(te.fecha_requerida, ' ', te.hora_requerida) < date_add(curdate(), interval 1 day)
            and   te.id_sucursal_destino = ? 
-        order by te.fecha_requerida  
+
+        union
+
+        select   tl.id_tarea_local,
+                 tl.ticket,
+                 tl.descripcion,
+                 concat(tl.fecha_requerida, ' ', tl.hora_requerida) as fecha_requerida,
+                 so.nombre as sucursal_origen,
+                 et.nombre as estado_tarea,
+                 ts.nombre as tipo_servicio,
+                 tt.nombre as tipo_trabajo
+           from  tarea_local tl
+                 inner join estado_tarea et
+                    on    et.id_estado_tarea = tl.id_estado_tarea
+                 inner join tipo_servicio ts
+                    on    ts.id_tipo_servicio = tl.id_tipo_servicio
+                 inner join tipo_trabajo tt
+                    on    tt.id_tipo_trabajo = tl.id_tipo_trabajo
+                 inner join sucursal so
+                    on    so.id_sucursal = tl.id_sucursal
+           where tl.estado = 1
+           and   tl.id_estado_tarea = 1                        -- Por atenderse
+        order by 4  
     `
 
     return new Promise((resolve, reject) => {

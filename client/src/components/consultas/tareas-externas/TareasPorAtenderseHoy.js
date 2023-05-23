@@ -7,7 +7,7 @@ import { useOlimpio } from '../../../context/OlimpioContext'
 import { useConsultas } from '../../../context/ConsultasContext'
 import { fechaFormatter, ticketFormatter} from '../../comun/utils'
 
-import TareaExternaModal from "./TareaExternaModal"
+import TareaModal from "./TareaModal"
 import TareasExternasHeader from './TareasExternasHeader'
 
 import { useQuery } from 'react-query'
@@ -21,11 +21,11 @@ export default function TareasPorAtenderseHoy() {
         [QUERY_TAREAS_POR_ATENDERSE_HOY, sucursalActual], 
         fetchTareasPorAtenderseHoy
     )
-    const [modalTarea, setModalTarea] = useState({mostrar: false, idTareaExterna: 0})
+    const [modalTarea, setModalTarea] = useState({mostrar: false, idTarea: 0})
 
     const tableRowEvents = {
         onDoubleClick: (e, row, rowIndex) => {
-            setModalTarea(prevValue => ({...prevValue, idTareaExterna: row.id_tarea_externa, mostrar: true}))
+            setModalTarea(prevValue => ({...prevValue, idTarea: row.id_tarea_externa, mostrar: true, tipoTarea: row.tipo_tarea}))
         }
     }
 
@@ -57,11 +57,12 @@ export default function TareasPorAtenderseHoy() {
         <>
             {
                 modalTarea.mostrar && (
-                <TareaExternaModal 
-                    mostrar={modalTarea.mostrar} 
-                    idTareaExterna={modalTarea.idTareaExterna}
-                    onClose={() => setModalTarea(prevValue => ({...prevValue, mostrar: false}))} 
-                />
+                    <TareaModal 
+                        mostrar={modalTarea.mostrar} 
+                        idTarea={modalTarea.idTarea}
+                        tipoTarea={modalTarea.tipoTarea}
+                        onClose={() => setModalTarea(prevValue => ({...prevValue, mostrar: false}))} 
+                    />
                 )
             }
 

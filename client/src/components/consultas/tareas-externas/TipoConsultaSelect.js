@@ -5,7 +5,7 @@ import { TIPO_CONSULTA_TE } from "../../comun/utils"
 function getTitulo(id) {
     switch (parseInt(id)) {
         case TIPO_CONSULTA_TE.POR_ATENDERSE_HOY:
-            return 'Tareas por Atenderse'
+            return 'Tareas por Atenderse Hoy'
         case TIPO_CONSULTA_TE.BITACORA:
             return 'Bitácora de Tareas Externas'
         default:

@@ -11,7 +11,7 @@ import { fechaFormatter } from '../../comun/utils'
 import { useQuery } from 'react-query'
 import { fetchTareasExternasLog, QUERY_TAREAS_EXTERNAS_LOG } from '../../../queries/TareaExternaLog'
 
-import TareaExternaModal from "./TareaExternaModal"
+import TareaModal from "./TareaModal"
 import TareasExternasHeader from './TareasExternasHeader'
 
 export default function Bitacora() {
@@ -19,11 +19,11 @@ export default function Bitacora() {
   const { filtros } = useConsultas()
 
   const {isLoading, data: tareasExternasLog, refetch} = useQuery(QUERY_TAREAS_EXTERNAS_LOG, fetchTareasExternasLog)
-  const [modalTarea, setModalTarea] = useState({mostrar: false, idTareaExterna: 0})
+  const [modalTarea, setModalTarea] = useState({mostrar: false, idTarea: 0})
 
   const tableRowEvents = {
     onDoubleClick: (e, row, rowIndex) => {
-      setModalTarea(prevValue => ({...prevValue, idTareaExterna: row.id_tarea_externa, mostrar: true}))
+      setModalTarea(prevValue => ({...prevValue, idTarea: row.id_tarea_externa, mostrar: true}))
     }
   }
 
@@ -57,9 +57,9 @@ export default function Bitacora() {
     <>
       {
         modalTarea.mostrar && (
-          <TareaExternaModal 
+          <TareaModal 
             mostrar={modalTarea.mostrar} 
-            idTareaExterna={modalTarea.idTareaExterna}
+            idTarea={modalTarea.idTarea}
             onClose={() => setModalTarea(prevValue => ({...prevValue, mostrar: false}))} 
           />
         )

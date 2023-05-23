@@ -36,7 +36,7 @@ const tareaLocal = async (req, res) => {
         params: { idTareaLocal }
     } = req
 
-    if (!idTareaLoca) {
+    if (!idTareaLocal) {
         res
             .status(400)
             .send({
@@ -48,7 +48,7 @@ const tareaLocal = async (req, res) => {
         return
     }
     
-    const tarea = await tareasLocalService.tareaLocal(idTareaLocal)
+    const tarea = await tareasLocalesService.tareaLocal(idTareaLocal)
     res.send({status: "OK", data: tarea})
 }
 

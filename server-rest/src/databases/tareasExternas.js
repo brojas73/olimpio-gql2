@@ -86,54 +86,61 @@ const tareasExternasActivas = () => {
 
 const porAtenderseHoy = (idSucursal) => {
     const q = `
-        select   te.id_tarea_externa,
-                 te.ticket,
-                 te.descripcion,
-                 concat(te.fecha_requerida, ' ', te.hora_requerida) as fecha_requerida,
-                 so.nombre as sucursal_origen,
-                 et.nombre as estado_tarea,
-                 ts.nombre as tipo_servicio,
-                 tt.nombre as tipo_trabajo
-           from  tarea_externa te
-                 inner join estado_tarea et
-                    on    et.id_estado_tarea = te.id_estado_tarea
-                 inner join tipo_servicio ts
-                    on    ts.id_tipo_servicio = te.id_tipo_servicio
-                 inner join tipo_trabajo tt
-                    on    tt.id_tipo_trabajo = te.id_tipo_trabajo
-                 inner join sucursal so
-                    on    so.id_sucursal = te.id_sucursal_origen
-           where te.estado = 1
-           and   te.id_estado_tarea = 3                        -- Recibidos para atenderse
---           and   concat(te.fecha_requerida, ' ', te.hora_requerida) < date_add(curdate(), interval 1 day)
-           and   te.id_sucursal_destino = ? 
+        select   *
+           from  (
 
-        union
+                    select  te.id_tarea_externa,
+                            te.ticket,
+                            te.descripcion,
+                            concat(te.fecha_requerida, ' ', te.hora_requerida) as fecha_requerida,
+                            so.nombre as sucursal_origen,
+                            et.nombre as estado_tarea,
+                            ts.nombre as tipo_servicio,
+                            tt.nombre as tipo_trabajo,
+                            'E' as tipo_tarea
+                    from  tarea_externa te
+                            inner join estado_tarea et
+                                on    et.id_estado_tarea = te.id_estado_tarea
+                            inner join tipo_servicio ts
+                                on    ts.id_tipo_servicio = te.id_tipo_servicio
+                            inner join tipo_trabajo tt
+                                on    tt.id_tipo_trabajo = te.id_tipo_trabajo
+                            inner join sucursal so
+                                on    so.id_sucursal = te.id_sucursal_origen
+                    where te.estado = 1
+                    and   te.id_estado_tarea = 3                        -- Recibidos para atenderse
+                    and   concat(te.fecha_requerida, ' ', te.hora_requerida) < date_add(curdate(), interval 3 day)
+                    and   te.id_sucursal_destino = ? 
 
-        select   tl.id_tarea_local,
-                 tl.ticket,
-                 tl.descripcion,
-                 concat(tl.fecha_requerida, ' ', tl.hora_requerida) as fecha_requerida,
-                 so.nombre as sucursal_origen,
-                 et.nombre as estado_tarea,
-                 ts.nombre as tipo_servicio,
-                 tt.nombre as tipo_trabajo
-           from  tarea_local tl
-                 inner join estado_tarea et
-                    on    et.id_estado_tarea = tl.id_estado_tarea
-                 inner join tipo_servicio ts
-                    on    ts.id_tipo_servicio = tl.id_tipo_servicio
-                 inner join tipo_trabajo tt
-                    on    tt.id_tipo_trabajo = tl.id_tipo_trabajo
-                 inner join sucursal so
-                    on    so.id_sucursal = tl.id_sucursal
-           where tl.estado = 1
-           and   tl.id_estado_tarea = 1                        -- Por atenderse
-        order by 4  
+                    union
+
+                    select   tl.id_tarea_local,
+                            tl.ticket,
+                            tl.descripcion,
+                            concat(tl.fecha_requerida, ' ', tl.hora_requerida) as fecha_requerida,
+                            so.nombre as sucursal_origen,
+                            et.nombre as estado_tarea,
+                            ts.nombre as tipo_servicio,
+                            tt.nombre as tipo_trabajo,
+                            'L' as tipo_tarea
+                    from  tarea_local tl
+                            inner join estado_tarea_local et
+                                on    et.id_estado_tarea = tl.id_estado_tarea
+                            inner join tipo_servicio ts
+                                on    ts.id_tipo_servicio = tl.id_tipo_servicio
+                            inner join tipo_trabajo tt
+                                on    tt.id_tipo_trabajo = tl.id_tipo_trabajo
+                            inner join sucursal so
+                                on    so.id_sucursal = tl.id_sucursal
+                    where tl.estado = 1
+                    and   tl.id_estado_tarea = 1                        -- Por atenderse
+                    and   tl.id_sucursal = ? 
+                 ) x  
+        order by fecha_requerida
     `
 
     return new Promise((resolve, reject) => {
-        pool.query(q, [idSucursal], (err, data) => {
+        pool.query(q, [idSucursal, idSucursal], (err, data) => {
             if (err) {
                 console.log(err)
                 return reject({

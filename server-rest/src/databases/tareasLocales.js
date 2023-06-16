@@ -41,13 +41,14 @@ const tareasLocales = () => {
         pool.query(q, (err, data) => {
             if (err) {
                 console.log(err)
-                return reject({
+                reject({
                     status: 500,
                     message: err?.message || err
                 })
+                return
             }
 
-            return resolve(JSON.parse(JSON.stringify(data)))
+            resolve(JSON.parse(JSON.stringify(data)))
         })
     })
 }
@@ -64,13 +65,14 @@ const tareasLocalesActivas = () => {
         pool.query(q, (err, data) => {
             if (err) {
                 console.log(err)
-                return reject({
+                reject({
                     status: 500,
                     message: err?.message || err
                 })
+                return
             }
 
-            return resolve(JSON.parse(JSON.stringify(data)))
+            resolve(JSON.parse(JSON.stringify(data)))
         })
     })
 }
@@ -105,13 +107,14 @@ const porAtenderseHoy = (idSucursal) => {
         pool.query(q, [idSucursal], (err, data) => {
             if (err) {
                 console.log(err)
-                return reject({
+                reject({
                     status: 500,
                     message: err?.message || err
                 })
+                return
             }
 
-            return resolve(JSON.parse(JSON.stringify(data)))
+            resolve(JSON.parse(JSON.stringify(data)))
         })
     })
 }
@@ -126,13 +129,14 @@ const tareaLocal = (idTareaLocal) => {
         pool.query(q, [idTareaLocal], (err, data) => {
             if (err) {
                 console.log(err)
-                return reject({
+                reject({
                     status: 500,
                     message: err?.message || err
                 })
+                return
             }
 
-            return resolve(JSON.parse(JSON.stringify(data)))
+            resolve(JSON.parse(JSON.stringify(data)))
         })
     })
 }
@@ -167,13 +171,15 @@ const creaTareaLocal = (tareaLocal) => {
     return new Promise((resolve, reject) => {
         pool.query(q, [values], (err, data) => {
             if (err) {
-                return reject({
+                console.log(err)
+                reject({
                     status: 500,
                     message: err?.sqlMessage || err
                 })
+                return
             }
 
-            return resolve(JSON.parse(JSON.stringify(data)))
+            resolve(JSON.parse(JSON.stringify(data)))
         })
     })
 }
@@ -188,13 +194,15 @@ const borraTareaLocal = (idTareaLocal) => {
     return new Promise((resolve, reject) => {
         pool.query(q, [idTareaLocal], (err, _) => {
             if (err) {
-                return reject({
+                console.log(err)
+                reject({
                     status: 500,
                     message: err?.message || err
                 })
+                return
             }
 
-            return resolve({
+            resolve({
                 status: 200,
                 mensaje: 'La tarea local se borró exitosamente',
                 id_tarea_local: idTareaLocal
@@ -216,13 +224,14 @@ const actualizaEstadoTareaLocal = (idTareaLocal, idUsuario, idEstadoTarea) => {
         pool.query(q, [idUsuario, idEstadoTarea, idTareaLocal], (err, data) => {
             if (err) {
                 console.log(err)
-                return reject({
+                reject({
                     status: 500,
                     message: err?.message || err
                 })
+                return
             }
 
-            return resolve({
+            resolve({
                 status: 200,
                 mensaje: 'El estado de la tarea se actualizó exitosamente',
                 id_tarea_local: idTareaLocal,
@@ -277,22 +286,24 @@ const redireccionaTareaLocal = (idTareaLocal, idUsuario, idEstadoTarea, idSucurs
         pool.query(q1, [idSucursalRedireccion, idTareaLocal, idUsuario, idUsuario, idTareaLocal], (err, _) => {
             if (err) {
                 console.log(err)
-                return reject({
+                reject({
                     status: 500,
                     message: err?.message || err
                 })
+                return
             }
 
             pool.query(q2, [idEstadoTarea, idUsuario, idTareaLocal], (err, _) => {
                 if (err) {
                     console.log(err)
-                    return reject({
+                    reject({
                         status: 500,
                         message: err?.message || err
                     })
+                    return
                 }
 
-                return resolve({
+                resolve({
                     status: 200,
                     mensaje: 'La tarea local se redireccionó exitosamente',
                     id_tarea_local: idTareaLocal,

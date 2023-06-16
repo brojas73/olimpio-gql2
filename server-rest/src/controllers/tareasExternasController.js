@@ -69,7 +69,7 @@ const creaTareaExterna = async (req, res) => {
         !body.id_creado_por ||
         !body.estado
     ) {
-        return res
+        res
             .status(400)
             .send({
                 status: "FAILED",
@@ -87,9 +87,11 @@ const creaTareaExterna = async (req, res) => {
 
     try {
         const tareaExterna = await tareasExternasService.creaTareaExterna(req.body)
-        return res.status(201).send({status: "OK", data: tareaExterna})
+        res
+            .status(201)
+            .send({status: "OK", data: tareaExterna})
     } catch (error) {
-        return res
+        res
             .status(error?.status || 500)
             .send({status: "FAILED", data: {error: error?.message || error}})
     }
@@ -114,7 +116,8 @@ const borraTareaExterna = async (req, res) => {
 
     try {
         const tareaExterna = await tareasExternasService.borraTareaExterna(idTareaExterna)
-        res.send({ status: "OK", data: tareaExterna})
+        res
+            .send({ status: "OK", data: tareaExterna})
     } catch (error) {
         res
             .status(error?.status || 500)

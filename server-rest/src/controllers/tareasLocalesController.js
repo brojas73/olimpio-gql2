@@ -66,7 +66,7 @@ const creaTareaLocal = async (req, res) => {
         !body.id_estado_tarea ||
         !body.id_creado_por
     ) {
-        return res
+        res
             .status(400)
             .send({
                 status: "FAILED",
@@ -78,7 +78,6 @@ const creaTareaLocal = async (req, res) => {
                     `
                 }
             })
-
         return
     }
 
@@ -111,7 +110,7 @@ const borraTareaLocal = async (req, res) => {
 
     try {
         const tarea = await tareasLocalesService.borraTareaLocal(idTareaLocal)
-        return res.send({status: "OK", data: tarea})
+        res.send({status: "OK", data: tarea})
     } catch (error) {
         res
             .status(error?.status || 500)

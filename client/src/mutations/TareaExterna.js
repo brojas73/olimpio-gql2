@@ -19,7 +19,7 @@ export async function creaTareaExterna(tareaExterna) {
         const data = await response.json()
         return data
     } catch (err) {
-        console.log(`${err}`)
+        throw new Error(err)
     }
 }
 
@@ -64,7 +64,7 @@ export async function borraTareaExterna({id_tarea_externa, id_tarea_local, id_us
             return data
         }
     } catch (err) {
-        console.log(err)
+        throw new Error(err)
     }
 }
 
@@ -113,7 +113,7 @@ export async function actualizaEstadoTareaExterna({id_tarea_externa, id_estado_t
         data.mensaje = mensaje
         return data
     } catch (err) {
-        console.log(err)
+        throw new Error(err)
     }
 }
 
@@ -135,7 +135,7 @@ export async function redireccionaTareaExterna({id_tarea_externa, id_sucursal_re
         data.mensaje = 'La tarea se redireccionó con éxito'
         return data
     } catch (err) {
-        console.log(err)
+        throw new Error(err)
     }
 }
 
@@ -157,7 +157,7 @@ export async function recolectaTareaExternaForwarded({id_tarea_externa, id_estad
         data.mensaje = 'La tarea se recolectó con éxito'
         return data
     } catch (err) {
-        console.log(err)
+        throw new Error(err)
     }
 }
 

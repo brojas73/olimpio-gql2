@@ -23,7 +23,7 @@ export async function login(credenciales) {
             return { status, data }
         }
     } catch (err) {
-        console.log(err)
+        throw new Error(err)
     }
 }
 
@@ -37,7 +37,7 @@ export async function logout() {
             }
         })
     } catch (err) {
-        console.log(err)
+        throw new Error(err)
     }
 }
 
@@ -51,6 +51,6 @@ export async function me() {
             }
         })
     } catch (err) {
-        console.log(err)
+        throw new Error(err)
     }
 }

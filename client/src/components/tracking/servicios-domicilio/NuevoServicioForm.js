@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { Button, Form, Row, Col, Navbar, Accordion } from 'react-bootstrap'
+import { Button, Form, Row, Col, Navbar, Accordion, Alert } from 'react-bootstrap'
 
 import { useOlimpio } from '../../../context/OlimpioContext'
 import { useAuth } from '../../../hooks/useAuth'
@@ -22,6 +22,13 @@ const NuevoServicioForm = ({onExito}) => {
   const { sucursalActual } = useOlimpio()
   const { credenciales } = useAuth()
   const [tituloAcordeon, setTituloAcordeon] = useState('Mostrar más...')
+
+  // Modals
+  const [alerta, setAlerta] = useState({
+    mostrar: false,
+    mensaje: '',
+    tipo: 'danger'
+  })
 
   const [servicioDomicilio, setServicioDomicilio] = useState({
     tipo_servicio: '',
@@ -45,8 +52,12 @@ const NuevoServicioForm = ({onExito}) => {
     mutationFn: creaServicioDomicilio,
     onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: [QUERY_SERVICIOS_DOMICILIO_ACTIVOS] })
-      }
-    })
+        navigate(-1)
+    },
+    onError: (err) => {
+        despliegaAlerta(err.message, 'danger')
+    }
+  })
 
   function handleChange(e) {
     setServicioDomicilio(prevValue => ({...prevValue, [e.target.name]: e.target.value.toUpperCase()}))
@@ -135,12 +146,27 @@ const NuevoServicioForm = ({onExito}) => {
         } 
 
         doCreaServicioDomicilio(nuevoServicioDomicilio)
-        navigate(-1)
     }
   }
 
+  // Funciones
+  function despliegaAlerta(mensaje, tipoAlerta='success') {
+    setAlerta(prevValue => ({...prevValue, mostrar: true, mensaje: mensaje, tipo: tipoAlerta}))
+    window.setTimeout(() => {
+        setAlerta(prevValue => ({...prevValue, mostrar: false}))
+    }, 10000)
+  }  
+    
   return (
     <>
+        <Alert
+            show={alerta.mostrar} 
+            variant={alerta.tipo} 
+            onClose={() => setAlerta(prevValue => ({...prevValue, mostrar: false}))} 
+            dismissible
+        >
+            {alerta.mensaje}
+        </Alert>
         <Navbar>
             <Button variant="dark" size={TAMANO_CONTROLES}>
                 Nuevo Servicio a Domicilio

@@ -22,7 +22,7 @@ const TareaModal = ({mostrar, idTarea, onClose, tipoTarea}) => {
   if (isLoadingTareasExternas || isLoadingTareasLocales) return <Spinner animation="border" />
 
   // Obtengo el primer elemento del resultado
-  const tarea = tipoTarea === 'E' ? tareasExternas[0] : tareasLocales[0]
+  const tarea = (tipoTarea === 'E' ? tareasExternas[0] : tareasLocales[0])
 
   return (
     <Modal show={mostrar} onHide={onClose} animation={true}> 
@@ -55,10 +55,10 @@ const TareaModal = ({mostrar, idTarea, onClose, tipoTarea}) => {
                             }
                             {
                               (tipoTarea === 'E' && esRedireccionada(tarea)) && (
-                                    <>
-                                        <FaArrowAltCircleRight className="mx-1"/>{tarea.sucursal_redireccion}
-                                    </>
-                                )
+                                <>
+                                  <FaArrowAltCircleRight className="mx-1"/>{tarea.sucursal_redireccion}
+                                </>
+                              )
                             }
                         </Card.Subtitle>
                     </div>
@@ -69,16 +69,21 @@ const TareaModal = ({mostrar, idTarea, onClose, tipoTarea}) => {
               </Card.Header>
               <Card.Body className="olimpio-font-size">
                     <Card.Subtitle className="olimpio-font-size">
-                        {tarea.tipo_trabajo} { " - "}
-                        {tarea.tipo_servicio}
+                      {tarea.tipo_trabajo} { " - "}
+                      {tarea.tipo_servicio}
                     </Card.Subtitle>
                     <Card.Text>
-                        {tarea.descripcion}
+                      {tarea.descripcion}
                     </Card.Text>
                 </Card.Body>
               <Card.Footer className="d-flex justify-content-between align-items-center olimpio-font-size">
-                <div>
-                  <small><FaRegCalendarAlt /> {formateaFechaHora(tarea.fecha_requerida, tarea.hora_requerida)}</small>
+                <div className="text-danger">
+                  <small>
+                      <FaRegCalendarAlt /> 
+                      <span className="align-middle ms-1">
+                          {formateaFechaHora(tarea.fecha_requerida, tarea.hora_requerida)}
+                      </span>
+                  </small>
                 </div>
               </Card.Footer>
           </Card>

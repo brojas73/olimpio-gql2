@@ -231,7 +231,7 @@ export function getTextoContinuarServicioDomicilio(idEstadoActual) {
       case STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_SUCURSAL:
           return 'Entregar'
       case STATUS_SERVICIO_DOMICILIO.RECIBIDO_EN_SUCURSAL:
-          return 'Terminar'
+          return 'Recibir'
       case STATUS_SERVICIO_DOMICILIO.PENDIENTE_RECOLECCION_EN_SUCURSAL:
           return 'Recolectar'
       case STATUS_SERVICIO_DOMICILIO.RECOLECTADO_PARA_ENTREGA_CLIENTE:

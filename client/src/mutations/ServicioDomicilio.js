@@ -18,7 +18,7 @@ export async function creaServicioDomicilio(servicioDomicilio) {
         const data = await response.json()
         return data
     } catch (err) {
-        console.log(err)
+        throw new Error(err)
     }
 }
 
@@ -39,7 +39,7 @@ export async function actualizaEstado({id_servicio_domicilio, id_estado_servicio
         const data = await response.json()
         return data
     } catch (err) {
-        console.log(err)
+        throw new Error(err)
     }
 }
 
@@ -60,7 +60,7 @@ export async function actualizaInfoPago({id_servicio_domicilio, id_usuario, info
         const data = await response.json()
         return data
     } catch (err) {
-        console.log(err)
+        throw new Error(err)
     }
 }
 
@@ -81,7 +81,7 @@ export async function actualizaFechaRequerida({id_servicio_domicilio, id_usuario
         const data = await response.json()
         return data
     } catch (err) {
-        console.log(err)
+        throw new Error(err)
     }
 }
 
@@ -102,7 +102,7 @@ export async function actualizaInformacionGeneral({id_servicio_domicilio, id_usu
         const data = await response.json()
         return data
     } catch (err) {
-        console.log(err)
+        throw new Error(err)
     }
 }
 
@@ -129,7 +129,7 @@ export async function cancelaServicioDomicilio({id_servicio_domicilio, id_usuari
         const data = await response.json()
         return data
     } catch (err) {
-        console.log(err)
+        throw new Error(err)
     }
 }
 
@@ -151,7 +151,7 @@ export async function borraServicioDomicilio({id_servicio_domicilio}) {
         const { data } = json
         return data
     } catch (err) {
-        console.log(err)
+        throw new Error(err)
     }
 }
 

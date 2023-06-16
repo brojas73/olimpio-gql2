@@ -1,8 +1,12 @@
-import TareasExternasHeader from "./TareasExternasHeader"
+// import TareasExternasHeader from "./TareasExternasHeader"
+import TareasPorAtenderseHoy from "./TareasPorAtenderseHoy"
 
 const ConsultasTareasExternasHome = () => {
   return (
-    <TareasExternasHeader />
+    <>
+      {/* <TareasExternasHeader /> */}
+      <TareasPorAtenderseHoy />
+    </>
   )
 }
 

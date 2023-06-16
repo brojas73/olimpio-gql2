@@ -59,7 +59,6 @@ const TareasExternasHome = () => {
     const { credenciales } = useAuth()
 
     // State
-    // const [idTareaExterna, setIdTareaExterna] = useState(0)
     const [tareaExterna, setTareaExterna] = useState(0)
     const [idSucursalRedireccion, setIdSucursalRedireccion] = useState(0)
     const [tipoConfirmacion, setTipoConfirmacion] = useState(null)
@@ -69,41 +68,47 @@ const TareasExternasHome = () => {
     const [modalSucursalRedireccion, setModalSucursalRedireccion] = useState({mostrar: false})
 
     // Queries
-    const { data: tareasExternasActivas, isLoading, refetch } = useQuery(QUERY_TAREAS_EXTERNAS_ACTIVAS, fetchTareasExternasActivas)
+    const { data: tareasExternasActivas, isLoading, isError, error, refetch } = useQuery(QUERY_TAREAS_EXTERNAS_ACTIVAS, fetchTareasExternasActivas)
 
     // Mutations
     const { mutate: doBorraTareaExterna } = useMutation ({
         mutationFn: borraTareaExterna,
-        onSuccess: (data) => {
-            queryClient.setQueriesData(QUERY_TAREAS_EXTERNAS_ACTIVAS, (current) => (
-                current.filter(tareaExterna => (parseInt(tareaExterna.id_tarea_externa) !== parseInt(data.id_tarea_externa)))
-            ))
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: [QUERY_TAREAS_EXTERNAS_ACTIVAS] })
         }
+        // onSuccess: (data) => {
+        //     queryClient.setQueriesData(QUERY_TAREAS_EXTERNAS_ACTIVAS, (current) => (
+        //         current.filter(tareaExterna => (parseInt(tareaExterna.id_tarea_externa) !== parseInt(data.id_tarea_externa)))
+        //     ))
+        // }
     })
 
     const { mutate: doActualizaEstadoTareaExterna } = useMutation ({
         mutationFn: actualizaEstadoTareaExterna,
-        onSuccess: ({data}) => {
-            queryClient.setQueriesData(QUERY_TAREAS_EXTERNAS_ACTIVAS, (current) => (
-                current.map(tareaExterna => (
-                    parseInt(tareaExterna.id_tarea_externa) === parseInt(data.id_tarea_externa) ? 
-                        {...tareaExterna, id_estado_tarea: data.id_estado_tarea} : 
-                        tareaExterna 
-                ))
-            ))
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: [QUERY_TAREAS_EXTERNAS_ACTIVAS] })
         }
+        // onSuccess: ({data}) => {
+        //     queryClient.setQueriesData(QUERY_TAREAS_EXTERNAS_ACTIVAS, (current) => (
+        //         current.map(tareaExterna => (
+        //             parseInt(tareaExterna.id_tarea_externa) === parseInt(data.id_tarea_externa) ? 
+        //                 {...tareaExterna, id_estado_tarea: data.id_estado_tarea} : 
+        //                 tareaExterna 
+        //         ))
+        //     ))
+        // }
     })
     
     const { mutate: doRedireccionaTareaExterna } = useMutation ({
         mutationFn: redireccionaTareaExterna,
-        onSuccess: ({data}) => {
+        onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [QUERY_TAREAS_EXTERNAS_ACTIVAS] })
         }
     })
     
     const { mutate: doRecolectaTareaExternaForwarded } = useMutation ({
         mutationFn: recolectaTareaExternaForwarded,
-        onSuccess: ({data}) => {
+        onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [QUERY_TAREAS_EXTERNAS_ACTIVAS] })
         }
     })

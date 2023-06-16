@@ -56,8 +56,9 @@ const serviciosDomicilioLogByServicioDomicilio = (idServicioDomicilio) => {
                 reject({
                   status: 500,
                   message: err?.message || err
-              })
-          }
+               })
+               return
+            }
 
             resolve(JSON.parse(JSON.stringify(data)))
         })

@@ -9,7 +9,7 @@ const tareasExternasActivas = async () => {
 }
 
 const porAtenderseHoy = async (idSucursal) => {
-    return await DB.porAtenderseHoy(idSucursal)
+    return await DB.porAtenderseHoy(idSucursal) 
 }
 
 const tareaExterna = async (idTareaExterna) => {
@@ -18,8 +18,7 @@ const tareaExterna = async (idTareaExterna) => {
 
 const creaTareaExterna = async (tareaExterna) => {
     try {
-        tareaExterna = await DB.creaTareaExterna(tareaExterna)
-        return tareaExterna
+        return await DB.creaTareaExterna(tareaExterna)
     } catch (error) {
         throw error
     }
@@ -51,7 +50,7 @@ const redireccionaTareaExterna = async (idTareaExterna, idUsuario, idSucursalRed
 
 const recolectaRedireccionTareaExterna = async (idTareaExterna, idUsuario, idSucursalRedireccion, idEstadoTareaExterna) => {
     try {
-        return DB.recolectaRedireccionTareaExterna(idTareaExterna, idUsuario, idEstadoTareaExterna, idSucursalRedireccion)
+        return await DB.recolectaRedireccionTareaExterna(idTareaExterna, idUsuario, idEstadoTareaExterna, idSucursalRedireccion)
     } catch (error) {
         throw error
     }
@@ -59,7 +58,7 @@ const recolectaRedireccionTareaExterna = async (idTareaExterna, idUsuario, idSuc
 
 const cancelaRedireccionTareaLocal = async (idTareaExterna, idTareaLocal, idUsuario, idEstadoTarea) => {
     try {
-        return DB.cancelaRedireccionTareaLocal(idTareaExterna, idTareaLocal, idUsuario, idEstadoTarea)
+        return await DB.cancelaRedireccionTareaLocal(idTareaExterna, idTareaLocal, idUsuario, idEstadoTarea)
     } catch (error) {
         throw error
     }

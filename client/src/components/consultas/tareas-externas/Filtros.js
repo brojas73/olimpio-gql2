@@ -20,7 +20,7 @@ const Filtros = ({onChange}) => {
       case TIPO_CONSULTA_TE.BITACORA:
         return navigate('/consultas/tareas-externas/bitacora')
       default:
-        navigate('/consultas/tareas-externas')
+        navigate('/consultas/tareas-externas/por-atenderse-hoy')
     }
   }
 

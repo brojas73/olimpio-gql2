@@ -35,8 +35,8 @@ export async function borraTareaExterna({id_tarea_externa, id_tarea_local, id_us
             })
     
             if (!response.ok) {
-                const mensaje = `Ocurrió un error: ${response.status}`
-                throw new Error(mensaje)
+                const { data } = await response.json()
+                throw new Error(data.error)
             }
     
             const json = await response.json()
@@ -54,8 +54,8 @@ export async function borraTareaExterna({id_tarea_externa, id_tarea_local, id_us
             })
     
             if (!response.ok) {
-                const mensaje = `Ocurrió un error: ${response.status}`
-                throw new Error(mensaje)
+                const { data } = await response.json()
+                throw new Error(data.error)
             }
     
             const json = await response.json()
@@ -78,8 +78,8 @@ export async function actualizaEstadoTareaExterna({id_tarea_externa, id_estado_t
         })
 
         if (!response.ok) {
-            const mensaje = `Ocurrió un error: ${response.status}`
-            throw new Error(mensaje)
+            const { data } = await response.json()
+            throw new Error(data.error)
         }
 
         const data = await response.json()
@@ -127,8 +127,8 @@ export async function redireccionaTareaExterna({id_tarea_externa, id_sucursal_re
         })
 
         if (!response.ok) {
-            const mensaje = `Ocurrió un error: ${response.status}`
-            throw new Error(mensaje)
+            const { data } = await response.json()
+            throw new Error(data.error)
         }
 
         const data = await response.json()
@@ -149,8 +149,8 @@ export async function recolectaTareaExternaForwarded({id_tarea_externa, id_estad
         })
 
         if (!response.ok) {
-            const mensaje = `Ocurrió un error: ${response.status}`
-            throw new Error(mensaje)
+            const { data } = await response.json()
+            throw new Error(data.error)
         }
 
         const data = await response.json()

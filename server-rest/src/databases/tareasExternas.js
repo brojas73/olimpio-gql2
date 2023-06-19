@@ -266,7 +266,6 @@ const actualizaEstadoTareaExterna = (idTareaExterna, idUsuario, idEstadoTarea) =
     return new Promise((resolve, reject) => {
         pool.query(q, [idUsuario, idEstadoTarea, idTareaExterna], (err, data) => {
             if (err) {
-                console.log(err)
                 reject({
                     status: 500,
                     message: err?.message || err

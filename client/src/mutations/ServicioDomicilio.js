@@ -11,8 +11,8 @@ export async function creaServicioDomicilio(servicioDomicilio) {
         })
 
         if (!response.ok) {
-            const mensaje = `Ocurrió un error: ${response.status}`
-            throw new Error(mensaje)
+            const { data } = await response.json()
+            throw new Error(data.error)
         }
 
         const data = await response.json()
@@ -32,8 +32,8 @@ export async function actualizaEstado({id_servicio_domicilio, id_estado_servicio
         })
 
         if (!response.ok) {
-            const mensaje = `Ocurrió un error: ${response.status}`
-            throw new Error(mensaje)
+            const { data } = await response.json()
+            throw new Error(data.error)
         }
 
         const data = await response.json()
@@ -53,8 +53,8 @@ export async function actualizaInfoPago({id_servicio_domicilio, id_usuario, info
         })
 
         if (!response.ok) {
-            const mensaje = `Ocurrió un error: ${response.status}`
-            throw new Error(mensaje)
+            const { data } = await response.json()
+            throw new Error(data.error)
         }
 
         const data = await response.json()
@@ -74,8 +74,8 @@ export async function actualizaFechaRequerida({id_servicio_domicilio, id_usuario
         })
 
         if (!response.ok) {
-            const mensaje = `Ocurrió un error: ${response.status}`
-            throw new Error(mensaje)
+            const { data } = await response.json()
+            throw new Error(data.error)
         }
 
         const data = await response.json()
@@ -95,8 +95,8 @@ export async function actualizaInformacionGeneral({id_servicio_domicilio, id_usu
         })
 
         if (!response.ok) {
-            const mensaje = `Ocurrió un error: ${response.status}`
-            throw new Error(mensaje)
+            const { data } = await response.json()
+            throw new Error(data.error)
         }
 
         const data = await response.json()
@@ -122,8 +122,8 @@ export async function cancelaServicioDomicilio({id_servicio_domicilio, id_usuari
         })
 
         if (!response.ok) {
-            const mensaje = `Ocurrió un error: ${response.status}`
-            throw new Error(mensaje)
+            const { data } = await response.json()
+            throw new Error(data.error)
         }
 
         const data = await response.json()
@@ -143,8 +143,8 @@ export async function borraServicioDomicilio({id_servicio_domicilio}) {
         })
 
         if (!response.ok) {
-            const mensaje = `Ocurrió un error: ${response.status}`
-            throw new Error(mensaje)
+            const { data } = await response.json()
+            throw new Error(data.error)
         }
 
         const json = await response.json()

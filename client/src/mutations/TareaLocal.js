@@ -33,8 +33,8 @@ export async function borraTareaLocal({id_tarea_local}) {
         })
 
         if (!response.ok) {
-            const mensaje = `Ocurrió un error: ${response.status}`
-            throw new Error(mensaje)
+            const { data } = await response.json()
+            throw new Error(data.error)
         }
 
         const json = await response.json()
@@ -55,8 +55,8 @@ export async function actualizaEstadoTareaLocal({id_tarea_local, id_estado_tarea
         })
 
         if (!response.ok) {
-            const mensaje = `Ocurrió un error: ${response.status}`
-            throw new Error(mensaje)
+            const { data } = await response.json()
+            throw new Error(data.error)
         }
 
         const data = await response.json()

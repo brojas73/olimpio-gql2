@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from "react-router-dom"
 
-import { Row, Spinner } from 'react-bootstrap'
+import { Alert, Row, Spinner } from 'react-bootstrap'
 
 // Hooks
 import { useAuth } from "../../../hooks/useAuth"
@@ -61,6 +61,7 @@ const TareasLocalesHome = () => {
     // Modals
     const [confirmacion, setConfirmacion] = useState({ mensaje: '', mostrar: false })
     const [modalSucursalRedireccion, setModalSucursalRedireccion] = useState({mostrar: false})
+    const [alerta, setAlerta] = useState({mostrar: false, mensaje: '', tipo: 'danger' })
 
     // Queries
     const { data: tareasLocalesActivas, isLoading, refetch } = useQuery(QUERY_TAREAS_LOCALES_ACTIVAS, fetchTareasLocalesActivas)
@@ -72,6 +73,9 @@ const TareasLocalesHome = () => {
             queryClient.setQueriesData(QUERY_TAREAS_LOCALES_ACTIVAS, (current) => (
                 current.filter(tarea => (parseInt(tarea.id_tarea_local) !== parseInt(id_tarea_local)))
             ))
+        },
+        onError: (err) => {
+            despliegaAlerta(err.message, 'danger')
         }
     })
 
@@ -85,6 +89,9 @@ const TareasLocalesHome = () => {
                         tarea 
                 ))
             ))
+        },
+        onError: (err) => {
+            despliegaAlerta(err.message, 'danger')
         }
     })
 
@@ -92,6 +99,9 @@ const TareasLocalesHome = () => {
         mutationFn: redireccionaTareaLocal,
         onSuccess: ({data}) => {
             queryClient.invalidateQueries({ queryKey: [QUERY_TAREAS_LOCALES_ACTIVAS] })
+        },
+        onError: (err) => {
+            despliegaAlerta(err.message, 'danger')
         }
     })
 
@@ -158,6 +168,13 @@ const TareasLocalesHome = () => {
         refetch()
     }
 
+    function despliegaAlerta(mensaje, tipoAlerta='success') {
+        setAlerta(prevValue => ({...prevValue, mostrar: true, mensaje: mensaje, tipo: tipoAlerta}))
+        window.setTimeout(() => {
+        setAlerta(prevValue => ({...prevValue, mostrar: false}))
+        }, 10000)
+    }  
+
     // Cuerpo principal del componente
 
     if (isLoading) return <Spinner animation="border" />
@@ -169,6 +186,14 @@ const TareasLocalesHome = () => {
 
     return (
         <>
+            <Alert
+                show={alerta.mostrar} 
+                variant={alerta.tipo} 
+                onClose={() => setAlerta(prevValue => ({...prevValue, mostrar: false}))} 
+                dismissible
+            >
+                {alerta.mensaje}
+            </Alert>
             <ConfirmacionModal 
                 mostrar={confirmacion.mostrar} 
                 titulo='Confirmación' 

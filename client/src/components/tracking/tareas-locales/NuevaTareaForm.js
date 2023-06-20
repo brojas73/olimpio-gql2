@@ -68,6 +68,15 @@ const NuevaTareaForm = ({onExito}) => {
     if (!hora_requerida || isBlank(hora_requerida)) newErrors.hora_requerida = 'Captura la hora requerida'
     if (!id_tipo_servicio || parseInt(id_tipo_servicio) === 0) newErrors.id_tipo_servicio = 'Captura el tipo de servicio'
 
+    // Validamos que la fecha/hora requerida sea una fecha del futuro
+    const fechaRequeridaString = `${fecha_requerida} ${hora_requerida}`
+    const fechaRequerida = new Date(fechaRequeridaString)
+    const fechaActual = new Date()
+    if (fechaActual > fechaRequerida) {
+        newErrors.fecha_requerida = 'La fecha/hora requerida debe ser posterior a la fecha actual'
+        newErrors.hora_requerida = 'La fecha/hora requerida debe ser posterior a la fecha actual'
+    }
+
     return newErrors
   }
 

@@ -99,6 +99,15 @@ const NuevoServicioForm = ({onExito}) => {
     if (!direccion || isBlank(direccion)) newErrors.direccion = 'Captura la dirección del cliente'
     if (telefono.length !== 14) newErrors.telefono = 'Captura un teléfono válido (10 dígitos)' 
 
+    // Validamos que la fecha/hora requerida sea una fecha del futuro
+    const fechaRequeridaString = `${fecha_requerida} ${hora_requerida}`
+    const fechaRequerida = new Date(fechaRequeridaString)
+    const fechaActual = new Date()
+    if (fechaActual > fechaRequerida) {
+        newErrors.fecha_requerida = 'La fecha/hora requerida debe ser posterior a la fecha actual'
+        newErrors.hora_requerida = 'La fecha/hora requerida debe ser posterior a la fecha actual'
+    }
+
     // El ticket sólo se requiere cuando es una entrega
     if (esEntrega()) {
         if (!ticket || isBlank(ticket)) newErrors.ticket  = 'Captura el ticket' 

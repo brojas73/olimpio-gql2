@@ -47,9 +47,10 @@ export function formateaFechaForm(fecha) {
 }  
 
 export function formateaHoraForm(fecha) {
-  const fechaTmp = new Date(fecha)
-  const horaFormateada = String(fechaTmp.getHours()).padStart(2, '0') + ':' +
-                         String(fechaTmp.getMinutes()).padStart(2, '0')
+  // const fechaTmp = new Date(fecha)
+  // const horaFormateada = String(fechaTmp.getHours()).padStart(2, '0') + ':' +
+  //                        String(fechaTmp.getMinutes()).padStart(2, '0')
+  const horaFormateada = '17:00' 
   return horaFormateada
 }
 

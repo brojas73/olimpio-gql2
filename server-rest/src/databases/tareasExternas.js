@@ -138,7 +138,8 @@ const porAtenderseHoy = (idSucursal) => {
                       and   tl.id_estado_tarea = 1                        -- Por atenderse
                       and   tl.id_sucursal = ? 
                  ) x  
-        order by fecha_requerida
+        order by fecha_requerida,
+                 ticket
     `
 
     return new Promise((resolve, reject) => {

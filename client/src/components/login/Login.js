@@ -2,6 +2,7 @@ import { useState } from "react"
 
 // Bootstrap
 import {Alert, Button, Container, Form, Spinner} from 'react-bootstrap'
+import { toast } from 'react-toastify'
 
 // Hooks
 import { useAuth } from '../../hooks/useAuth'
@@ -62,16 +63,8 @@ const Login = ({onLoginOk}) => {
     })
   }
 
-  // Funciones
-  function despliegaAlerta(mensaje, tipoAlerta='success') {
-    setAlerta(prevValue => ({...prevValue, mostrar: true, mensaje: mensaje, tipo: tipoAlerta}))
-    window.setTimeout(() => {
-      setAlerta(prevValue => ({...prevValue, mostrar: false}))
-    }, 2000)
-  }  
-
   function onLoginFail(mensaje) {
-    despliegaAlerta(mensaje, 'danger')
+    toast.error(mensaje)
   }
 
   if (isLoading) return <Spinner animation="border" />

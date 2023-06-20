@@ -1,7 +1,8 @@
 import { useState } from "react"
 import { useNavigate } from 'react-router-dom'
 
-import { Alert, Row, Spinner } from "react-bootstrap"
+import { Row, Spinner } from "react-bootstrap"
+import { toast } from 'react-toastify'
 
 // Hooks
 import { useAuth } from "../../../hooks/useAuth"
@@ -49,7 +50,6 @@ const ServiciosDomicilioHome = () => {
 
     // Modals
     const [confirmacion, setConfirmacion] = useState({ mensaje: '', mostrar: false })
-    const [alerta, setAlerta] = useState({mostrar: false, mensaje: '', tipo: 'danger' })
 
     // Queries
     const { data: serviciosDomicilioActivos, isLoadingActivos, refetch: refetchActivos } = useQuery(QUERY_SERVICIOS_DOMICILIO_ACTIVOS, fetchServiciosDomicilioActivos)
@@ -68,7 +68,7 @@ const ServiciosDomicilioHome = () => {
             ))
         },
         onError: (err) => {
-            despliegaAlerta(err.message, 'danger')
+            toast.error(err.message)
         }
     })
 
@@ -138,13 +138,6 @@ const ServiciosDomicilioHome = () => {
         refetchPorPagar()
     }
 
-    function despliegaAlerta(mensaje, tipoAlerta='success') {
-        setAlerta(prevValue => ({...prevValue, mostrar: true, mensaje: mensaje, tipo: tipoAlerta}))
-        window.setTimeout(() => {
-        setAlerta(prevValue => ({...prevValue, mostrar: false}))
-        }, 10000)
-    }  
-    
     // Cuerpo principal del componente
 
     if (isLoadingActivos || isLoadingPorPagar) return <Spinner animation="border" />
@@ -162,14 +155,6 @@ const ServiciosDomicilioHome = () => {
   
     return (
         <>
-            <Alert
-                show={alerta.mostrar} 
-                variant={alerta.tipo} 
-                onClose={() => setAlerta(prevValue => ({...prevValue, mostrar: false}))} 
-                dismissible
-            >
-                {alerta.mensaje}
-            </Alert>
             <ConfirmacionModal 
                 mostrar={confirmacion.mostrar} 
                 titulo='Confirmación' 

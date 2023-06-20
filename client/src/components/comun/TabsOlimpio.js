@@ -61,7 +61,7 @@ const TabsOlimpio = () => {
             {
                 conectado && (
                     <Tabs
-                        defaultActiveKey='tareas-locales'
+                        defaultActiveKey='tareas-externas'
                         id='olimpio-tab'
                         className='mb-3 olimpio-tab-size'
                         onSelect={key => handleSelect(key)}

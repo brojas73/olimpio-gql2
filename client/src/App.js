@@ -34,17 +34,21 @@ import Bitacora from "./components/consultas/tareas-externas/Bitacora"
 
 import ConsultasServiciosDomicilioHome from "./components/consultas/servicios-domicilio/ConsultasServiciosDomicilioHome"
 
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 function App() {
   const navigate = useNavigate()
   const { setConectado } = useOlimpio()
 
   function handleLoginOk() {
     setConectado(true)
-    navigate('/tracking/tareas-locales')
+    navigate('/tracking/tareas-externas')
   }  
 
   return (
     <Container>
+      <ToastContainer />
       <TabsOlimpio />
   
       <Routes>

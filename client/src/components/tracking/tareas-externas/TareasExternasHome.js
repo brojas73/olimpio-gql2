@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from "react-router-dom"
 
-import { Alert, Row, Spinner } from 'react-bootstrap'
+import { Row, Spinner } from 'react-bootstrap'
+import { toast } from 'react-toastify'
 
 // Hooks
 import { useAuth } from "../../../hooks/useAuth"
@@ -66,7 +67,6 @@ const TareasExternasHome = () => {
     // Modals
     const [confirmacion, setConfirmacion] = useState({ mensaje: '', mostrar: false })
     const [modalSucursalRedireccion, setModalSucursalRedireccion] = useState({mostrar: false})
-    const [alerta, setAlerta] = useState({mostrar: false, mensaje: '', tipo: 'danger' })
     
     // Queries
     const { data: tareasExternasActivas, isLoading, refetch } = useQuery(QUERY_TAREAS_EXTERNAS_ACTIVAS, fetchTareasExternasActivas)
@@ -78,7 +78,7 @@ const TareasExternasHome = () => {
             queryClient.invalidateQueries({ queryKey: [QUERY_TAREAS_EXTERNAS_ACTIVAS] })
         },
         onError: (err) => {
-            despliegaAlerta(err.message, 'danger')
+            toast.error(err.message)
         }
         // onSuccess: (data) => {
         //     queryClient.setQueriesData(QUERY_TAREAS_EXTERNAS_ACTIVAS, (current) => (
@@ -93,7 +93,7 @@ const TareasExternasHome = () => {
             queryClient.invalidateQueries({ queryKey: [QUERY_TAREAS_EXTERNAS_ACTIVAS] })
         },
         onError: (err) => {
-            despliegaAlerta(err.message, 'danger')
+            toast.error(err.message)
         }
         // onSuccess: ({data}) => {
         //     queryClient.setQueriesData(QUERY_TAREAS_EXTERNAS_ACTIVAS, (current) => (
@@ -112,7 +112,7 @@ const TareasExternasHome = () => {
             queryClient.invalidateQueries({ queryKey: [QUERY_TAREAS_EXTERNAS_ACTIVAS] })
         },
         onError: (err) => {
-            despliegaAlerta(err.message, 'danger')
+            toast.error(err.message)
         }
     })
     
@@ -122,7 +122,7 @@ const TareasExternasHome = () => {
             queryClient.invalidateQueries({ queryKey: [QUERY_TAREAS_EXTERNAS_ACTIVAS] })
         },
         onError: (err) => {
-            despliegaAlerta(err.message, 'danger')
+            toast.error(err.message)
         }
     })
 
@@ -211,15 +211,6 @@ const TareasExternasHome = () => {
         refetch()
     }
 
-
-    // Funciones
-    function despliegaAlerta(mensaje, tipoAlerta='success') {
-        setAlerta(prevValue => ({...prevValue, mostrar: true, mensaje: mensaje, tipo: tipoAlerta}))
-        window.setTimeout(() => {
-        setAlerta(prevValue => ({...prevValue, mostrar: false}))
-        }, 10000)
-    }  
-
     // Cuerpo principal del componente
 
     if (isLoading) return <Spinner animation="border" />
@@ -231,14 +222,6 @@ const TareasExternasHome = () => {
   
     return (
         <>
-            <Alert
-                show={alerta.mostrar} 
-                variant={alerta.tipo} 
-                onClose={() => setAlerta(prevValue => ({...prevValue, mostrar: false}))} 
-                dismissible
-            >
-                {alerta.mensaje}
-            </Alert>
             <ConfirmacionModal 
                 mostrar={confirmacion.mostrar} 
                 titulo='Confirmación' 

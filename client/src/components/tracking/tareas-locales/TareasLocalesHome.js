@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from "react-router-dom"
 
-import { Alert, Row, Spinner } from 'react-bootstrap'
+import { Row, Spinner } from 'react-bootstrap'
+import { toast } from 'react-toastify'
 
 // Hooks
 import { useAuth } from "../../../hooks/useAuth"
@@ -61,7 +62,6 @@ const TareasLocalesHome = () => {
     // Modals
     const [confirmacion, setConfirmacion] = useState({ mensaje: '', mostrar: false })
     const [modalSucursalRedireccion, setModalSucursalRedireccion] = useState({mostrar: false})
-    const [alerta, setAlerta] = useState({mostrar: false, mensaje: '', tipo: 'danger' })
 
     // Queries
     const { data: tareasLocalesActivas, isLoading, refetch } = useQuery(QUERY_TAREAS_LOCALES_ACTIVAS, fetchTareasLocalesActivas)
@@ -75,7 +75,7 @@ const TareasLocalesHome = () => {
             ))
         },
         onError: (err) => {
-            despliegaAlerta(err.message, 'danger')
+            toast.error(err.message)
         }
     })
 
@@ -91,7 +91,7 @@ const TareasLocalesHome = () => {
             ))
         },
         onError: (err) => {
-            despliegaAlerta(err.message, 'danger')
+            toast.error(err.message)
         }
     })
 
@@ -101,7 +101,7 @@ const TareasLocalesHome = () => {
             queryClient.invalidateQueries({ queryKey: [QUERY_TAREAS_LOCALES_ACTIVAS] })
         },
         onError: (err) => {
-            despliegaAlerta(err.message, 'danger')
+            toast.error(err.message)
         }
     })
 
@@ -168,13 +168,6 @@ const TareasLocalesHome = () => {
         refetch()
     }
 
-    function despliegaAlerta(mensaje, tipoAlerta='success') {
-        setAlerta(prevValue => ({...prevValue, mostrar: true, mensaje: mensaje, tipo: tipoAlerta}))
-        window.setTimeout(() => {
-        setAlerta(prevValue => ({...prevValue, mostrar: false}))
-        }, 10000)
-    }  
-
     // Cuerpo principal del componente
 
     if (isLoading) return <Spinner animation="border" />
@@ -186,14 +179,6 @@ const TareasLocalesHome = () => {
 
     return (
         <>
-            <Alert
-                show={alerta.mostrar} 
-                variant={alerta.tipo} 
-                onClose={() => setAlerta(prevValue => ({...prevValue, mostrar: false}))} 
-                dismissible
-            >
-                {alerta.mensaje}
-            </Alert>
             <ConfirmacionModal 
                 mostrar={confirmacion.mostrar} 
                 titulo='Confirmación' 

@@ -3,7 +3,13 @@ import { fetchData, getUrlApis } from '../components/comun/utils'
 export const QUERY_SERVICIOS_DOMICILIO_ACTIVOS = 'serviciosDomicilioActivos'
 export async function fetchServiciosDomicilioActivos() {
     try {
-        const { data } = await fetchData(`${getUrlApis()}/servicios-domicilio`)
+        const response = await fetchData(`${getUrlApis()}/servicios-domicilio`)
+
+        if (response.status === 'FAILED') {
+            throw new Error(response.data.error)
+        }
+
+        const { data } = response
         return data
     } catch (error) {
         throw error
@@ -14,7 +20,13 @@ export const QUERY_SERVICIO_DOMICILIO = 'servicioDomicilio'
 export async function fetchServicioDomicilio({queryKey}) {
     const idServicioDomicilio = queryKey[1]
     try {
-        const { data } = await fetchData(`${getUrlApis()}/servicios-domicilio/${idServicioDomicilio}`)
+        const response = await fetchData(`${getUrlApis()}/servicios-domicilio/${idServicioDomicilio}`)
+
+        if (response.status === 'FAILED') {
+            throw new Error(response.data.error)
+        }
+
+        const { data } = response
         return data
     } catch (error) {
         throw error
@@ -24,11 +36,16 @@ export async function fetchServicioDomicilio({queryKey}) {
 export const QUERY_SERVICIOS_DOMICILIO_POR_PAGAR = 'servicioSDomicilioPorPagar'
 export async function fetchServiciosDomicilioPorPagar() {
     try {
-        const { data } = await fetchData(`${getUrlApis()}/servicios-domicilio/por-pagar`)
+        const response = await fetchData(`${getUrlApis()}/servicios-domicilio/por-pagar`)
+
+        if (response.status === 'FAILED') {
+            throw new Error(response.data.error)
+        }
+
+        const { data } = response
         return data
     } catch (error) {
         throw error
     }
 }
-
 

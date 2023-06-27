@@ -1,6 +1,8 @@
 import { useLocation, useNavigate } from "react-router-dom"
 
 import { Button, Spinner } from "react-bootstrap"
+import { toast } from 'react-toastify'
+
 import BootstrapTable from "react-bootstrap-table-next"
 import paginationFactory from 'react-bootstrap-table2-paginator'
 
@@ -16,10 +18,14 @@ export default function BitacoraTareaLocal() {
   const navigate = useNavigate()
   const idTareaLocal = location.state.id_tarea_local
 
-  const {isLoading, data: tareasLocalesLog} = useQuery(
-    [QUERY_TAREAS_LOCALES_LOG_BY_TAREA_LOCAL, idTareaLocal],  
-    fetchTareasLocalesLogByTareaLocal
-  )
+
+  const { data: tareasLocalesLog, isLoading, isError } = useQuery({
+    queryKey: [QUERY_TAREAS_LOCALES_LOG_BY_TAREA_LOCAL, idTareaLocal], 
+    queryFn: fetchTareasLocalesLogByTareaLocal,
+    onError: (err) => {
+        toast.error(err.message)
+    }
+  })
 
   const columns = [
     { dataField: "tipo_accion", text: "Acción", sort: true },
@@ -30,6 +36,8 @@ export default function BitacoraTareaLocal() {
   ]
 
   if (isLoading) return <Spinner animation="border" />
+
+  if (isError) return "Error"
 
   return (
     <>

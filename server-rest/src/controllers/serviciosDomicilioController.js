@@ -1,18 +1,36 @@
 import serviciosDomicilioService from '../services/serviciosDomicilioService.js'
 
 const serviciosDomicilio = async (_, res) => {
-    const serviciosDomicilio = await serviciosDomicilioService.serviciosDomicilio()
-    res.send({status: "OK", data: serviciosDomicilio})
+    try {
+        const serviciosDomicilio = await serviciosDomicilioService.serviciosDomicilio()
+        res.send({status: "OK", data: serviciosDomicilio})
+    } catch (err) {
+        return res
+            .status(err?.status || 500)
+            .send({status: "FAILED", data: {error: err?.message || err}})
+    }
 }
 
 const serviciosDomicilioActivos = async (_, res) => {
-    const serviciosDomicilio = await serviciosDomicilioService.serviciosDomicilioActivos()
-    res.send({status: "OK", data: serviciosDomicilio})
+    try {
+        const serviciosDomicilio = await serviciosDomicilioService.serviciosDomicilioActivos()
+        res.send({status: "OK", data: serviciosDomicilio})
+    } catch (err) {
+        return res
+            .status(err?.status || 500)
+            .send({status: "FAILED", data: {error: err?.message || err}})
+    }
 }
 
 const serviciosDomicilioPorPagar = async (_, res) => {
-    const serviciosDomicilio = await serviciosDomicilioService.serviciosDomicilioPorPagar()
-    res.send({status: "OK", data: serviciosDomicilio})
+    try {
+        const serviciosDomicilio = await serviciosDomicilioService.serviciosDomicilioPorPagar()
+        res.send({status: "OK", data: serviciosDomicilio})
+    } catch (err) {
+        return res
+            .status(err?.status || 500)
+            .send({status: "FAILED", data: {error: err?.message || err}})
+    }
 }
 
 const servicioDomicilio = async (req, res) => {
@@ -33,8 +51,14 @@ const servicioDomicilio = async (req, res) => {
         return
     }
 
-    const servicioDomicilio = await serviciosDomicilioService.servicioDomicilio(idServicioDomicilio)
-    res.send({status: "OK", data: servicioDomicilio})
+    try {
+        const servicioDomicilio = await serviciosDomicilioService.servicioDomicilio(idServicioDomicilio)
+        res.send({status: "OK", data: servicioDomicilio})
+    } catch (err) {
+        return res
+            .status(err?.status || 500)
+            .send({status: "FAILED", data: {error: err?.message || err}})
+    }
 }
 
 const creaServicioDomicilio = async (req, res) => {

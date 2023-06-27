@@ -1,36 +1,68 @@
 import DB from '../databases/catalogos.js'
 
 const estadosServicioDomicilio = async () => {
-    return await DB.estadosServicioDomicilio()
+    try {
+        return await DB.estadosServicioDomicilio()
+    } catch (error) {
+        throw error
+    }
 }
 
 const estadosTareaExterna = async () => {
-    return await DB.estadosTareaExterna()
+    try {
+        return await DB.estadosTareaExterna()
+    } catch (error) {
+        throw error
+    }
 }
 
 const estadosTareaLocal = async () => {
-    return await DB.estadosTareaLocal()
+    try {
+        return await DB.estadosTareaLocal()
+    } catch (error) {
+        throw error
+    }
 }
 
 const formasPago = async () => {
-    return await DB.formasPago()
+    try {
+        return await DB.formasPago()
+    } catch (error) {
+        throw error
+    }
 }
 
 const roles = async () => {
-    return await DB.roles()
+    try {
+        return await DB.roles()
+    } catch (error) {
+        throw error
+    }
 }
 
 const sucursales = async () => {
-    return await DB.sucursales()
+    try {
+        return await DB.sucursales()
+    } catch (error) {
+        throw error
+    }
 }
 
 
 const tiposServicio = async () => {
-    return await DB.tiposServicio()
+    try {
+        return await DB.tiposServicio()
+    } catch (error) {
+        throw error
+    }
 }
 
 const tiposTrabajo = async () => {
-    return await DB.tiposTrabajo()
+    try {
+        return await DB.tiposTrabajo()
+    } catch (error) {
+        throw error
+    }
 }
 
 export default {

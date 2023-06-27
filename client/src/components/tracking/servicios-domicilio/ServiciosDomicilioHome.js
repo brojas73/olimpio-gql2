@@ -52,8 +52,21 @@ const ServiciosDomicilioHome = () => {
     const [confirmacion, setConfirmacion] = useState({ mensaje: '', mostrar: false })
 
     // Queries
-    const { data: serviciosDomicilioActivos, isLoadingActivos, refetch: refetchActivos } = useQuery(QUERY_SERVICIOS_DOMICILIO_ACTIVOS, fetchServiciosDomicilioActivos)
-    const { data: serviciosDomicilioPorPagar, isLoadingPorPagar, refetch: refetchPorPagar } = useQuery(QUERY_SERVICIOS_DOMICILIO_POR_PAGAR, fetchServiciosDomicilioPorPagar)
+    const { data: serviciosDomicilioActivos, isLoading: isLoadingActivos, isError: isErrorActivos, refetch: refetchActivos } = useQuery({
+        queryKey: [QUERY_SERVICIOS_DOMICILIO_ACTIVOS], 
+        queryFn: fetchServiciosDomicilioActivos,
+        onError: (err) => {
+            toast.error(err.message)
+        }
+    })
+
+    const { data: serviciosDomicilioPorPagar, isLoading: isLoadingPorPagar, isError: isErrorPorPagar, refetch: refetchPorPagar } = useQuery({
+        queryKey: [QUERY_SERVICIOS_DOMICILIO_POR_PAGAR], 
+        queryFn: fetchServiciosDomicilioPorPagar,
+        onError: (err) => {
+            toast.error(err.message)
+        }
+    })
 
     // Mutations
     const { mutate: doActualizaEstadoServicioDomicilio } = useMutation ({
@@ -141,6 +154,8 @@ const ServiciosDomicilioHome = () => {
     // Cuerpo principal del componente
 
     if (isLoadingActivos || isLoadingPorPagar) return <Spinner animation="border" />
+
+    if (isErrorActivos || isErrorPorPagar) return "Error"
 
     if (serviciosDomicilioActivos && serviciosDomicilioPorPagar) {
         // Obtengo los servicios que voy a desplegar

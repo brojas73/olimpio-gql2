@@ -1,43 +1,91 @@
 import catalogosService from '../services/catalogosService.js'
 
 const estadosServicioDomicilio = async (_, res) => {
-    const estadosServicioDomicilio = await catalogosService.estadosServicioDomicilio()
-    res.send({status: "OK", data: estadosServicioDomicilio})
+    try {
+        const estadosServicioDomicilio = await catalogosService.estadosServicioDomicilio()
+        res.send({status: "OK", data: estadosServicioDomicilio})
+    } catch (err) {
+        return res
+            .status(err?.status || 500)
+            .send({status: "FAILED", data: {error: err?.message || err}})
+    }
 }
 
 const estadosTareaExterna = async (_, res) => {
-    const estadosTareaExterna = await catalogosService.estadosTareaExterna()
-    res.send({status: "OK", data: estadosTareaExterna})
+    try {
+        const estadosTareaExterna = await catalogosService.estadosTareaExterna()
+        res.send({status: "OK", data: estadosTareaExterna})
+    } catch (err) {
+        return res
+            .status(err?.status || 500)
+            .send({status: "FAILED", data: {error: err?.message || err}})
+    }
 }
 
 const estadosTareaLocal = async (_, res) => {
-    const estadosTareaLocal = await catalogosService.estadosTareaLocal()
-    res.send({status: "OK", data: estadosTareaLocal})
+    try {
+        const estadosTareaLocal = await catalogosService.estadosTareaLocal()
+        res.send({status: "OK", data: estadosTareaLocal})
+    } catch (err) {
+        return res
+            .status(err?.status || 500)
+            .send({status: "FAILED", data: {error: err?.message || err}})
+    }
 }
 
 const formasPago = async (_, res) => {
-    const formasPago = await catalogosService.formasPago()
-    res.send({status: "OK", data: formasPago})
+    try {
+        const formasPago = await catalogosService.formasPago()
+        res.send({status: "OK", data: formasPago})
+    } catch (err) {
+        return res
+            .status(err?.status || 500)
+            .send({status: "FAILED", data: {error: err?.message || err}})
+    }
 }
 
 const roles = async (_, res) => {
-    const roles = await catalogosService.roles()
-    res.send({status: "OK", data: roles})
+    try {
+        const roles = await catalogosService.roles()
+        res.send({status: "OK", data: roles})
+    } catch (err) {
+        return res
+            .status(err?.status || 500)
+            .send({status: "FAILED", data: {error: err?.message || err}})
+    }
 }
 
 const sucursales = async (_, res) => {
-    const sucursales = await catalogosService.sucursales()
-    res.send({status: "OK", data: sucursales})
+    try {
+        const sucursales = await catalogosService.sucursales()
+        res.send({status: "OK", data: sucursales})
+    } catch (err) {
+        return res
+            .status(err?.status || 500)
+            .send({status: "FAILED", data: {error: err?.message || err}})
+    }
 }
 
 const tiposServicio = async (_, res) => {
-    const tiposServicio = await catalogosService.tiposServicio()
-    res.send({status: "OK", data: tiposServicio})
+    try {
+        const tiposServicio = await catalogosService.tiposServicio()
+        res.send({status: "OK", data: tiposServicio})
+    } catch (err) {
+        return res
+            .status(err?.status || 500)
+            .send({status: "FAILED", data: {error: err?.message || err}})
+    }
 }
 
 const tiposTrabajo = async (_, res) => {
-    const tiposTrabajo = await catalogosService.tiposTrabajo()
-    res.send({status: "OK", data: tiposTrabajo})
+    try {
+        const tiposTrabajo = await catalogosService.tiposTrabajo()
+        res.send({status: "OK", data: tiposTrabajo})
+    } catch (err) {
+        return res
+            .status(err?.status || 500)
+            .send({status: "FAILED", data: {error: err?.message || err}})
+    }
 }
 
 export default {

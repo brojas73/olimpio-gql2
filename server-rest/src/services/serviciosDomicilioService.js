@@ -1,19 +1,35 @@
 import DB from '../databases/serviciosDomicilio.js'
 
 const serviciosDomicilio = async () => {
-    return await DB.serviciosDomicilio()
+    try {
+        return await DB.serviciosDomicilio()
+    } catch (error) {
+        throw error
+    }
 }
 
 const serviciosDomicilioActivos = async () => {
-    return await DB.serviciosDomicilioActivos()
+    try {
+        return await DB.serviciosDomicilioActivos()
+    } catch (error) {
+        throw error
+    }
 }
 
 const serviciosDomicilioPorPagar = async () => {
-    return await DB.serviciosDomicilioPorPagar()
+    try {
+        return await DB.serviciosDomicilioPorPagar()
+    } catch (error) {
+        throw error
+    }
 }
 
 const servicioDomicilio = async (idServicioDomicilio) => {
-    return await DB.servicioDomicilio(idServicioDomicilio)
+    try {
+        return await DB.servicioDomicilio(idServicioDomicilio)
+    } catch (error) {
+        throw error
+    }
 }
 
 const creaRecoleccion = async (servicioDomicilio) => {

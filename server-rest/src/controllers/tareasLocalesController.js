@@ -1,13 +1,25 @@
 import tareasLocalesService from "../services/tareasLocalesService.js"
 
 const tareasLocales = async (_, res) => {
-    const tareas = await tareasLocalesService.tareasLocales()
-    res.send({status: "OK", data: tareas})
+    try {
+        const tareas = await tareasLocalesService.tareasLocales()
+        res.send({status: "OK", data: tareas})
+    } catch (err) {
+        return res
+            .status(err?.status || 500)
+            .send({status: "FAILED", data: {error: err?.message || err}})
+    }
 }
 
 const tareasLocalesActivas = async (_, res) => {
-    const tareas = await tareasLocalesService.tareasLocalesActivas()
-    res.send({status: "OK", data: tareas})
+    try {
+        const tareas = await tareasLocalesService.tareasLocalesActivas()
+        res.send({status: "OK", data: tareas})
+    } catch (err) {
+        return res
+            .status(err?.status || 500)
+            .send({status: "FAILED", data: {error: err?.message || err}})
+    }
 }
 
 const porAtenderseHoy = async (req, res) => {
@@ -27,8 +39,15 @@ const porAtenderseHoy = async (req, res) => {
         return
     }
 
-    const tareas = await tareasLocalesService.porAtenderseHoy(idSucursal)
-    res.send({status: "OK", data: tareas})
+    try {
+        const tareas = await tareasLocalesService.porAtenderseHoy(idSucursal)
+        res.send({status: "OK", data: tareas})
+    } catch (err) {
+        return res
+            .status(err?.status || 500)
+            .send({status: "FAILED", data: {error: err?.message || err}})
+    }
+
 }
 
 const tareaLocal = async (req, res) => {
@@ -48,8 +67,14 @@ const tareaLocal = async (req, res) => {
         return
     }
     
-    const tarea = await tareasLocalesService.tareaLocal(idTareaLocal)
-    res.send({status: "OK", data: tarea})
+    try {
+        const tarea = await tareasLocalesService.tareaLocal(idTareaLocal)
+        res.send({status: "OK", data: tarea})
+    } catch (err) {
+        return res
+            .status(err?.status || 500)
+            .send({status: "FAILED", data: {error: err?.message || err}})
+    }
 }
 
 const creaTareaLocal = async (req, res) => {

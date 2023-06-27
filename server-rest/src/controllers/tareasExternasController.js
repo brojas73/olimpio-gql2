@@ -1,13 +1,25 @@
 import tareasExternasService from "../services/tareasExternasService.js"
 
 const tareasExternas = async (_, res) => {
-    const tareasExternas = await tareasExternasService.tareasExternas()
-    res.send({status: "OK", data: tareasExternas})
+    try {
+        const tareasExternas = await tareasExternasService.tareasExternas()
+        res.send({status: "OK", data: tareasExternas})
+    } catch (err) {
+        return res
+            .status(err?.status || 500)
+            .send({status: "FAILED", data: {error: err?.message || err}})
+    }
 }
 
 const tareasExternasActivas = async (_, res) => {
-    const tareasExternas = await tareasExternasService.tareasExternasActivas()
-    res.send({status: "OK", data: tareasExternas})
+    try {
+        const tareasExternas = await tareasExternasService.tareasExternasActivas()
+        res.send({status: "OK", data: tareasExternas})
+    } catch (err) {
+        return res
+            .status(err?.status || 500)
+            .send({status: "FAILED", data: {error: err?.message || err}})
+    }
 }
 
 const porAtenderseHoy = async (req, res) => {
@@ -27,8 +39,14 @@ const porAtenderseHoy = async (req, res) => {
         return
     }
 
-    const tareasExternas = await tareasExternasService.porAtenderseHoy(idSucursal)
-    res.send({status: "OK", data: tareasExternas})
+    try {
+        const tareasExternas = await tareasExternasService.porAtenderseHoy(idSucursal)
+        res.send({status: "OK", data: tareasExternas})
+    } catch (err) {
+        return res
+            .status(err?.status || 500)
+            .send({status: "FAILED", data: {error: err?.message || err}})
+    }
 }
 
 const tareaExterna = async (req, res) => {
@@ -47,9 +65,15 @@ const tareaExterna = async (req, res) => {
             })
         return
     }
-    
-    const tareaExterna = await tareasExternasService.tareaExterna(idTareaExterna)
-    res.send({status: "OK", data: tareaExterna})
+
+    try {
+        const tareaExterna = await tareasExternasService.tareaExterna(idTareaExterna)
+        res.send({status: "OK", data: tareaExterna})
+    } catch (err) {
+        return res
+            .status(err?.status || 500)
+            .send({status: "FAILED", data: {error: err?.message || err}})
+    }
 }
 
 const creaTareaExterna = async (req, res) => {

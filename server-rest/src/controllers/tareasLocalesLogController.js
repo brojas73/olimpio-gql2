@@ -9,8 +9,14 @@ const tareasLocalesLog = async (req, res) => {
     if (!ticket) ticket = '%'
     if (!descripcion) descripcion = '%'
 
-    const tareasLocalesLog = await tareasLocalesLogService.tareasLocalesLog(ticket, descripcion)
-    res.send({status: "OK", data: tareasLocalesLog})
+    try {
+        const tareasLocalesLog = await tareasLocalesLogService.tareasLocalesLog(ticket, descripcion)
+        res.send({status: "OK", data: tareasLocalesLog})
+    } catch (err) {
+        return res
+            .status(err?.status || 500)
+            .send({status: "FAILED", data: {error: err?.message || err}})
+    }
 }
 
 const tareasLocalesLogByTareaLocal = async (req, res) => {
@@ -31,8 +37,14 @@ const tareasLocalesLogByTareaLocal = async (req, res) => {
         return
     }
 
-    const tareasLocalesLog = await tareasLocalesLogService.tareasLocalesLogByTareaLocal(idTareaLocal)
-    res.send({status: "OK", data: tareasLocalesLog})
+    try {
+        const tareasLocalesLog = await tareasLocalesLogService.tareasLocalesLogByTareaLocal(idTareaLocal)
+        res.send({status: "OK", data: tareasLocalesLog})
+    } catch (err) {
+        return res
+            .status(err?.status || 500)
+            .send({status: "FAILED", data: {error: err?.message || err}})
+    }
 }
 
 export default {

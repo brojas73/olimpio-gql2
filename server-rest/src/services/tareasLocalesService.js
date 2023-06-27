@@ -1,15 +1,27 @@
 import DB from '../databases/tareasLocales.js'
 
 const tareasLocales = async () => {
-    return await DB.tareasLocales()
+    try {
+        return await DB.tareasLocales()
+    } catch (error) {
+        throw error
+    }
 }
 
 const tareasLocalesActivas = async () => {
-    return await DB.tareasLocalesActivas()
+    try {
+        return await DB.tareasLocalesActivas()
+    } catch (error) {
+        throw error
+    }
 }
 
 const porAtenderseHoy = async (idSucursal) => {
-    return await DB.porAtenderseHoy(idSucursal)
+    try {
+        return await DB.porAtenderseHoy(idSucursal)
+    } catch (error) {
+        throw error
+    }
 }
 
 const tareaLocal = async (idTareaLocal) => {

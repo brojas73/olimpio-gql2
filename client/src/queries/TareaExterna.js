@@ -3,7 +3,13 @@ import { fetchData, getUrlApis } from '../components/comun/utils'
 export const QUERY_TAREAS_EXTERNAS_ACTIVAS = 'tareasExternasActivas'
 export async function fetchTareasExternasActivas() {
     try {
-        const { data } = await fetchData(`${getUrlApis()}/tareas-externas`)
+        const response = await fetchData(`${getUrlApis()}/tareas-externas`)
+
+        if (response.status === 'FAILED') {
+            throw new Error(response.data.error)
+        }
+
+        const { data } = response
         return data
     } catch (error) {
         throw error
@@ -13,7 +19,13 @@ export async function fetchTareasExternasActivas() {
 export const QUERY_TAREAS_POR_ATENDERSE_HOY = 'tareasPorAtenderseHoy'
 export async function fetchTareasPorAtenderseHoy({queryKey}) {
     try {
-        const { data } = await fetchData(`${getUrlApis()}/tareas-externas/por-atenderse-hoy/${queryKey[1]}`)
+        const response = await fetchData(`${getUrlApis()}/tareas-externas/por-atenderse-hoy/${queryKey[1]}`)
+
+        if (response.status === 'FAILED') {
+            throw new Error(response.data.error)
+        }
+
+        const { data } = response
         return data
     } catch (error) {
         throw error
@@ -23,7 +35,13 @@ export async function fetchTareasPorAtenderseHoy({queryKey}) {
 export const QUERY_TAREA_EXTERNA = 'tareaExterna'
 export async function fetchTareaExterna({queryKey}) {
     try {
-        const { data } = await fetchData(`${getUrlApis()}/tareas-externas/${queryKey[1]}`)
+        const response = await fetchData(`${getUrlApis()}/tareas-externas/${queryKey[1]}`)
+
+        if (response.status === 'FAILED') {
+            throw new Error(response.data.error)
+        }
+
+        const { data } = response
         return data
     } catch (error) {
         throw error

@@ -1,6 +1,8 @@
 import { useLocation, useNavigate } from "react-router-dom"
 
 import { Button, Spinner } from "react-bootstrap"
+import { toast } from 'react-toastify'
+
 import BootstrapTable from "react-bootstrap-table-next"
 import paginationFactory from 'react-bootstrap-table2-paginator'
 
@@ -16,10 +18,14 @@ export default function BitacoraTareaExterna() {
   const navigate = useNavigate()
   const idTareaExterna = location.state.id_tarea_externa
 
-  const {isLoading, data: tareasExternasLog} = useQuery(
-    [QUERY_TAREAS_EXTERNAS_LOG_BY_TAREA_EXTERNA, idTareaExterna],  
-    fetchTareasExternasLogByTareaExterna
-  )
+  const { data: tareasExternasLog, isLoading, isError } = useQuery({
+    queryKey: [QUERY_TAREAS_EXTERNAS_LOG_BY_TAREA_EXTERNA, idTareaExterna], 
+    queryFn: fetchTareasExternasLogByTareaExterna,
+    onError: (err) => {
+        toast.error(err.message)
+    }
+  })
+
 
   const columns = [
     { dataField: "tipo_accion", text: "Acción", sort: true },
@@ -30,6 +36,8 @@ export default function BitacoraTareaExterna() {
   ]
 
   if (isLoading) return <Spinner animation="border" />
+
+  if (isError) return "Error"
 
   return (
     <>

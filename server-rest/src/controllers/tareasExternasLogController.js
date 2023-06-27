@@ -9,8 +9,14 @@ const tareasExternasLog = async (req, res) => {
     if (!ticket) ticket = '%'
     if (!descripcion) descripcion = '%'
 
-    const tareasExternasLog = await tareasExternasLogService.tareasExternasLog(ticket, descripcion)
-    res.send({status: "OK", data: tareasExternasLog})
+    try {
+        const tareasExternasLog = await tareasExternasLogService.tareasExternasLog(ticket, descripcion)
+        res.send({status: "OK", data: tareasExternasLog})
+    } catch (err) {
+        return res
+            .status(err?.status || 500)
+            .send({status: "FAILED", data: {error: err?.message || err}})
+    }
 }
 
 const tareasExternasLogByTareaExterna = async (req, res) => {
@@ -31,8 +37,14 @@ const tareasExternasLogByTareaExterna = async (req, res) => {
         return
     }
 
-    const tareasExternasLog = await tareasExternasLogService.tareasExternasLogByTareaExterna(idTareaExterna)
-    res.send({status: "OK", data: tareasExternasLog})
+    try {
+        const tareasExternasLog = await tareasExternasLogService.tareasExternasLogByTareaExterna(idTareaExterna)
+        res.send({status: "OK", data: tareasExternasLog})
+    } catch (err) {
+        return res
+            .status(err?.status || 500)
+            .send({status: "FAILED", data: {error: err?.message || err}})
+    }
 }
 
 export default {

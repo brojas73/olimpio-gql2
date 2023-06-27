@@ -1,19 +1,35 @@
 import DB from '../databases/tareasExternas.js'
 
 const tareasExternas = async () => {
-    return await DB.tareasExternas()
+    try {
+        return await DB.tareasExternas()
+    } catch (error) {
+        throw error
+    }
 }
 
 const tareasExternasActivas = async () => {
-    return await DB.tareasExternasActivas()
+    try {
+        return await DB.tareasExternasActivas()
+    } catch (error) {
+        throw error
+    }
 }
 
 const porAtenderseHoy = async (idSucursal) => {
-    return await DB.porAtenderseHoy(idSucursal) 
+    try {
+        return await DB.porAtenderseHoy(idSucursal) 
+    } catch (error) {
+        throw error
+    }
 }
 
 const tareaExterna = async (idTareaExterna) => {
-    return await DB.tareaExterna(idTareaExterna)
+    try {
+        return await DB.tareaExterna(idTareaExterna)
+    } catch (error) {
+        throw error
+    }
 }
 
 const creaTareaExterna = async (tareaExterna) => {

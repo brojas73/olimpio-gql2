@@ -1,7 +1,11 @@
 import DB from '../databases/serviciosDomicilioLog.js'
 
 const serviciosDomicilioLogByServicioDomicilio = async (idServicioDomicilio) => {
-    return await DB.serviciosDomicilioLogByServicioDomicilio(idServicioDomicilio)
+    try {
+        return await DB.serviciosDomicilioLogByServicioDomicilio(idServicioDomicilio)
+    } catch (error) {
+        throw error
+    }
 }
 
 export default {

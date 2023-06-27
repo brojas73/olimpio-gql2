@@ -17,9 +17,15 @@ const serviciosDomicilioLogByServicioDomicilio = async (req, res) => {
             })
         return
     }
-        
-    const serviciosDomicilioLog = await serviciosDomicilioLogService.serviciosDomicilioLogByServicioDomicilio(idServicioDomicilio)
-    res.send({status: "OK", data: serviciosDomicilioLog})
+
+    try {
+        const serviciosDomicilioLog = await serviciosDomicilioLogService.serviciosDomicilioLogByServicioDomicilio(idServicioDomicilio)
+        res.send({status: "OK", data: serviciosDomicilioLog})
+    } catch (err) {
+        return res
+            .status(err?.status || 500)
+            .send({status: "FAILED", data: {error: err?.message || err}})
+    }
 }
 
 export default {

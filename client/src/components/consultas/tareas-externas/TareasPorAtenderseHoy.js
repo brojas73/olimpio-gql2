@@ -17,10 +17,11 @@ export default function TareasPorAtenderseHoy() {
     const { sucursalActual } = useOlimpio()
     const { filtros } = useConsultas()
 
-    const { isLoading, data: tareasExternas, refetch } = useQuery(
-        [QUERY_TAREAS_POR_ATENDERSE_HOY, sucursalActual], 
-        fetchTareasPorAtenderseHoy
-    )
+    const { isLoading, error, data: tareasExternas, refetch } = useQuery({
+        queryKey: [QUERY_TAREAS_POR_ATENDERSE_HOY, sucursalActual], 
+        queryFn: fetchTareasPorAtenderseHoy,
+        retry: false
+    })
     const [modalTarea, setModalTarea] = useState({mostrar: false, idTarea: 0})
 
     const tableRowEvents = {
@@ -44,6 +45,8 @@ export default function TareasPorAtenderseHoy() {
     }
 
     if (isLoading) return <Spinner animation="border" />
+
+    if (error) return <span>{error.message}</span>
 
     if (tareasExternas) {
         // Obtengo las tareas que voy a desplegar

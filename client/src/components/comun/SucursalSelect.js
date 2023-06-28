@@ -7,9 +7,17 @@ import { TAMANO_CONTROLES } from './utils'
 
 const SucursalSelect = ({onChange, name, value, label, filtraSucursalActual, isInvalid }) => {
     const { sucursalActual } = useOlimpio()
-    const { data: sucursales, isLoading } = useQuery(QUERY_SUCURSALES, fetchSucursales, { staleTime: Infinity, cacheTime: Infinity})
+    const { data: sucursales, isLoading, error } = useQuery({
+        queryKey: [QUERY_SUCURSALES], 
+        queryFn: fetchSucursales, 
+        retry: false,
+        staleTime: Infinity, 
+        cacheTime: Infinity
+    })
 
     if (isLoading) return <Spinner animation="border" />
+
+    if (error) return <span>{error.message}</span>
 
     return (
         <>

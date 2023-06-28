@@ -5,12 +5,13 @@ import { faHouse, faLocationDot } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { Button, Card, Form, Spinner } from 'react-bootstrap'
+import { toast } from 'react-toastify'
 import { FaPhoneAlt, FaTicketAlt, FaUserAlt } from 'react-icons/fa'
 
-import { useQuery, useMutation } from 'react-query'
+import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { actualizaInfoPago } from "../../../mutations/ServicioDomicilio"
 import { useAuth } from '../../../hooks/useAuth'
-import { fetchServicioDomicilio, QUERY_SERVICIO_DOMICILIO } from '../../../queries/ServicioDomicilio'
+import { fetchServicioDomicilio, QUERY_SERVICIO_DOMICILIO, QUERY_SERVICIOS_DOMICILIO_ACTIVOS } from '../../../queries/ServicioDomicilio'
 
 import FormasPagoSelect from '../../comun/FormaPagoSelect'
 import { isBlank, pagado, esEntrega, TAMANO_CONTROLES } from '../../comun/utils'
@@ -18,6 +19,8 @@ import { isBlank, pagado, esEntrega, TAMANO_CONTROLES } from '../../comun/utils'
 const InformacionPagoForm = () => {
     const navigate = useNavigate()
     const location = useLocation()
+    const queryClient = useQueryClient()
+
     const idServicioDomicilio = location.state.id_servicio_domicilio
     const { credenciales } = useAuth()
     const [formaPagoInfo, setFormaPagoInfo] = useState({
@@ -30,29 +33,35 @@ const InformacionPagoForm = () => {
 
     const { mutate: doActualizaInfoPago } = useMutation ({
         mutationFn: actualizaInfoPago,
+        onSuccess: () => {
+            refetch()
+            queryClient.invalidateQueries({ queryKey: [QUERY_SERVICIOS_DOMICILIO_ACTIVOS, QUERY_SERVICIO_DOMICILIO] })
+            navigate(-1)
+        },
+        onError: (err) => {
+            toast.error(err.message)
+        }
     })
     
-    const { data, isLoading } = useQuery(
-        [QUERY_SERVICIO_DOMICILIO, idServicioDomicilio], 
-        fetchServicioDomicilio, 
-        {
-            onSuccess: (data) => {
-                const servicioDomicilio = data[0]
-                setFormaPagoInfo(prevValue => ({...prevValue, 
-                    id_forma_pago: servicioDomicilio.id_forma_pago ? servicioDomicilio.id_forma_pago : 0,
-                    notas_pago: servicioDomicilio.notas_pago ? servicioDomicilio.notas_pago : '',
-                    confirmar_pago: pagado(servicioDomicilio),
-                    referencia_pago: servicioDomicilio.referencia_pago ? servicioDomicilio.referencia_pago : ''
-                }))
-            }
-        }
-    )
+    const { data, error, isLoading, refetch } = useQuery({
+        queryKey: [QUERY_SERVICIO_DOMICILIO, idServicioDomicilio], 
+        queryFn: fetchServicioDomicilio, 
+        onSuccess: (data) => {
+            const servicioDomicilio = data[0]
+            setFormaPagoInfo(prevValue => ({...prevValue, 
+                id_forma_pago: servicioDomicilio.id_forma_pago ? servicioDomicilio.id_forma_pago : 0,
+                notas_pago: servicioDomicilio.notas_pago ? servicioDomicilio.notas_pago : '',
+                confirmar_pago: pagado(servicioDomicilio),
+                referencia_pago: servicioDomicilio.referencia_pago ? servicioDomicilio.referencia_pago : ''
+            }))
+        },
+        retry: false
+    })
 
     function handleSubmit(event) {
         event.preventDefault()
         if (isValid()) {
             doActualizaInfoPago({id_servicio_domicilio: idServicioDomicilio, id_usuario: credenciales.id_usuario, infoPago: formaPagoInfo})
-            navigate(-1)
         }
     }
 
@@ -98,6 +107,8 @@ const InformacionPagoForm = () => {
     }
     
     if (isLoading) return <Spinner animation="border" />
+
+    if (error) return <span>{error.message}</span>
 
     const servicioDomicilio = data[0]
     

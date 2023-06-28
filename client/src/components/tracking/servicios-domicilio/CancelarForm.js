@@ -5,18 +5,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHouse, faLocationDot } from '@fortawesome/free-solid-svg-icons'
 
 import { Button, Card, Col, Form, Spinner } from 'react-bootstrap'
+import { toast } from 'react-toastify'
 import { FaPhoneAlt, FaTicketAlt, FaUserAlt } from 'react-icons/fa'
 
-import { useMutation, useQuery } from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { cancelaServicioDomicilio } from "../../../mutations/ServicioDomicilio"
 import { useAuth } from '../../../hooks/useAuth'
 
 import { isBlank, esEntrega, TAMANO_CONTROLES } from '../../comun/utils'
-import { QUERY_SERVICIO_DOMICILIO, fetchServicioDomicilio } from '../../../queries/ServicioDomicilio'
+import { QUERY_SERVICIO_DOMICILIO, QUERY_SERVICIOS_DOMICILIO_ACTIVOS, fetchServicioDomicilio } from '../../../queries/ServicioDomicilio'
 
 const InformacionGeneralForm = () => {
     const navigate = useNavigate()
     const location = useLocation()
+    const queryClient = useQueryClient()
+
     const idServicioDomicilio = location.state.id_servicio_domicilio
     const { credenciales } = useAuth()
     const [formaCancelar, setFormaCancelar] = useState({
@@ -24,12 +27,23 @@ const InformacionGeneralForm = () => {
     })
     const [errors, setErrors] = useState({})
 
-    const { data, isLoading } = useQuery([QUERY_SERVICIO_DOMICILIO, idServicioDomicilio], fetchServicioDomicilio)
-
+    const { data, error, isLoading, refetch } = useQuery({
+        queryKey: [QUERY_SERVICIO_DOMICILIO, idServicioDomicilio], 
+        queryFn: fetchServicioDomicilio,
+        retry: false
+    })
 
     const { mutate: doCancelaServicioDomicilio } = useMutation ({
         mutationFn: cancelaServicioDomicilio,
-    })
+        onSuccess: () => {
+            refetch()
+            queryClient.invalidateQueries({ queryKey: [QUERY_SERVICIOS_DOMICILIO_ACTIVOS] })
+            navigate(-1)
+        },
+        onError: (err) => {
+            toast.error(err.message)
+        }
+      })
     
     function handleSubmit(event) {
         event.preventDefault()
@@ -39,7 +53,6 @@ const InformacionGeneralForm = () => {
                 id_usuario: credenciales.id_usuario, 
                 informacionCancelacion: formaCancelar
             })
-            navigate(-1)
         }
     }
 
@@ -80,6 +93,8 @@ const InformacionGeneralForm = () => {
     }
 
     if (isLoading) return <Spinner animation="border" />
+
+    if (error) return <span>{error.message}</span>
 
     const servicioDomicilio = data[0]
     

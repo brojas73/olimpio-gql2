@@ -5,9 +5,17 @@ import { fetchTiposTrabajo, QUERY_TIPOS_TRABAJO } from '../../queries/TipoTrabaj
 import { TAMANO_CONTROLES } from './utils'
 
 const TipoTrabajoSelect = ({onChange, name, value, label, isInvalid}) => {
-    const { data: tiposTrabajo, isLoading } = useQuery(QUERY_TIPOS_TRABAJO, fetchTiposTrabajo, { staleTime: Infinity, cacheTime: Infinity})
+    const { data: tiposTrabajo, isLoading, error } = useQuery({
+        queryKey: [QUERY_TIPOS_TRABAJO], 
+        queryFn: fetchTiposTrabajo, 
+        retry: false,
+        staleTime: Infinity, 
+        cacheTime: Infinity
+    })
 
     if (isLoading) return <Spinner animation="border" />
+
+    if (error) return <span>{error.message}</span>
 
     return (
         <>

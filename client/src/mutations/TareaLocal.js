@@ -19,7 +19,11 @@ export async function creaTareaLocal(tareaLocal) {
         const data = await response.json()
         return data
     } catch (err) {
-        throw new Error(err)
+        // eslint-disable-next-line eqeqeq
+        if (err == 'TypeError: Failed to fetch')
+            throw new Error('No puedo contactar al servidor')
+        else
+            throw new Error(err)
     }
 }
 
@@ -41,7 +45,11 @@ export async function borraTareaLocal({id_tarea_local}) {
         const { data } = json
         return data
     } catch (err) {
-        throw new Error(err)
+        // eslint-disable-next-line eqeqeq
+        if (err == 'TypeError: Failed to fetch')
+            throw new Error('No puedo contactar al servidor')
+        else
+            throw new Error(err)
     }
 }
 
@@ -75,7 +83,11 @@ export async function actualizaEstadoTareaLocal({id_tarea_local, id_estado_tarea
         data.mensaje = mensaje
         return data
     } catch (err) {
-        throw new Error(err)
+        // eslint-disable-next-line eqeqeq
+        if (err == 'TypeError: Failed to fetch')
+            throw new Error('No puedo contactar al servidor')
+        else
+            throw new Error(err)
     }
 }
 
@@ -96,7 +108,11 @@ export async function redireccionaTareaLocal(tareaLocal) {
         const data = await response.json()
         return data
     } catch (err) {
-        throw new Error(err)
+        // eslint-disable-next-line eqeqeq
+        if (err == 'TypeError: Failed to fetch')
+            throw new Error('No puedo contactar al servidor')
+        else
+            throw new Error(err)
     }
 }
 

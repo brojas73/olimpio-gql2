@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 
 import { Accordion, Button, Col, Form, Spinner } from 'react-bootstrap'
+import { toast } from 'react-toastify'
 
 import { useQuery, useMutation } from 'react-query'
 import { actualizaInformacionGeneral } from "../../../mutations/ServicioDomicilio"
@@ -30,32 +31,35 @@ const InformacionGeneralForm = () => {
     })
     const [errors, setErrors] = useState({})
 
-    const { data, isLoading, refetch } = useQuery(
-        [QUERY_SERVICIO_DOMICILIO, idServicioDomicilio], 
-        fetchServicioDomicilio, 
-        {
-            onSuccess: (data) => {
-                const servicioDomicilio = data[0]
-                setFormaInformacionGeneral(prevValue => ({...prevValue, 
-                    ticket: servicioDomicilio.ticket,
-                    nombre: servicioDomicilio.nombre,
-                    direccion: servicioDomicilio.direccion,
-                    colonia: servicioDomicilio.colonia,
-                    municipio: servicioDomicilio.municipio,
-                    cp: servicioDomicilio.cp,
-                    ubicacion: servicioDomicilio.ubicacion,
-                    telefono: servicioDomicilio.telefono
-                }))
+    const { data, error, isLoading, refetch } = useQuery({
+        queryKey: [QUERY_SERVICIO_DOMICILIO, idServicioDomicilio], 
+        queryFn: fetchServicioDomicilio, 
+        onSuccess: (data) => {
+            const servicioDomicilio = data[0]
+            setFormaInformacionGeneral(prevValue => ({...prevValue, 
+                ticket: servicioDomicilio.ticket,
+                nombre: servicioDomicilio.nombre,
+                direccion: servicioDomicilio.direccion,
+                colonia: servicioDomicilio.colonia,
+                municipio: servicioDomicilio.municipio,
+                cp: servicioDomicilio.cp,
+                ubicacion: servicioDomicilio.ubicacion,
+                telefono: servicioDomicilio.telefono
+            }))
 
-                setHeaderAcordeon(getHeaderInicialAcordeon(servicioDomicilio))
-            }
-        }
-    )
+            setHeaderAcordeon(getHeaderInicialAcordeon(servicioDomicilio))
+        },
+        retry: false
+    })
 
     const { mutate: doActualizaInformacionGeneral } = useMutation ({
         mutationFn: actualizaInformacionGeneral,
         onSuccess: () => {
             refetch()
+            navigate(-1)
+        },
+        onError: (err) => {
+            toast.error(err.message)
         }
     })
     
@@ -63,7 +67,6 @@ const InformacionGeneralForm = () => {
         event.preventDefault()
         if (isValid()) {
             doActualizaInformacionGeneral({id_servicio_domicilio: idServicioDomicilio, id_usuario: credenciales.id_usuario, informacionGeneral: formaInformacionGeneral})
-            navigate(-1)
         }
     }
 
@@ -139,6 +142,8 @@ const InformacionGeneralForm = () => {
     }
 
     if (isLoading) return <Spinner animation="border" />
+
+    if (error) return <span>{error.message}</span>
 
     const servicioDomicilio = data[0]
     

@@ -79,8 +79,19 @@ export const accionFormatter = (data, row) => {
 }
 
 export async function fetchData(url) { 
-  const response = await fetch(url, {credentials: 'include'}).then(response => response.json())
-  return response
+  try {
+    const response = await fetch(url, {credentials: 'include'})
+    if (!response.ok) {
+      throw new Error('Ocurrió un error de red')
+    }
+    return await response.json()
+  } catch (err) {
+    // eslint-disable-next-line eqeqeq
+    if (err == 'TypeError: Failed to fetch')
+        throw new Error('No puedo contactar al servidor')
+    else
+        throw new Error(err)
+  }
 }    
 
 export function nombreSucursal(sucursales, idSucursal) {

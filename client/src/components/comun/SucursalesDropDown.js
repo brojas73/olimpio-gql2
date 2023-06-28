@@ -9,9 +9,17 @@ import { fetchSucursales, QUERY_SUCURSALES } from "../../queries/Sucursal"
 import { nombreSucursal } from "./utils"
 
 const SucursalesDropDown = ({onSelect, titleOption, showIcon, idSelected}) => {
-  const { data: sucursales, isLoading } = useQuery(QUERY_SUCURSALES, fetchSucursales, { staleTime: Infinity, cacheTime: Infinity})
+  const { data: sucursales, isLoading, error } = useQuery({
+    queryKey: [QUERY_SUCURSALES], 
+    queryFn: fetchSucursales, 
+    retry: false,
+    staleTime: Infinity, 
+    cacheTime: Infinity
+  })
 
   if (isLoading) return <Spinner animation="border" />
+
+  if (error) return <span>{error.message}</span>
 
   return (
     <NavDropdown className="olimpio-font-size" title={

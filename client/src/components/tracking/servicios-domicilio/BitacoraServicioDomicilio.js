@@ -1,7 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom"
 
 import { Button, Spinner } from "react-bootstrap"
-import { toast } from 'react-toastify'
 
 import BootstrapTable from "react-bootstrap-table-next"
 import paginationFactory from 'react-bootstrap-table2-paginator'
@@ -19,12 +18,10 @@ export default function BitacoraServicioDomicilio() {
   const idServicioDomicilio = location.state.id_servicio_domicilio
 
 
-  const { data: serviciosDomicilioLog, isLoading, isError } = useQuery({
+  const { data: serviciosDomicilioLog, error, isLoading} = useQuery({
     queryKey: [QUERY_SERVICIOS_DOMICILIO_LOG_BY_SERVICIO_DOMICILIO, idServicioDomicilio], 
     queryFn: fetchServiciosDomicilioLogByServicioDomicilio,
-    onError: (err) => {
-        toast.error(err.message)
-    }
+    retry: false
   })
 
   const columns = [ 
@@ -37,7 +34,7 @@ export default function BitacoraServicioDomicilio() {
 
   if (isLoading) return <Spinner animation="border" />
 
-  if (isError) return "Error"
+  if (error) return <span>{error.message}</span>
 
   return (
     <>

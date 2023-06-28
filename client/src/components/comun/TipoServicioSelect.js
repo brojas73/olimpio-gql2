@@ -5,9 +5,17 @@ import { fetchTiposServicio, QUERY_TIPOS_SERVICIO } from '../../queries/TipoServ
 import { TAMANO_CONTROLES } from './utils'
 
 const TipoServicioSelect = ({onChange, name, value, label, isInvalid}) => {
-    const { data: tiposServicio, isLoading } = useQuery(QUERY_TIPOS_SERVICIO, fetchTiposServicio, { staleTime: Infinity, cacheTime: Infinity})
+    const { data: tiposServicio, isLoading, error } = useQuery({
+        queryKey: [QUERY_TIPOS_SERVICIO], 
+        queryFn: fetchTiposServicio, 
+        retry: false,
+        staleTime: Infinity, 
+        cacheTime: Infinity
+    })
 
     if (isLoading) return <Spinner animation="border" />
+
+    if (error) return <span>{error.message}</span>
 
     return (
         <>

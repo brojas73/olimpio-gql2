@@ -5,9 +5,17 @@ import { fetchFormasPago, QUERY_FORMAS_PAGO } from '../../queries/FormaPago'
 import { TAMANO_CONTROLES } from './utils'
 
 const FormaPagoSelect = ({onChange, name, value, label, isInvalid, disabled}) => {
-    const { data: formasPago, isLoading } = useQuery(QUERY_FORMAS_PAGO, fetchFormasPago, { staleTime: Infinity, cacheTime: Infinity})
+    const { data: formasPago, isLoading, error } = useQuery({
+        queryKey: [QUERY_FORMAS_PAGO], 
+        queryFn: fetchFormasPago, 
+        retry: false,
+        staleTime: Infinity, 
+        cacheTime: Infinity
+    })
 
     if (isLoading) return <Spinner animation="border" />
+
+    if (error) return <span>{error.message}</span>
 
     return (
         <>

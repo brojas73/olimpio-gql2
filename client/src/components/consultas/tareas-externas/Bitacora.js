@@ -18,7 +18,11 @@ export default function Bitacora() {
   const { sucursalActual } = useOlimpio()
   const { filtros } = useConsultas()
 
-  const {isLoading, data: tareasExternasLog, refetch} = useQuery(QUERY_TAREAS_EXTERNAS_LOG, fetchTareasExternasLog)
+  const {isLoading, data: tareasExternasLog, error, refetch} = useQuery({
+    queryKey: [QUERY_TAREAS_EXTERNAS_LOG], 
+    queryFn: fetchTareasExternasLog,
+    retry: false
+  })
   const [modalTarea, setModalTarea] = useState({mostrar: false, idTarea: 0})
 
   const tableRowEvents = {
@@ -43,6 +47,8 @@ export default function Bitacora() {
   }
 
   if (isLoading) return <Spinner animation="border" />
+
+  if (error) return <span>{error.message}</span>
 
   if (tareasExternasLog) {
     // Obtengo las tareas que voy a desplegar

@@ -5,7 +5,9 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 
 import { BrowserRouter } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryCache, QueryClient, QueryClientProvider } from 'react-query';
+
+import { toast } from 'react-toastify'
 
 import { AuthProvider } from './hooks/useAuth';
 
@@ -15,7 +17,17 @@ import { ServiciosDomicilioProvider } from './context/ServiciosDomicilioContext'
 import { ConsultasProvider } from './context/ConsultasContext';
 import { TareasLocalesProvider } from './context/TareasLocalesContext';
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  queryCache: new QueryCache({
+    onError: (error, query) => {
+      if (query.state.data !== undefined) {
+        toast.error(`Error: No puedo cotactar al servidor`)
+      } else {
+        toast.error(error.message)
+      }
+    }
+  })
+})
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

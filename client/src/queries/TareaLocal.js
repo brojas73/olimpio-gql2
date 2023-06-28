@@ -11,8 +11,12 @@ export async function fetchTareasLocalesActivas() {
 
         const { data } = response
         return data
-    } catch (error) {
-        throw error
+    } catch (err) {
+        // eslint-disable-next-line eqeqeq
+        if (err == 'TypeError: Failed to fetch')
+            throw new Error('No puedo contactar al servidor')
+        else
+            throw new Error(err)
     }
 }
 
@@ -27,8 +31,12 @@ export async function fetchTareasLocalesPorAtenderseHoy({queryKey}) {
 
         const { data } = response
         return data
-    } catch (error) {
-        throw error
+    } catch (err) {
+        // eslint-disable-next-line eqeqeq
+        if (err == 'TypeError: Failed to fetch')
+            throw new Error('No puedo contactar al servidor')
+        else
+            throw new Error(err)
     }
 }
 
@@ -43,7 +51,11 @@ export async function fetchTareaLocal({queryKey}) {
 
         const { data } = response
         return data
-    } catch (error) {
-        throw error
+    } catch (err) {
+        // eslint-disable-next-line eqeqeq
+        if (err == 'TypeError: Failed to fetch')
+            throw new Error('No puedo contactar al servidor')
+        else
+            throw new Error(err)
     }
 }

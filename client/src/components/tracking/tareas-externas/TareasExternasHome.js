@@ -69,12 +69,10 @@ const TareasExternasHome = () => {
     const [modalSucursalRedireccion, setModalSucursalRedireccion] = useState({mostrar: false})
     
     // Queries
-    const { data: tareasExternasActivas, isLoading, isError, refetch } = useQuery({
+    const { data: tareasExternasActivas, isLoading, error, refetch } = useQuery({
         queryKey: [QUERY_TAREAS_EXTERNAS_ACTIVAS], 
         queryFn: fetchTareasExternasActivas,
-        onError: (err) => {
-            toast.error(err.message)
-        }
+        retry: false
     })
 
     // Mutations
@@ -221,7 +219,7 @@ const TareasExternasHome = () => {
 
     if (isLoading) return <Spinner animation="border" />
 
-    if (isError) return "Error"
+    if (error) return <span>{error.message}</span>
 
     if (tareasExternasActivas) {
       // Obtengo las tareas que voy a desplegar

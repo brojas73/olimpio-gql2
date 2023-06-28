@@ -10,10 +10,18 @@ import { nombreEstadoTarea } from '../../comun/utils'
 
 
 const EstadosTareaDropDown = ({onSelect, idSelected }) => {
-  const { data: estadosTarea, isLoading } = useQuery(QUERY_ESTADOS_TAREA, fetchEstadosTarea, { staleTime: Infinity, cacheTime: Infinity})
+  const { data: estadosTarea, isLoading, error } = useQuery({
+    queryKey: [QUERY_ESTADOS_TAREA], 
+    queryFn: fetchEstadosTarea, 
+    retry: false,
+    staleTime: Infinity, 
+    cacheTime: Infinity
+  })
   const titulo = nombreEstadoTarea(estadosTarea, idSelected)
 
   if (isLoading) return <Spinner animation='border' />
+
+  if (error) return <span>{error.message}</span>
 
   return (
     <NavDropdown title={titulo} className='olimpio-font-size'>

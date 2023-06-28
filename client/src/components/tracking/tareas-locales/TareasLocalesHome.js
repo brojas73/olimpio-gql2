@@ -64,12 +64,10 @@ const TareasLocalesHome = () => {
     const [modalSucursalRedireccion, setModalSucursalRedireccion] = useState({mostrar: false})
 
     // Queries
-    const { data: tareasLocalesActivas, isLoading, isError, refetch } = useQuery({
+    const { data: tareasLocalesActivas, error, isLoading, refetch } = useQuery({
         queryKey: [QUERY_TAREAS_LOCALES_ACTIVAS], 
         queryFn: fetchTareasLocalesActivas,
-        onError: (err) => {
-            toast.error(err.message)
-        }
+        retry: false
     })
 
     // Mutations
@@ -178,7 +176,7 @@ const TareasLocalesHome = () => {
 
     if (isLoading) return <Spinner animation="border" />
 
-    if (isError) return "Error"
+    if (error) return <span>{error.message}</span>
 
     if (tareasLocalesActivas) {
       // Obtengo las tareas que voy a desplegar

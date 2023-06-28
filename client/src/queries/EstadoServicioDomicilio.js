@@ -12,8 +12,12 @@ export async function fetchEstadosServiciosDomicilio() {
 
         const { data } = response
         return data
-    } catch (error) {
-        throw error
+    } catch (err) {
+        // eslint-disable-next-line eqeqeq
+        if (err == 'TypeError: Failed to fetch')
+            throw new Error('No puedo contactar al servidor')
+        else
+            throw new Error(err)
     }
 }
 

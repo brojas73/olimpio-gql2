@@ -9,17 +9,23 @@ import { fetchTareaExterna, QUERY_TAREA_EXTERNA } from '../../../queries/TareaEx
 import { fetchTareaLocal, QUERY_TAREA_LOCAL } from '../../../queries/TareaLocal'
 
 const TareaModal = ({mostrar, idTarea, onClose, tipoTarea}) => {
-  const { data: tareasExternas, isLoading: isLoadingTareasExternas } = useQuery(
-    [QUERY_TAREA_EXTERNA, idTarea], 
-    fetchTareaExterna
-  )
+  const { data: tareasExternas, isLoading: isLoadingTareasExternas, error: errorTareasExternas } = useQuery({
+    queryKey: [QUERY_TAREA_EXTERNA, idTarea], 
+    queryFn: fetchTareaExterna,
+    retry: false
+  })
 
-  const { data: tareasLocales, isLoading: isLoadingTareasLocales } = useQuery(
-    [QUERY_TAREA_LOCAL, idTarea], 
-    fetchTareaLocal
-  )
+  const { data: tareasLocales, isLoading: isLoadingTareasLocales, error: errorTareasLocales } = useQuery({
+    queryKey: [QUERY_TAREA_LOCAL, idTarea], 
+    queryFn: fetchTareaLocal,
+    retry: false
+  })
 
   if (isLoadingTareasExternas || isLoadingTareasLocales) return <Spinner animation="border" />
+
+  if (errorTareasExternas) return <span>{errorTareasExternas.message}</span>
+
+  if (errorTareasLocales) return <span>{errorTareasLocales.message}</span>
 
   // Obtengo el primer elemento del resultado
   const tarea = (tipoTarea === 'E' ? tareasExternas[0] : tareasLocales[0])

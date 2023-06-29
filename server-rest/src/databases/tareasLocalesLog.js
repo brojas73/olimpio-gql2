@@ -16,6 +16,7 @@ const mainQuery = `
              u.nombre as usuario,
              estado_final.nombre as estado_fin,
              estado_inicial.nombre as estado_ini,
+             "L" as tipo_tarea,
              tl.id_tarea_local as id_tarea_local,
              tl.id_sucursal,
              tll.id_tarea_local_log as id

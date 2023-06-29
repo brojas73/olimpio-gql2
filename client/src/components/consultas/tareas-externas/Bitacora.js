@@ -23,11 +23,11 @@ export default function Bitacora() {
     queryFn: fetchTareasExternasLog,
     retry: false
   })
-  const [modalTarea, setModalTarea] = useState({mostrar: false, idTarea: 0})
+  const [modalTarea, setModalTarea] = useState({mostrar: false, idTarea: 0, tipoTarea: 'E'})
 
   const tableRowEvents = {
     onDoubleClick: (e, row, rowIndex) => {
-      setModalTarea(prevValue => ({...prevValue, idTarea: row.id_tarea_externa, mostrar: true}))
+      setModalTarea(prevValue => ({...prevValue, idTarea: row.id_tarea_externa, mostrar: true, tipoTarea: row.tipo_tarea}))
     }
   }
 
@@ -66,6 +66,7 @@ export default function Bitacora() {
           <TareaModal 
             mostrar={modalTarea.mostrar} 
             idTarea={modalTarea.idTarea}
+            tipoTarea={modalTarea.tipoTarea}
             onClose={() => setModalTarea(prevValue => ({...prevValue, mostrar: false}))} 
           />
         )

@@ -16,9 +16,9 @@ const mainQuery = `
              u.nombre as usuario,
              estado_final.nombre as estado_fin,
              estado_inicial.nombre as estado_ini,
+             "E" as tipo_tarea,
              te.id_tarea_externa as id_tarea_externa,
              te.id_sucursal_origen,
-             te.id_sucursal_destino,
              tel.id_tarea_externa_log as id
        from  tarea_externa_log as tel
              inner join tarea_externa as te

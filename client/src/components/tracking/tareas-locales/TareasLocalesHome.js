@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useNavigate } from "react-router-dom"
 
 import { Row, Spinner } from 'react-bootstrap'
-import { toast } from 'react-toastify'
 
 // Hooks
 import { useAuth } from "../../../hooks/useAuth"
@@ -77,9 +76,6 @@ const TareasLocalesHome = () => {
             queryClient.setQueriesData(QUERY_TAREAS_LOCALES_ACTIVAS, (current) => (
                 current.filter(tarea => (parseInt(tarea.id_tarea_local) !== parseInt(id_tarea_local)))
             ))
-        },
-        onError: (err) => {
-            toast.error(err.message)
         }
     })
 
@@ -93,23 +89,16 @@ const TareasLocalesHome = () => {
                         tarea 
                 ))
             ))
-        },
-        onError: (err) => {
-            toast.error(err.message)
         }
     })
 
     const { mutate: doRedireccionaTareaLocal } = useMutation ({
         mutationFn: redireccionaTareaLocal,
-        onSuccess: ({data}) => {
+        onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [QUERY_TAREAS_LOCALES_ACTIVAS] })
-        },
-        onError: (err) => {
-            toast.error(err.message)
         }
     })
 
-    
     // Handlers
     function handleConfirmacion(confirmado) {
         // Cierro la modal

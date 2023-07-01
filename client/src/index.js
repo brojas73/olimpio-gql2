@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 
 import { BrowserRouter } from 'react-router-dom';
-import { QueryCache, QueryClient, QueryClientProvider } from 'react-query';
+import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from 'react-query';
 
 import { toast } from 'react-toastify'
 
@@ -17,7 +17,14 @@ import { ServiciosDomicilioProvider } from './context/ServiciosDomicilioContext'
 import { ConsultasProvider } from './context/ConsultasContext';
 import { TareasLocalesProvider } from './context/TareasLocalesContext';
 
-const queryClient = new QueryClient({
+const mutationCache = new MutationCache({
+  onError: (error) => {
+    toast.error(error.message)
+  }
+})
+
+const queryClient = new QueryClient({ 
+  mutationCache, 
   queryCache: new QueryCache({
     onError: (error, query) => {
       if (query.state.data !== undefined) {

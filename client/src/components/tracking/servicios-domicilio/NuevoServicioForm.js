@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { Button, Form, Row, Col, Navbar, Accordion } from 'react-bootstrap'
-import { toast } from 'react-toastify'
 
 import { useOlimpio } from '../../../context/OlimpioContext'
 import { useAuth } from '../../../hooks/useAuth'
@@ -47,9 +46,6 @@ const NuevoServicioForm = ({onExito}) => {
     onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: [QUERY_SERVICIOS_DOMICILIO_ACTIVOS] })
         navigate(-1)
-    },
-    onError: (err) => {
-        toast.error(err.message)
     }
   })
 

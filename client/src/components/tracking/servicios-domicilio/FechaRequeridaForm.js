@@ -5,7 +5,6 @@ import { faHouse, faLocationDot } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { Button, Card, Col, Form, Row, Spinner } from 'react-bootstrap'
-import { toast } from 'react-toastify'
 import { FaPhoneAlt, FaTicketAlt, FaUserAlt } from 'react-icons/fa'
 
 import { useAuth } from '../../../hooks/useAuth'
@@ -32,9 +31,6 @@ const FechaRequeridaForm = () => {
         onSuccess: () => {
             refetch()
             navigate(-1)
-        },
-        onError: (err) => {
-            toast.error(err.message)
         }
     })
     

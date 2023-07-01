@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { Button, Form, Row, Col, Navbar } from 'react-bootstrap'
-import { toast } from 'react-toastify'
 
 import { STATUS_TAREA } from '../../../context/TareasExternasContext'
 import { useOlimpio } from '../../../context/OlimpioContext'
@@ -40,9 +39,6 @@ const NuevaTareaForm = ({onExito}) => {
     onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: [QUERY_TAREAS_EXTERNAS_ACTIVAS] })
         navigate(-1)
-    },
-    onError: (err) => {
-        toast.error(err.message)
     }
   })
 

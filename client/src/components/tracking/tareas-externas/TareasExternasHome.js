@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useNavigate } from "react-router-dom"
 
 import { Row, Spinner } from 'react-bootstrap'
-import { toast } from 'react-toastify'
 
 // Hooks
 import { useAuth } from "../../../hooks/useAuth"
@@ -78,45 +77,33 @@ const TareasExternasHome = () => {
     // Mutations
     const { mutate: doBorraTareaExterna } = useMutation ({
         mutationFn: borraTareaExterna,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [QUERY_TAREAS_EXTERNAS_ACTIVAS] })
+        onSuccess: (data) => {
+            queryClient.setQueriesData(QUERY_TAREAS_EXTERNAS_ACTIVAS, (current) => (
+                current.filter(tareaExterna => (parseInt(tareaExterna.id_tarea_externa) !== parseInt(data.id_tarea_externa)))
+            ))
         },
-        onError: (err) => {
-            toast.error(err.message)
-        }
-        // onSuccess: (data) => {
-        //     queryClient.setQueriesData(QUERY_TAREAS_EXTERNAS_ACTIVAS, (current) => (
-        //         current.filter(tareaExterna => (parseInt(tareaExterna.id_tarea_externa) !== parseInt(data.id_tarea_externa)))
-        //     ))
-        // }
+        // onSuccess: () => {
+        //     queryClient.invalidateQueries({ queryKey: [QUERY_TAREAS_EXTERNAS_ACTIVAS] })
+        // },
     })
 
     const { mutate: doActualizaEstadoTareaExterna } = useMutation ({
         mutationFn: actualizaEstadoTareaExterna,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [QUERY_TAREAS_EXTERNAS_ACTIVAS] })
-        },
-        onError: (err) => {
-            toast.error(err.message)
+        onSuccess: ({data}) => {
+            queryClient.setQueriesData(QUERY_TAREAS_EXTERNAS_ACTIVAS, (current) => (
+                current.map(tareaExterna => (
+                    parseInt(tareaExterna.id_tarea_externa) === parseInt(data.id_tarea_externa) ? 
+                        {...tareaExterna, id_estado_tarea: data.id_estado_tarea} : 
+                        tareaExterna 
+                ))
+            ))
         }
-        // onSuccess: ({data}) => {
-        //     queryClient.setQueriesData(QUERY_TAREAS_EXTERNAS_ACTIVAS, (current) => (
-        //         current.map(tareaExterna => (
-        //             parseInt(tareaExterna.id_tarea_externa) === parseInt(data.id_tarea_externa) ? 
-        //                 {...tareaExterna, id_estado_tarea: data.id_estado_tarea} : 
-        //                 tareaExterna 
-        //         ))
-        //     ))
-        // }
     })
     
     const { mutate: doRedireccionaTareaExterna } = useMutation ({
         mutationFn: redireccionaTareaExterna,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [QUERY_TAREAS_EXTERNAS_ACTIVAS] })
-        },
-        onError: (err) => {
-            toast.error(err.message)
         }
     })
     
@@ -124,9 +111,6 @@ const TareasExternasHome = () => {
         mutationFn: recolectaTareaExternaForwarded,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [QUERY_TAREAS_EXTERNAS_ACTIVAS] })
-        },
-        onError: (err) => {
-            toast.error(err.message)
         }
     })
 

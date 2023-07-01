@@ -45,7 +45,7 @@ const Login = ({onLoginOk}) => {
         setSucursalActual(parseInt(formInfo.sucursal))
         onLoginOk()
       } else {
-        onLoginFail(data.error.mensaje)
+        toast.error(data.error.mensaje)
       }
     })
   })
@@ -61,10 +61,6 @@ const Login = ({onLoginOk}) => {
       usuario: formInfo.usuario,
       contrasena: formInfo.contrasena
     })
-  }
-
-  function onLoginFail(mensaje) {
-    toast.error(mensaje)
   }
 
   if (isLoading) return <Spinner animation="border" />

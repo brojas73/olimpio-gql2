@@ -22,7 +22,7 @@ export default function TareasPorAtenderseHoy() {
         queryFn: fetchTareasPorAtenderseHoy,
         retry: false
     })
-    const [modalTarea, setModalTarea] = useState({mostrar: false, idTarea: 0})
+    const [modalTarea, setModalTarea] = useState({mostrar: false, idTarea: 0, tipoTarea: 'E'})
 
     const tableRowEvents = {
         onDoubleClick: (e, row, rowIndex) => {

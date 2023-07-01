@@ -2,7 +2,6 @@ import { useState } from "react"
 import { useNavigate } from 'react-router-dom'
 
 import { Row, Spinner } from "react-bootstrap"
-import { toast } from 'react-toastify'
 
 // Hooks
 import { useAuth } from "../../../hooks/useAuth"
@@ -75,9 +74,6 @@ const ServiciosDomicilioHome = () => {
                         serviciosDomicilio 
                 ))
             ))
-        },
-        onError: (err) => {
-            toast.error(err.message)
         }
     })
 

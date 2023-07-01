@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 
 import { Accordion, Button, Col, Form, Spinner } from 'react-bootstrap'
-import { toast } from 'react-toastify'
 
 import { useQuery, useMutation } from 'react-query'
 import { actualizaInformacionGeneral } from "../../../mutations/ServicioDomicilio"
@@ -57,9 +56,6 @@ const InformacionGeneralForm = () => {
         onSuccess: () => {
             refetch()
             navigate(-1)
-        },
-        onError: (err) => {
-            toast.error(err.message)
         }
     })
     

@@ -5,7 +5,6 @@ import { faHouse, faLocationDot } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { Button, Card, Form, Spinner } from 'react-bootstrap'
-import { toast } from 'react-toastify'
 import { FaPhoneAlt, FaTicketAlt, FaUserAlt } from 'react-icons/fa'
 
 import { useQuery, useMutation, useQueryClient } from 'react-query'
@@ -37,9 +36,6 @@ const InformacionPagoForm = () => {
             refetch()
             queryClient.invalidateQueries({ queryKey: [QUERY_SERVICIOS_DOMICILIO_ACTIVOS, QUERY_SERVICIO_DOMICILIO] })
             navigate(-1)
-        },
-        onError: (err) => {
-            toast.error(err.message)
         }
     })
     

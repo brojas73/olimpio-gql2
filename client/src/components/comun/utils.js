@@ -416,11 +416,14 @@ export function getTextoForwardTareaExterna(idEstadoActual) {
 }
 
 export function filtraTareasExternas(tareasExternasActivas, filtros, sucursalActual) {
+  // Primero filtramos por el ticket y la sucursal del filtro
   const tareasExternasFiltradas = tareasExternasActivas.filter(tareaExterna => 
       (filtros.ticket.length === 0 || (filtros.ticket.length > 0 && tareaExterna.ticket.includes(filtros.ticket))) &&
       (filtros.sucursal === 0 || (filtros.sucursal !== 0 && (tareaExterna.id_sucursal_origen === filtros.sucursal || tareaExterna.id_sucursal_destino === filtros.sucursal)))
   )
 
+  // Si tenemos un estado de la tarea seleccionado, filtraremos, además de por el estado, por la sucursal
+  // actualmente seleccionada
   switch (parseInt(filtros.estado)) {
       case STATUS_TAREA.PENDIENTE_RECOLECCION:
           return tareasExternasFiltradas.filter(tareaExterna => (
@@ -513,11 +516,14 @@ export function getTextoForwardTareaLocal(idEstadoActual) {
 }
 
 export function filtraTareasLocales(tareasActivas, filtros, sucursalActual) {
+  // Primero filtramos por el ticket y por la sucursal
   const tareasFiltradas = tareasActivas.filter(tarea => 
       (filtros.ticket.length === 0 || (filtros.ticket.length > 0 && tarea.ticket.includes(filtros.ticket))) &&
-      (filtros.sucursal === 0 || (filtros.sucursal !== 0 && (tarea.id_sucursal_origen === filtros.sucursal || tarea.id_sucursal_destino === filtros.sucursal)))
+      (filtros.sucursal === 0 || (filtros.sucursal !== 0 && (tarea.id_sucursal === filtros.sucursal)))
   )
 
+  // Si estamos filtrando por el estado de la tarea, es decir, queremos sólo un tipo de tarea en específico, 
+  // también filtraremos por la sucursal actual seleccionada
   switch (parseInt(filtros.estado)) {
       case STATUS_TAREA_LOCAL.POR_ATENDERSE:
           return tareasFiltradas.filter(tarea => (

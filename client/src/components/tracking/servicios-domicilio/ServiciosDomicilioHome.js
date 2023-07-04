@@ -27,7 +27,8 @@ import {
 } from "../../../queries/ServicioDomicilio"
 
 // Mutations
-import { useMutation, useQueryClient } from "react-query"
+// import { useMutation, useQueryClient } from "react-query"
+import { useMutation } from "react-query"
 import { actualizaEstado } from "../../../mutations/ServicioDomicilio"
 
 // Componentes
@@ -37,7 +38,7 @@ import ConfirmacionModal from '../../comun/ConfirmacionModal'
 
 const ServiciosDomicilioHome = () => {
     const navigate = useNavigate()
-    const queryClient = useQueryClient()
+    // const queryClient = useQueryClient()
 
     const { sucursalActual } = useOlimpio()
     const { filtros } = useServiciosDomicilio()
@@ -66,15 +67,18 @@ const ServiciosDomicilioHome = () => {
     // Mutations
     const { mutate: doActualizaEstadoServicioDomicilio } = useMutation ({
         mutationFn: actualizaEstado,
-        onSuccess: ({data}) => {
-            queryClient.setQueriesData(QUERY_SERVICIOS_DOMICILIO_ACTIVOS, (current) => (
-                current.map(serviciosDomicilio => (
-                    parseInt(serviciosDomicilio.id_servicio_domicilio) === parseInt(data.id_servicio_domicilio) ? 
-                        {...serviciosDomicilio, id_estado_servicio_domicilio: data.id_estado_servicio_domicilio} : 
-                        serviciosDomicilio 
-                ))
-            ))
+        onSuccess: () => {
+            refetchActivos()
         }
+        // onSuccess: ({data}) => {
+        //     queryClient.setQueriesData(QUERY_SERVICIOS_DOMICILIO_ACTIVOS, (current) => (
+        //         current.map(serviciosDomicilio => (
+        //             parseInt(serviciosDomicilio.id_servicio_domicilio) === parseInt(data.id_servicio_domicilio) ? 
+        //                 {...serviciosDomicilio, id_estado_servicio_domicilio: data.id_estado_servicio_domicilio} : 
+        //                 serviciosDomicilio 
+        //         ))
+        //     ))
+        // }
     })
 
     // Handlers

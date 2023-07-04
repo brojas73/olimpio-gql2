@@ -27,7 +27,8 @@ import {
 } from "../../../queries/TareaLocal"
 
 // Mutations
-import { useMutation, useQueryClient } from "react-query"
+// import { useMutation, useQueryClient } from "react-query"
+import { useMutation } from "react-query"
 import { 
     actualizaEstadoTareaLocal, 
     borraTareaLocal, 
@@ -48,7 +49,7 @@ const TIPO_CONFIRMACION = {
 
 const TareasLocalesHome = () => {
     const navigate = useNavigate()
-    const queryClient = useQueryClient()
+    // const queryClient = useQueryClient()
     
     const { sucursalActual } = useOlimpio()
     const { filtros } = useTareasLocales()
@@ -72,31 +73,40 @@ const TareasLocalesHome = () => {
     // Mutations
     const { mutate: doBorraTareaLocal } = useMutation ({
         mutationFn: borraTareaLocal,
-        onSuccess: ({id_tarea_local}) => {
-            queryClient.setQueriesData(QUERY_TAREAS_LOCALES_ACTIVAS, (current) => (
-                current.filter(tarea => (parseInt(tarea.id_tarea_local) !== parseInt(id_tarea_local)))
-            ))
+        onSuccess: () => {
+            refetch()
         }
+        // onSuccess: ({id_tarea_local}) => {
+        //     queryClient.setQueriesData(QUERY_TAREAS_LOCALES_ACTIVAS, (current) => (
+        //         current.filter(tarea => (parseInt(tarea.id_tarea_local) !== parseInt(id_tarea_local)))
+        //     ))
+        // }
     })
 
     const { mutate: doActualizaEstadoTareaLocal } = useMutation ({
         mutationFn: actualizaEstadoTareaLocal,
-        onSuccess: ({data}) => {
-            queryClient.setQueriesData(QUERY_TAREAS_LOCALES_ACTIVAS, (current) => (
-                current.map(tarea => (
-                    parseInt(tarea.id_tarea_local) === parseInt(data.id_tarea_local) ? 
-                        {...tarea, id_estado_tarea: data.id_estado_tarea} : 
-                        tarea 
-                ))
-            ))
+        onSuccess: () => {
+            refetch()
         }
+        // onSuccess: ({data}) => {
+        //     queryClient.setQueriesData(QUERY_TAREAS_LOCALES_ACTIVAS, (current) => (
+        //         current.map(tarea => (
+        //             parseInt(tarea.id_tarea_local) === parseInt(data.id_tarea_local) ? 
+        //                 {...tarea, id_estado_tarea: data.id_estado_tarea} : 
+        //                 tarea 
+        //         ))
+        //     ))
+        // }
     })
 
     const { mutate: doRedireccionaTareaLocal } = useMutation ({
         mutationFn: redireccionaTareaLocal,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [QUERY_TAREAS_LOCALES_ACTIVAS] })
+            refetch()
         }
+        // onSuccess: () => {
+        //     queryClient.invalidateQueries({ queryKey: [QUERY_TAREAS_LOCALES_ACTIVAS] })
+        // }
     })
 
     // Handlers

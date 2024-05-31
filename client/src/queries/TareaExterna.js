@@ -21,9 +21,9 @@ export async function fetchTareasExternasActivas() {
 }
 
 export const QUERY_TAREAS_EXTERNAS_TERMINADAS = 'tareasExternasTerminadas'
-export async function fetchTareasExternasTerminadas() {
+export async function fetchTareasExternasTerminadas({queryKey}) {
     try {
-        const response = await fetchData(`${getUrlApis()}/tareas-externas/terminadas/all`)
+        const response = await fetchData(`${getUrlApis()}/tareas-externas/terminadas/${queryKey[1]}`)
 
         if (response.status === 'FAILED') {
             throw new Error(response.data.error)

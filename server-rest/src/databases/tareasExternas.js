@@ -87,16 +87,17 @@ const tareasExternasActivas = () => {
     })
 }
 
-const tareasExternasTerminadas = () => {
+const tareasExternasTerminadas = (idSucursal) => {
     const q = `
         ${mainQuery}
            where te.estado = 1
            and   te.id_estado_tarea = 7
+           and   te.id_sucursal_origen = ?
         order by te.fecha_creacion
     `
 
     return new Promise((resolve, reject) => {
-        pool.query(q, (err, data) => {
+        pool.query(q, [idSucursal], (err, data) => {
             if (err) {
                 console.log(err)
                 reject({
@@ -110,7 +111,6 @@ const tareasExternasTerminadas = () => {
         })
     })
 }
-
 
 const porAtenderseHoy = (idSucursal) => {
     const q = `

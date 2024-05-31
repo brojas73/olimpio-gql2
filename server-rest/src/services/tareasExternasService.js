@@ -16,9 +16,9 @@ const tareasExternasActivas = async () => {
     }
 }
 
-const tareasExternasTerminadas = async () => {
+const tareasExternasTerminadas = async (idSucursal) => {
     try {
-        return await DB.tareasExternasTerminadas()
+        return await DB.tareasExternasTerminadas(idSucursal)
     } catch (error) {
         throw error
     }

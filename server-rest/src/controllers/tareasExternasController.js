@@ -22,9 +22,26 @@ const tareasExternasActivas = async (_, res) => {
     }
 }
 
-const tareasExternasTerminadas = async (_, res) => {
+const tareasExternasTerminadas = async (req, res) => {
+
+    const { 
+        params: { idSucursal }
+    } = req 
+    
+    if (!idSucursal) {
+        res
+            .status(400)
+            .send({
+                status: "FAILED",
+                data: {
+                    error: 'No se recibió el parámetro idSucursal'
+                }
+            })
+        return
+    }
+
     try {
-        const tareasExternas = await tareasExternasService.tareasExternasTerminadas()
+        const tareasExternas = await tareasExternasService.tareasExternasTerminadas(idSucursal)
         res.send({status: "OK", data: tareasExternas})
     } catch (err) {
         return res

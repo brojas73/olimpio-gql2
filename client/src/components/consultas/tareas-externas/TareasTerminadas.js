@@ -3,6 +3,7 @@ import { Spinner } from "react-bootstrap"
 import BootstrapTable from "react-bootstrap-table-next"
 import paginationFactory from 'react-bootstrap-table2-paginator'
 
+import { useOlimpio } from '../../../context/OlimpioContext'
 import { useConsultas } from '../../../context/ConsultasContext'
 import { fechaFormatter, ticketFormatter} from '../../comun/utils'
 
@@ -13,10 +14,11 @@ import { useQuery } from 'react-query'
 import { fetchTareasExternasTerminadas, QUERY_TAREAS_EXTERNAS_TERMINADAS } from '../../../queries/TareaExterna'
 
 export default function TareasTerminadas() {
+    const { sucursalActual } = useOlimpio()
     const { filtros } = useConsultas()
 
     const { isLoading, error, data: tareasExternas, refetch } = useQuery({
-        queryKey: [QUERY_TAREAS_EXTERNAS_TERMINADAS], 
+        queryKey: [QUERY_TAREAS_EXTERNAS_TERMINADAS, sucursalActual], 
         queryFn: fetchTareasExternasTerminadas,
         retry: false
     })

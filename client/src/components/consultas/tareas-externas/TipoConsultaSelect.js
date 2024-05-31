@@ -6,6 +6,8 @@ function getTitulo(id) {
     switch (parseInt(id)) {
         case TIPO_CONSULTA_TE.POR_ATENDERSE_HOY:
             return 'Tareas por Atenderse Hoy'
+        case TIPO_CONSULTA_TE.TERMINADAS:
+            return 'Tareas Terminadas'
         case TIPO_CONSULTA_TE.BITACORA:
             return 'Bitácora de Tareas Externas'
         default:
@@ -36,6 +38,14 @@ const TipoConsultaSelect = ({onSelect, selected}) => {
                 className="olimpio-font-size"
             >
                 {getTitulo(TIPO_CONSULTA_TE.POR_ATENDERSE_HOY)}
+            </NavDropdown.Item>
+
+            <NavDropdown.Item 
+                key={TIPO_CONSULTA_TE.TERMINADAS} 
+                eventKey={TIPO_CONSULTA_TE.TERMINADAS}
+                className="olimpio-font-size"
+            >
+                {getTitulo(TIPO_CONSULTA_TE.TERMINADAS)}
             </NavDropdown.Item>
 
             <NavDropdown.Item 

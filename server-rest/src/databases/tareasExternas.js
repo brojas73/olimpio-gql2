@@ -86,6 +86,31 @@ const tareasExternasActivas = () => {
     })
 }
 
+const tareasExternasTerminadas = () => {
+    const q = `
+        ${mainQuery}
+           where te.estado = 1
+           and   te.id_estado_tarea = 7
+        order by te.fecha_creacion
+    `
+
+    return new Promise((resolve, reject) => {
+        pool.query(q, (err, data) => {
+            if (err) {
+                console.log(err)
+                reject({
+                    status: 500,
+                    message: err?.message || err
+                })
+                return
+            }
+
+            resolve(JSON.parse(JSON.stringify(data)))
+        })
+    })
+}
+
+
 const porAtenderseHoy = (idSucursal) => {
     const q = `
     select   *
@@ -399,6 +424,7 @@ const cancelaRedireccionTareaLocal = (idTareaExterna, idTareaLocal, idUsuario, i
 export default {
     tareasExternas,
     tareasExternasActivas,
+    tareasExternasTerminadas,
     porAtenderseHoy,
     tareaExterna,
     creaTareaExterna,

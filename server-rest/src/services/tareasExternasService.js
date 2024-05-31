@@ -16,6 +16,14 @@ const tareasExternasActivas = async () => {
     }
 }
 
+const tareasExternasTerminadas = async () => {
+    try {
+        return await DB.tareasExternasTerminadas()
+    } catch (error) {
+        throw error
+    }
+}
+
 const porAtenderseHoy = async (idSucursal) => {
     try {
         return await DB.porAtenderseHoy(idSucursal) 
@@ -83,6 +91,7 @@ const cancelaRedireccionTareaLocal = async (idTareaExterna, idTareaLocal, idUsua
 export default {
     tareasExternas,
     tareasExternasActivas,
+    tareasExternasTerminadas,
     porAtenderseHoy,
     tareaExterna,
     creaTareaExterna,

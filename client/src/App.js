@@ -30,6 +30,7 @@ import BitacoraServicioDomicilio from "./components/tracking/servicios-domicilio
 
 import ConsultasTareasExternasHome from "./components/consultas/tareas-externas/ConsultasTareasExternasHome"
 import TareasPorAtenderseHoy from "./components/consultas/tareas-externas/TareasPorAtenderseHoy"
+import TareasTermiadas from "./components/consultas/tareas-externas/TareasTerminadas"
 import Bitacora from "./components/consultas/tareas-externas/Bitacora"
 
 import ConsultasServiciosDomicilioHome from "./components/consultas/servicios-domicilio/ConsultasServiciosDomicilioHome"
@@ -74,6 +75,7 @@ function App() {
         <Route path='/consultas' element={<ProtectedLayout />}>
           <Route path='tareas-externas' element={<ConsultasTareasExternasHome />} />
           <Route path='tareas-externas/por-atenderse-hoy' element={<TareasPorAtenderseHoy />} />
+          <Route path='tareas-externas/terminadas' element={<TareasTermiadas />} />
           <Route path='tareas-externas/bitacora' element={<Bitacora />} />
 
           <Route path='servicios-domicilio' element={<ConsultasServiciosDomicilioHome />} />

@@ -9,7 +9,8 @@ const URL_APIS_PROD = 'http://5.183.8.10/api-v1'
 export const TIPO_CONSULTA_TE = {
   TIPO_CONSULTA: 0,
   POR_ATENDERSE_HOY: 1,
-  BITACORA: 2
+  TERMINADAS: 2,
+  BITACORA: 3
 }
 
 export const TAMANO_CONTROLES = "sm"

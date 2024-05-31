@@ -17,6 +17,8 @@ const Filtros = ({onChange}) => {
     switch (parseInt(seleccion)) {
       case TIPO_CONSULTA_TE.POR_ATENDERSE_HOY:
         return navigate('/consultas/tareas-externas/por-atenderse-hoy')
+      case TIPO_CONSULTA_TE.TERMINADAS:
+        return navigate('/consultas/tareas-externas/terminadas')
       case TIPO_CONSULTA_TE.BITACORA:
         return navigate('/consultas/tareas-externas/bitacora')
       default:

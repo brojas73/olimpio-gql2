@@ -46,8 +46,6 @@ export default function TareasTerminadas() {
 
     if (error) return <span>{error.message}</span>
 
-    console.log({function: 'TareasTerminadas', tareasExternas})
-
     if (tareasExternas) {
         // Obtengo las tareas que voy a desplegar
         var tareasFiltradas = tareasExternas.filter(tareaExterna => (

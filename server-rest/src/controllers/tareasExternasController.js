@@ -12,7 +12,6 @@ const tareasExternas = async (_, res) => {
 }
 
 const tareasExternasActivas = async (_, res) => {
-    console.log({function: 'tareaseExternasController::tareasExternasActivas'})
     try {
         const tareasExternas = await tareasExternasService.tareasExternasActivas()
         res.send({status: "OK", data: tareasExternas})
@@ -24,7 +23,6 @@ const tareasExternasActivas = async (_, res) => {
 }
 
 const tareasExternasTerminadas = async (_, res) => {
-    console.log({function: 'tareaseExternasController::tareasExternasTerminadas'})
     try {
         const tareasExternas = await tareasExternasService.tareasExternasTerminadas()
         res.send({status: "OK", data: tareasExternas})
@@ -36,7 +34,6 @@ const tareasExternasTerminadas = async (_, res) => {
 }
 
 const porAtenderseHoy = async (req, res) => {
-    console.log({function: 'tareaseExternasController::porAtenderseHoy'})
     const { 
         params: { idSucursal }
     } = req 

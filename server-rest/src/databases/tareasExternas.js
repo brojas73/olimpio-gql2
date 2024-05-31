@@ -21,7 +21,8 @@ const mainQuery = `
              sr.nombre sucursal_redireccion,
              tt.nombre tipo_trabajo,
              ts.nombre tipo_servicio,
-             cp.nombre creado_por
+             cp.nombre creado_por,
+             'E' tipo_tarea
        from  tarea_externa te
              inner join sucursal so
                 on    so.id_sucursal = te.id_sucursal_origen

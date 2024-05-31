@@ -16,7 +16,8 @@ const mainQuery = `
              s.nombre sucursal,
              tt.nombre tipo_trabajo,
              ts.nombre tipo_servicio,
-             cp.nombre creado_por
+             cp.nombre creado_por,
+             'L' tipo_tarea
        from  tarea_local tl
              inner join sucursal s
                 on    s.id_sucursal = tl.id_sucursal
